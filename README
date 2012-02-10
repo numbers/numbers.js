@@ -1,0 +1,23 @@
+numeric.ly is a Javascript library for advanced mathematics.
+
+It includes
+
+Basic calculations
+Point differentiation
+Riemann integrals
+Functional evaluation
+Prime number analysis
+Statistical tools
+
+For basic function calls,
+e.g.
+
+numeric.addition(array)
+numeric.gcd(a,b)
+
+For using the prime and statistical tools
+
+numeric.isPrime.simple(val)
+numeric.statistic.median(array)
+
+More to come
