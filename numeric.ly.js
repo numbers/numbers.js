@@ -110,6 +110,63 @@ var numeric = function(){
 		return simpsonRecursive(func, a, b, eps, simpsonDef(func, a, b));
 	}
 /*-----------------------------------------------------------------------------*/
+	/*a variety of matrix analysis tools
+
+	let's consider the matrix A:
+
+	[1 2 3]
+	[4 5 6]
+
+	As input, set arg = [[1,2,3],[4,5,6]];
+
+	Note: The "structure" of matrices may be neglected in some calculations,
+	however in and transformation, mapping, etc, we recognize the proper
+	format.
+	*/
+	var matrix = function(){
+		
+		//add two arrays (arrA and arrB)
+		function addition(arrA, arrB){
+			if((arrA.length == arrB.length) && (arrA[0].length == arrB[0].length)){
+				var result = new Array(arrA.length);
+				for (var i = 0; i < arrA.length; i++) {
+					result[i] = new Array(arrA[i].length);
+					for (var j = 0; j < arrA[i].length; j++) {
+						result[i][j] = arrA[i][j] + arrB[i][j];
+					}
+				}
+				return result;
+			}else{
+				return 'Error: Array mismatch';
+			}
+		}
+
+		//multiple array (arr) by a scalar (val)
+		function scalar(arr,val){
+			for (var i = 0; i < arr.length; i++) {
+				for (var j = 0; j < arr[i].length; j++) {
+					arr[i][j] = val * arr[i][j];
+				}
+			}
+			return arr;
+		}
+
+		//transpose array
+		function transpose(arr){
+			//set 
+			var result = new Array(arr[0].length);
+			for (var i = 0; i < arr.length; i++) {
+				arr[i] = new Array(arr.length);
+			};
+		}
+
+
+		return{
+			addition: addition,
+			scalar: scalar
+		}
+	}()
+/*-----------------------------------------------------------------------------*/
 	//execute as numeric.isPrime.simple(val) or numeric.isPrime.complex(val)
 	var isPrime = function(){
 
@@ -254,6 +311,7 @@ var numeric = function(){
 		pointDiff: pointDiff,
 		riemann: riemann,
 		adaptiveSimpson: adaptiveSimpson,
+		matrix: matrix,
 		isPrime: isPrime,
 		statistic: statistic
 	}
