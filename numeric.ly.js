@@ -68,49 +68,81 @@ var numeric = function(){
 		return result;
 	}
 
-	//evaluate function at val (func passed a string)
+	//evaluate function at val (func passed as a string)
 	function evaluate(func, val){
 		return parseFloat(eval("with(Math){var x = " + val + ";" + func+'};'));
 	}
-
-	//function, point at which differentiation occurs (func passed as string)
-	function pointDiff(func, point){
-		var a = evaluate(func, point - .00001);
-		var b = evaluate(func, point + .00001);
-		return (b-a)/(.00002);
-	}
-
-	//calculate riemann integral (left hand) (func passed as string)
-	function riemann(func, start, finish, n){
-		var inc = (finish - start)/n;
-		var result = 0;
-		for (var i = start; i < finish; i+= inc) {
-			result += (evaluate(func, i) * inc);
-		}
-		return result;
-	}
-
-	//estimate integral with adaptive simpson quadrature
-	function simpsonDef(func, a, b){
-		var c = (a + b) / 2;
-		var d = Math.abs(b - a) / 6;
-		return d * (evaluate(func, a) + 4 * evaluate(func, c) + evaluate(func, b));
-	}
-	function simpsonRecursive(func, a, b, eps, whole){
-		var c = a + b;
-		var left = simpsonDef(func, a, c);
-		var right = simpsonDef(func, c, b);
-		if(Math.abs(left + right - whole) <= 15 * eps){
-			return left + right + (left + right - whole) / 15;
-		}else{
-			return simpsonRecursive(func, a, c, eps/2, left) + simpsonRecursive(f, c, b, eps/2, right);
-		}
-	}
-	function adaptiveSimpson(func, a, b, eps){
-		return simpsonRecursive(func, a, b, eps, simpsonDef(func, a, b));
-	}
 /*-----------------------------------------------------------------------------*/
-	/*a variety of matrix analysis tools
+	/*
+	Basic calculus tools including point differentiation, finite integration.
+	
+	Working towards functional differentiation and infinite integration, as well as
+	limits and taylor polynomials
+
+	*/
+	var calculus = function(){
+
+		//function, point at which differentiation occurs (func passed as string)
+		function pointDiff(func, point){
+			var a = evaluate(func, point - .00001);
+			var b = evaluate(func, point + .00001);
+			return (b-a)/(.00002);
+		}
+
+		//calculate riemann integral (left hand) (func passed as string)
+		function riemann(func, start, finish, n){
+			var inc = (finish - start)/n;
+			var result = 0;
+			for (var i = start; i < finish; i+= inc) {
+				result += (evaluate(func, i) * inc);
+			}
+			return result;
+		}
+
+		//estimate integral with adaptive simpson quadrature
+		function simpsonDef(func, a, b){
+			var c = (a + b) / 2;
+			var d = Math.abs(b - a) / 6;
+			return d * (evaluate(func, a) + 4 * evaluate(func, c) + evaluate(func, b));
+		}
+		function simpsonRecursive(func, a, b, eps, whole){
+			var c = a + b;
+			var left = simpsonDef(func, a, c);
+			var right = simpsonDef(func, c, b);
+			if(Math.abs(left + right - whole) <= 15 * eps){
+				return left + right + (left + right - whole) / 15;
+			}else{
+				return simpsonRecursive(func, a, c, eps/2, left) + simpsonRecursive(f, c, b, eps/2, right);
+			}
+		}
+		//execute this
+		function adaptiveSimpson(func, a, b, eps){
+			return simpsonRecursive(func, a, b, eps, simpsonDef(func, a, b));
+		}
+
+		//take the limit of a function (left, middle, or right)
+		function limit(func, point, approach){
+			if(approach == 'left'){
+				return evaluate(func, point - .001);
+			}else if(approach == 'right'){
+				return evaluate(func, point + .001);
+			}else if(approach == 'middle'){
+				return (limit(func, point, 'left') + limit(func, point, 'right')) / 2;
+			}else{
+				return 'Error: approach not provided';
+			}
+		}
+
+		return{
+			pointDiff: pointDiff,
+			riemann: riemann,
+			adaptiveSimpson: adaptiveSimpson,
+			limit: limit
+		}
+	}()
+/*-----------------------------------------------------------------------------*/
+	/*
+	a variety of matrix analysis tools
 
 	let's consider the matrix A:
 
@@ -167,8 +199,8 @@ var numeric = function(){
 		}
 	}()
 /*-----------------------------------------------------------------------------*/
-	//execute as numeric.isPrime.simple(val) or numeric.isPrime.complex(val)
-	var isPrime = function(){
+	//execute as numeric.prime.simple(val) or numeric.prime.complex(val)
+	var prime = function(){
 
 		//standard prime evaluation (no consideration towards efficiency)
 		//acceptable for small numbers
@@ -308,11 +340,9 @@ var numeric = function(){
 		gcd: gcd,
 		lcm: lcm,
 		evaluate: evaluate,
-		pointDiff: pointDiff,
-		riemann: riemann,
-		adaptiveSimpson: adaptiveSimpson,
+		calculus: calculus,
 		matrix: matrix,
-		isPrime: isPrime,
+		prime: prime,
 		statistic: statistic
 	}
 

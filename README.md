@@ -21,11 +21,11 @@ For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we co
 
 Use riemann integrals (with 200 subdivisions)
 
-	numeric.riemann("sin(x)", -2, 4, 200);
+	numeric.calculus.riemann("sin(x)", -2, 4, 200);
 
 Or adaptive simpson quadrature (with epsilon .0001)
 
-	numeric.adaptiveSimpson("sin(x)", -2, 4, .0001);
+	numeric.calculus.adaptiveSimpson("sin(x)", -2, 4, .0001);
 
 Say we wanted to run some matrix calculations:
 
@@ -40,9 +40,9 @@ We can transpose a matrix
 Numeric.ly also includes some basic prime number analysis.  We can check if a number is prime:
 
 	//basic check
-	numeric.isPrime.simple(number);
+	numeric.prime.simple(number);
 	//elliptic analysis (good for huge numbers)
-	numeric.isPrime.elliptic(number);
+	numeric.prime.elliptic(number);
 
 
 The statistics tools include mean, median, mode, standard deviation, random sample generator, correlation, confidence intervals, t-test, chi-square, and more.
