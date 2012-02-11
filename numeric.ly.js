@@ -4,7 +4,7 @@
 *	feb 2012
 */
 
-
+/*-----------------------------------------------------------------------------*/
 var numeric = function(){
 
 	//basic addition of vals in an array
@@ -90,6 +90,26 @@ var numeric = function(){
 		return result;
 	}
 
+	//estimate integral with adaptive simpson quadrature
+	function simpsonDef(func, a, b){
+		var c = (a + b) / 2;
+		var d = Math.abs(b - a) / 6;
+		return d * (evaluate(func, a) + 4 * evaluate(func, c) + evaluate(func, b));
+	}
+	function simpsonRecursive(func, a, b, eps, whole){
+		var c = a + b;
+		var left = simpsonDef(func, a, c);
+		var right = simpsonDef(func, c, b);
+		if(Math.abs(left + right - whole) <= 15 * eps){
+			return left + right + (left + right - whole) / 15;
+		}else{
+			return simpsonRecursive(func, a, c, eps/2, left) + simpsonRecursive(f, c, b, eps/2, right);
+		}
+	}
+	function adaptiveSimpson(func, a, b, eps){
+		return simpsonRecursive(func, a, b, eps, simpsonDef(func, a, b));
+	}
+/*-----------------------------------------------------------------------------*/
 	//execute as numeric.isPrime.simple(val) or numeric.isPrime.complex(val)
 	var isPrime = function(){
 
@@ -129,7 +149,7 @@ var numeric = function(){
 			elliptic: elliptic
 		}
 	}()
-
+/*-----------------------------------------------------------------------------*/
 	//statistic oriented tools
 	var statistic = function(){
 		
@@ -213,18 +233,16 @@ var numeric = function(){
 			}
 		}
 
-
-
-
 		return{
 			mean: mean,
 			median: median,
 			mode: mode,
 			randomSample: randomSample,
-			standardDev: standardDev
+			standardDev: standardDev,
+			correlation: correlation
 		}
 	}()
-
+/*-----------------------------------------------------------------------------*/
 	// return functions
 	return{
 		addition: addition,
@@ -235,6 +253,7 @@ var numeric = function(){
 		evaluate: evaluate,
 		pointDiff: pointDiff,
 		riemann: riemann,
+		adaptiveSimpson: adaptiveSimpson,
 		isPrime: isPrime,
 		statistic: statistic
 	}
