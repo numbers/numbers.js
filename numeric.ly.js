@@ -16,12 +16,7 @@ var numeric = function(){
 		return total;
 	};
 
-	/*
-	* 	basic subtraction of vals in an array
-	*	var arr = {1,2,3,4,5,6,1}
-	*  	the subtraction will be evaluated as:
-	* 	1 - 6 - 5 - 4 - 3 - 2 - 1 = - 20
-	*/
+	//subtract items in an array (descending)
 	function subtraction(arr){
 		var total = arr[arr.length - 1];
 		for (var i = arr.length - 2; i >= 0; i--) {
@@ -73,19 +68,19 @@ var numeric = function(){
 		return result;
 	}
 
-	//evaluate function at val
+	//evaluate function at val (func passed a string)
 	function evaluate(func, val){
 		return parseFloat(eval("with(Math){var x = " + val + ";" + func+'};'));
 	}
 
-	//function, point at which differentiation occurs
+	//function, point at which differentiation occurs (func passed as string)
 	function pointDiff(func, point){
 		var a = evaluate(func, point - .00001);
 		var b = evaluate(func, point + .00001);
 		return (b-a)/(.00002);
 	}
 
-	//calculate riemann integral (left hand)
+	//calculate riemann integral (left hand) (func passed as string)
 	function riemann(func, start, finish, n){
 		var inc = (finish - start)/n;
 		var result = 0;
@@ -96,7 +91,6 @@ var numeric = function(){
 	}
 
 	//execute as numeric.isPrime.simple(val) or numeric.isPrime.complex(val)
-	//returns bool
 	var isPrime = function(){
 
 		//standard prime evaluation (no consideration towards efficiency)
@@ -127,7 +121,7 @@ var numeric = function(){
 		//determine primality using elliptic curve testing
 		//better for large numbers....really large numbers
 		function elliptic(){
-			return 6;
+			return null;
 		}
 
 		return{
@@ -139,12 +133,14 @@ var numeric = function(){
 	//statistic oriented tools
 	var statistic = function(){
 		
+		//get mean value of the numbers in an array
 		function mean(arr){
 			var count = arr.length;
 			var sum = addition(arr);
 			return sum/count
 		}
 
+		//get median value of the numbers in an array
 		function median(arr){
 			var count = arr.length;
 			var middle;
@@ -155,6 +151,7 @@ var numeric = function(){
 			}
 		}
 
+		//get mode value (most common value) of the numbers in an array
 		function mode(arr){
 			//sort array
 			var maxIndex = 0, maxOccurence = 0, tempIndex = 0, tempOccurence = 0;
@@ -177,10 +174,54 @@ var numeric = function(){
 			return arr[maxIndex];
 		}
 
+		//generate a random sample of n-values within lower/upper bounds
+		function randomSample(lower,upper,n){
+			var sample = new Array();
+			var temp;
+			for(var i = 0 ; i < n ; i++){
+				temp = Math.random()*upper;
+				if(temp > lower)
+					sample[i] = temp;
+			}
+			return sample;
+		}
+
+		//standard deviation
+		function standardDev(arr){
+			var count = arr.length;
+			var mean = mean(arr);
+			var squaredArr = new Array();
+			for (var i = 0; i < arr.length; i++) {
+				squaredArr[i] = Math.pow((arr[i] - mean),2);
+			}
+			return Math.sqrt((1/count) * addition(squaredArr));
+		}
+
+		//correlation of two arrays
+		function correlation(arrX,arrY){
+			if(arrX.length == arrY.length){
+				var numerator = 0;
+				var denominator = (arrX.length)*(standardDev(arrX))*(standardDev(arrY));
+				var xMean = mean(arrX);
+				var yMean = mean(arrY);
+				for(int i = 0 ; i < arrX.length ; i++){
+					numerator += (arrX[i] - xMean) * (arrY[i] - yMean);
+				}
+				return numerator / denominator;
+			}else{
+				return 'Error: Array mismatch';
+			}
+		}
+
+
+
+
 		return{
 			mean: mean,
 			median: median,
-			mode: mode
+			mode: mode,
+			randomSample: randomSample,
+			standardDev: standardDev
 		}
 	}()
 
@@ -192,7 +233,6 @@ var numeric = function(){
 		gcd: gcd,
 		lcm: lcm,
 		evaluate: evaluate,
-		//evaluateN: evaluateN
 		pointDiff: pointDiff,
 		riemann: riemann,
 		isPrime: isPrime,
