@@ -1,23 +1,55 @@
-numeric.ly is a Javascript library for advanced mathematics.
+numeric.ly.js - an advanced mathematics toolkit for JavaScript
+developed by Steve Kaliski, [@sjkaliski](http://twitter.com/sjkaliski)
 
-It includes
+## DESCRIPTION
 
-Basic calculations
-Point differentiation
-Riemann integrals
-Functional evaluation
-Prime number analysis
-Statistical tools
+Numeric.ly provides a comprehensive set of mathematical tools that currently are not offered in JavaScript.  These tools include:
 
-For basic function calls,
-e.g.
+* Basic calculations
+* Differentiation
+* Integration
+* Matrices
+* Prime Numbers
+* Statistics
+* More...
 
-numeric.addition(array)
-numeric.gcd(a,b)
+## HOW TO USE
 
-For using the prime and statistical tools
+Numeric.ly is pretty straightforward to use.
 
-numeric.isPrime.simple(val)
-numeric.statistic.median(array)
+For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we could:
 
-More to come
+Use riemann integrals (with 200 subdivisions)
+
+	numeric.riemann("sin(x)", -2, 4, 200);
+
+Or adaptive simpson quadrature (with epsilon .0001)
+
+	numeric.adaptiveSimpson("sin(x)", -2, 4, .0001);
+
+Say we wanted to run some matrix calculations:
+
+We can add two matrices
+
+	numeric.matrix.addition(array1, array2);
+
+We can transpose a matrix
+
+	numeric.matrix.transpose(array);
+
+Numeric.ly also includes some basic prime number analysis.  We can check if a number is prime:
+
+	//basic check
+	numeric.isPrime.simple(number);
+	//elliptic analysis (good for huge numbers)
+	numeric.isPrime.elliptic(number);
+
+
+The statistics tools include mean, median, mode, standard deviation, random sample generator, correlation, confidence intervals, t-test, chi-square, and more.
+
+	numeric.statistic.mean(array);
+	numeric.statistic.median(array);
+	numeric.statistic.mode(array);
+	numeric.statistic.standardDev(array);
+	numeric.statistic.randomSample(lower, upper, n);
+	numeric.statistic.correlation(array1, array2);
