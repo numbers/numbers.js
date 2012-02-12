@@ -2,7 +2,7 @@ numeric.ly.js - an advanced mathematics toolkit for JavaScript
 developed by Steve Kaliski, [@sjkaliski](http://twitter.com/sjkaliski)
 
 ## DESCRIPTION
---------------------------
+
 Numeric.ly provides a comprehensive set of mathematical tools that currently are not offered in JavaScript.  These tools include:
 
 * Basic calculations
@@ -14,7 +14,7 @@ Numeric.ly provides a comprehensive set of mathematical tools that currently are
 * More...
 
 ## HOW TO USE
---------------------------
+
 Numeric.ly is pretty straightforward to use.
 
 For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we could:
