@@ -185,17 +185,63 @@ var numeric = function(){
 
 		//transpose array
 		function transpose(arr){
-			//set 
 			var result = new Array(arr[0].length);
 			for (var i = 0; i < arr.length; i++) {
 				arr[i] = new Array(arr.length);
-			};
+				for(var j = 0 ; j < arr[i].length){
+					arr[j][i] = arr[i][j];
+				}
+			}
+		}
+		//return identity matrix of dimension n x n
+		function identity(n){
+			var result = new Array(n);
+			for(var i = 0 ; i < n ; i++){
+				arr[i] = new Array(n);
+				for(var j = 0 ; j < n ; j++){
+					if(i == j)
+						arr[i][j] = 1;
+				}
+			}
 		}
 
+		//dot product
+		function dotproduct(vectorA, vectorB){
+			if(vectorA.length == vectorB.length){
+				var result = 0;
+				for(var i = 0 ; i < vectorA.length ; i++){
+					result += vectorA[i]*vectorB[i];
+				}
+				return result;
+			}else{
+				return 'Error: Vector mismatch';
+			}
+		}
+
+		//multiply two matrices
+		function multiply(arrA, arrB){
+			if(arrA[0].length == arrB.length){
+				var result = new Array(arrB.length);
+				for(var i = 0 ; i < arrB.length ; i++){
+					result[i] = new Array(arrB.length);
+				}
+				for(var i = 0 ; i < arrB.length ; i++){
+					for(var j = 0 ; j < arrB.length ; j++){
+						
+					}
+				}
+			}else{
+				return 'Error: Array mismatch';
+			}
+		}
 
 		return{
 			addition: addition,
-			scalar: scalar
+			scalar: scalar,
+			transpose: transpose,
+			identity: identity,
+			dotproduct: dotproduct,
+			multiply: multiply
 		}
 	}()
 /*-----------------------------------------------------------------------------*/
