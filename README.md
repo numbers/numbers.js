@@ -53,3 +53,9 @@ The statistics tools include mean, median, mode, standard deviation, random samp
 	numeric.statistic.standardDev(array);
 	numeric.statistic.randomSample(lower, upper, n);
 	numeric.statistic.correlation(array1, array2);
+
+## TODO
+
+Error (epsilon) handling:
+
+* User provides acceptable "error," function tailored to reduce processing requirements
