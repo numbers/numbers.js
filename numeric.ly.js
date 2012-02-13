@@ -2,9 +2,8 @@
 *	numeric.ly
 *	author: steve kaliski
 *	feb 2012
-*/
+*-----------------------------------------------------------------------------*/
 
-/*-----------------------------------------------------------------------------*/
 var numeric = function(){
 
 	//basic addition of vals in an array
@@ -14,7 +13,7 @@ var numeric = function(){
 			total = total + arr[i];
 		}
 		return total;
-	};
+	}
 
 	//subtract items in an array (descending)
 	function subtraction(arr){
@@ -33,7 +32,6 @@ var numeric = function(){
 		};
 		return total;
 	}
-
 
 	//greatest common denominator
 	function gcd(num1, num2){
@@ -72,14 +70,10 @@ var numeric = function(){
 	function evaluate(func, val){
 		return parseFloat(eval("with(Math){var x = " + val + ";" + func+'};'));
 	}
-/*-----------------------------------------------------------------------------*/
-	/*
-	Basic calculus tools including point differentiation, finite integration.
-	
-	Working towards functional differentiation and infinite integration, as well as
-	limits and taylor polynomials
 
-	*/
+/*-----------------------------------------------------------------------------*/
+	
+	//a variety of calculus tools
 	var calculus = function(){
 
 		//function, point at which differentiation occurs (func passed as string)
@@ -140,7 +134,9 @@ var numeric = function(){
 			limit: limit
 		}
 	}()
+
 /*-----------------------------------------------------------------------------*/
+	
 	/*
 	a variety of matrix analysis tools
 
@@ -221,17 +217,33 @@ var numeric = function(){
 		//multiply two matrices
 		function multiply(arrA, arrB){
 			if(arrA[0].length == arrB.length){
-				var result = new Array(arrB.length);
-				for(var i = 0 ; i < arrB.length ; i++){
-					result[i] = new Array(arrB.length);
+				var result = new Array(arrA.length);
+				for(var i = 0 ; i < arrA.length ; i++){
+					result[i] = new Array(arrB[0].length);
 				}
-				for(var i = 0 ; i < arrB.length ; i++){
-					for(var j = 0 ; j < arrB.length ; j++){
-						
+				var arrB_T = transpose(arrB);
+				for(var i = 0 ; i < result.length ; i++){
+					for(var j = 0 ; j < result[i].length ; j++){
+						result[i][j] = dotproduct(arrA[i],arrB_T[j]);
 					}
 				}
+				return result;
 			}else{
 				return 'Error: Array mismatch';
+			}
+		}
+
+		//determinant, only for n x n -> 2 and 3
+		function determinant(matrix){
+			if((matrix.length == 2) && (matrix[0].length == 2)){
+				return matrix[0][0]*matrix[1][1] - matrix[0][1]*matrix[1][0];
+			}else if((matrix.length == 3) && (matrix[0].length == 3)){
+				return matrix[0][0]*matrix[1][1]*matrix[2][2] +
+					matrix[0][1]*matrix[1][2]*matrix[2][0] + 
+					matrix[0][2]*matrix[1][0]*matrix[2][1] -
+					matrix[0][2]*matrix[1][1]*matrix[2][0] -
+					matrix[0][1]*matrix[1][0]*matrix[2][2] -
+					matrix[0][0]*matrix[1][2]*matrix[2][1];
 			}
 		}
 
@@ -244,20 +256,18 @@ var numeric = function(){
 			multiply: multiply
 		}
 	}()
+
 /*-----------------------------------------------------------------------------*/
-	//execute as numeric.prime.simple(val) or numeric.prime.complex(val)
+	
+	//collection of prime associated tools
 	var prime = function(){
 
 		//standard prime evaluation (no consideration towards efficiency)
-		//acceptable for small numbers
 		function simple(val){
-			//check for 1
 			if(val == 1)
 				return false;
-			//check for 2
 			else if(val == 2)
 				return true;
-			//otherwise, let's double check it's not empty, and continue
 			else if(val != null){
 				start = 2;
 				result = true;
@@ -274,7 +284,6 @@ var numeric = function(){
 		}
 
 		//determine primality using elliptic curve testing
-		//better for large numbers....really large numbers
 		function elliptic(){
 			return null;
 		}
@@ -284,7 +293,9 @@ var numeric = function(){
 			elliptic: elliptic
 		}
 	}()
+
 /*-----------------------------------------------------------------------------*/
+
 	//statistic oriented tools
 	var statistic = function(){
 		
@@ -377,7 +388,9 @@ var numeric = function(){
 			correlation: correlation
 		}
 	}()
+
 /*-----------------------------------------------------------------------------*/
+	
 	// return functions
 	return{
 		addition: addition,
@@ -391,5 +404,4 @@ var numeric = function(){
 		prime: prime,
 		statistic: statistic
 	}
-
 }()
