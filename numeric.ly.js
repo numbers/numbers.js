@@ -360,7 +360,7 @@ var numeric = {
 				var denominator = (arrX.length)*(standardDev(arrX))*(standardDev(arrY));
 				var xMean = mean(arrX);
 				var yMean = mean(arrY);
-				for(int i = 0 ; i < arrX.length ; i++){
+				for(var i = 0 ; i < arrX.length ; i++){
 					numerator += (arrX[i] - xMean) * (arrY[i] - yMean);
 				}
 				return numerator / denominator;
