@@ -106,7 +106,7 @@ var numeric = {
 			if(Math.abs(left + right - whole) <= 15 * eps){
 				return left + right + (left + right - whole) / 15;
 			}else{
-				return simpsonRecursive(func, a, c, eps/2, left) + simpsonRecursive(f, c, b, eps/2, right);
+				return simpsonRecursive(func, a, c, eps/2, left) + simpsonRecursive(func, c, b, eps/2, right);
 			}
 		},
 		//execute this
@@ -191,12 +191,13 @@ var numeric = {
 		//transpose array
 		transpose: function(arr){
 			var result = new Array(arr[0].length);
-			for (var i = 0; i < arr.length; i++) {
-				arr[i] = new Array(arr.length);
-				for(var j = 0 ; j < arr[i].length){
-					arr[j][i] = arr[i][j];
+			for (var i = 0; i < arr[0].length; i++) {
+				result[i] = new Array(arr.length);
+				for(var j = 0; j < arr.length; j++){
+					result[i][j] = arr[j][i];
 				}
 			}
+			return result;
 		},
 
 		//return identity matrix of dimension n x n
