@@ -21,38 +21,49 @@ For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we co
 
 Use riemann integrals (with 200 subdivisions)
 
-	numeric.calculus.riemann("sin(x)", -2, 4, 200);
+```javascript
+numeric.calculus.riemann("sin(x)", -2, 4, 200);
+```
 
 Or adaptive simpson quadrature (with epsilon .0001)
 
-	numeric.calculus.adaptiveSimpson("sin(x)", -2, 4, .0001);
+```javascript
+numeric.calculus.adaptiveSimpson("sin(x)", -2, 4, .0001);
+```
 
 Say we wanted to run some matrix calculations:
 
 We can add two matrices
 
-	numeric.matrix.addition(array1, array2);
+```javascript
+numeric.matrix.addition(array1, array2);
+```
 
 We can transpose a matrix
 
-	numeric.matrix.transpose(array);
+```javascript
+numeric.matrix.transpose(array);
+```
 
 Numeric.ly also includes some basic prime number analysis.  We can check if a number is prime:
 
-	//basic check
-	numeric.prime.simple(number);
-	//elliptic analysis (good for huge numbers)
-	numeric.prime.elliptic(number);
-
+```javascript
+//basic check
+numeric.prime.simple(number);
+//elliptic analysis (good for huge numbers)
+numeric.prime.elliptic(number);
+```
 
 The statistics tools include mean, median, mode, standard deviation, random sample generator, correlation, confidence intervals, t-test, chi-square, and more.
 
-	numeric.statistic.mean(array);
-	numeric.statistic.median(array);
-	numeric.statistic.mode(array);
-	numeric.statistic.standardDev(array);
-	numeric.statistic.randomSample(lower, upper, n);
-	numeric.statistic.correlation(array1, array2);
+```javascript
+numeric.statistic.mean(array);
+numeric.statistic.median(array);
+numeric.statistic.mode(array);
+numeric.statistic.standardDev(array);
+numeric.statistic.randomSample(lower, upper, n);
+numeric.statistic.correlation(array1, array2);
+```
 
 ## TODO
 
