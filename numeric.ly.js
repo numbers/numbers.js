@@ -34,7 +34,7 @@ var numeric = {
 	}
 
 	//greatest common denominator
-	product: function(num1, num2){
+	gcd: function(num1, num2){
 		var result;
 		if(num1 > num2){
 			for(i = 0 ; i <= num2 ; i++){
