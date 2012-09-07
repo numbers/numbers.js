@@ -37,7 +37,7 @@ var numeric = {
 	gcd: function(num1, num2){
 		var result;
 		if(num1 > num2){
-			for(i = 0 ; i <= num2 ; i++){
+			for(var i = 0 ; i <= num2 ; i++){
 				if(num2%i === 0){
 					if(num1%i === 0){
 						result = i;
@@ -46,16 +46,16 @@ var numeric = {
 			}
 			return result;
 		}else if(num2 > num1){
-			for(i = 0 ; i <= num2 ; i++){
+			for(var i = 0 ; i <= num2 ; i++){
 				if(num1%i === 0){
 					if(num2%i === 0){
-						var result = i;
+						result = i;
 					}
 				}
 			}
 			return result;
 		}else{
-			var result = num1*num2/num1;
+			result = num1*num2/num1;
 			return result;
 		}
 	},
@@ -265,8 +265,8 @@ var numeric = {
 			}else if(val == 2){
 				return true;
 			}else if(val != null){
-				start = 2;
-				result = true;
+				var start = 2;
+				var result = true;
 				while(start < val){
 					if(val % start === 0){
 						result = false;
