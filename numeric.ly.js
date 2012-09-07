@@ -123,7 +123,7 @@ var numeric = {
 			}else if(approach === 'middle'){
 				return (limit(func, point, 'left') + limit(func, point, 'right')) / 2;
 			}else{
-				return 'Error: approach not provided';
+				throw new Error('Approach not provided');
 			}
 		},
 
@@ -174,7 +174,7 @@ var numeric = {
 				}
 				return result;
 			}else{
-				return 'Error: Array mismatch';
+				throw new Error('Array mismatch');
 			}
 		},
 
@@ -220,7 +220,7 @@ var numeric = {
 				}
 				return result;
 			}else{
-				return 'Error: Vector mismatch';
+				throw new Error("Vector mismatch");
 			}
 		},
 
@@ -239,7 +239,7 @@ var numeric = {
 				}
 				return result;
 			}else{
-				return 'Error: Array mismatch';
+				throw new Error("Array mismatch");
 			}
 		},
 
@@ -366,7 +366,7 @@ var numeric = {
 				}
 				return numerator / denominator;
 			}else{
-				return 'Error: Array mismatch';
+				throw new Error('Array mismatch');
 			}
 		}
 	}
