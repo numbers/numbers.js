@@ -204,12 +204,12 @@ var numeric = {
 		identity: function(n){
 			var result = new Array(n);
 			for(var i = 0 ; i < n ; i++){
-				arr[i] = new Array(n);
+				result[i] = new Array(n);
 				for(var j = 0 ; j < n ; j++){
-					if(i === j)
-						arr[i][j] = 1;
+					result[i][j] = (i === j) ? 1 : 0;
 				}
 			}
+			return result;
 		},
 
 		//dot product
