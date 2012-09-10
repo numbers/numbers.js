@@ -1,0 +1,24 @@
+{
+  "author": "Steve Kaliski <sjkaliski@gmail.com> (https://github.com/sjkaliski)"
+, "name": "numeric.ly"
+, "description": "Advanced mathematics library for JavaScript"
+, "version": "0.0.1"
+, "homepage": "https://github.com/sjkaliski/numeric.ly"
+, "repository": {
+    "type": "git"
+  , "url": "git://github.com/sjkaliski/numeric.ly"
+  }
+, "contributors" : [
+    "David Byrd (https://github.com/davidbyrd11)"
+  , "Ethan Resnick (https://github.comc/ethanresnick)"
+  ]
+, "engines": {
+    "node": ">= v0.6.0"
+  }
+, "main": "index"
+, "keywords" : [
+    "math"
+  , "mathematics"
+  , "numerical"
+  ]
+}
