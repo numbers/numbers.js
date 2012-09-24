@@ -67,8 +67,12 @@ numeric.statistic.randomSample(lower, upper, n);
 numeric.statistic.correlation(array1, array2);
 ```
 
-## TODO
+## TESTS
 
-Error (epsilon) handling:
+Tests have been written for basic operations (addition, product, gcd, etc).
 
-* User provides acceptable "error," function tailored to reduce processing requirements
+To execute, run:
+
+```
+make test
+```
