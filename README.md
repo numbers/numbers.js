@@ -1,6 +1,8 @@
 numeric.ly.js - an advanced mathematics toolkit for JavaScript
 developed by Steve Kaliski, [@sjkaliski](http://twitter.com/sjkaliski)
 
+Now written as a node module, although currently not published.
+
 ## DESCRIPTION
 
 Numeric.ly provides a comprehensive set of mathematical tools that currently are not offered in JavaScript.  These tools include:
