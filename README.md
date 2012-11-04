@@ -69,15 +69,9 @@ numeric.statistic.correlation(array1, array2);
 
 ## TESTS
 
-<<<<<<< HEAD
-Tests for basic operations have been written.
-
-Run tests easily by executing
-=======
 Tests have been written for basic operations (addition, product, gcd, etc).
 
 To execute, run:
->>>>>>> a363e153394a019359ec89ee797eb7781f79f916
 
 ```
 make test
