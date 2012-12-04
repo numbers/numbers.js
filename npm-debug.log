@@ -1,0 +1,83 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish', 'math' ]
+2 info using npm@1.1.59
+3 info using node@v0.8.8
+4 verbose publish [ 'math' ]
+5 verbose read json /Users/david/Documents/numeric.ly/math/package.json
+6 verbose cache add [ 'math', null ]
+7 silly cache add name=undefined spec="math" args=["math",null]
+8 verbose parsed url { pathname: 'math', path: 'math', href: 'math' }
+9 silly lockFile 7a488390-math math
+10 verbose lock math /Users/david/.npm/7a488390-math.lock
+11 silly lockFile 7a488390-math math
+12 verbose addNamed [ 'math', '' ]
+13 verbose addNamed [ null, '' ]
+14 silly lockFile e74019dc-math math@
+15 verbose lock math@ /Users/david/.npm/e74019dc-math.lock
+16 silly addNameRange { name: 'math', range: '', hasData: false }
+17 verbose url raw math
+18 verbose url resolving [ 'https://registry.npmjs.org/', './math' ]
+19 verbose url resolved https://registry.npmjs.org/math
+20 info retry registry request attempt 1 at 23:48:33
+21 verbose etag "1WQZ8ANO7XTIYTEL3EAC00IWT"
+22 http GET https://registry.npmjs.org/math
+23 http 304 https://registry.npmjs.org/math
+24 silly registry.get cb [ 304,
+24 silly registry.get   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+24 silly registry.get     etag: '"1WQZ8ANO7XTIYTEL3EAC00IWT"',
+24 silly registry.get     date: 'Mon, 03 Dec 2012 04:47:51 GMT',
+24 silly registry.get     'content-length': '0' } ]
+25 verbose etag math from cache
+26 silly addNameRange number 2 { name: 'math', range: '', hasData: true }
+27 silly addNameRange versions [ 'math', [ '0.0.0', '0.0.3' ] ]
+28 verbose addNamed [ 'math', '0.0.3' ]
+29 verbose addNamed [ '0.0.3', '0.0.3' ]
+30 silly lockFile 9bb9c1b2-math-0-0-3 math@0.0.3
+31 verbose lock math@0.0.3 /Users/david/.npm/9bb9c1b2-math-0-0-3.lock
+32 verbose read json /Users/david/.npm/math/0.0.3/package/package.json
+33 warn package.json math@0.0.3 No README.md file found!
+34 silly lockFile 9bb9c1b2-math-0-0-3 math@0.0.3
+35 silly lockFile e74019dc-math math@
+36 silly publish { author:
+36 silly publish    { name: 'Kaleb Hornsby',
+36 silly publish      email: 'kaleb@hornsby.ws',
+36 silly publish      url: 'kaleb.hornsby.ws' },
+36 silly publish   name: 'math',
+36 silly publish   description: 'Mathematical Functions',
+36 silly publish   version: '0.0.3',
+36 silly publish   repository: { type: 'git', url: 'git://github.com/kaleb/js-math.git' },
+36 silly publish   main: 'math.js',
+36 silly publish   engines: { node: '> 0.0.0' },
+36 silly publish   dependencies: {},
+36 silly publish   devDependencies: {},
+36 silly publish   homepage: 'kaleb.hornsby.ws/js-math',
+36 silly publish   contributors:
+36 silly publish    [ { name: 'Kaleb Hornsby',
+36 silly publish        email: 'kaleb@hornsby.ws',
+36 silly publish        url: 'kaleb.hornsby.ws' } ],
+36 silly publish   _id: 'math@0.0.3',
+36 silly publish   readme: 'ERROR: No README.md file found!' }
+37 info prepublish math@0.0.3
+38 verbose url raw math
+39 verbose url resolving [ 'https://registry.npmjs.org/', './math' ]
+40 verbose url resolved https://registry.npmjs.org/math
+41 info retry registry request attempt 1 at 23:48:33
+42 http PUT https://registry.npmjs.org/math
+43 http 409 https://registry.npmjs.org/math
+44 verbose url raw math
+45 verbose url resolving [ 'https://registry.npmjs.org/', './math' ]
+46 verbose url resolved https://registry.npmjs.org/math
+47 info retry registry request attempt 1 at 23:48:34
+48 http GET https://registry.npmjs.org/math
+49 http 200 https://registry.npmjs.org/math
+50 error publish fail Cannot publish over existing version.
+50 error publish fail Bump the 'version' field, set the --force flag, or
+50 error publish fail     npm unpublish 'math@0.0.3'
+50 error publish fail and try again
+51 error System Darwin 12.2.0
+52 error command "node" "/usr/local/bin/npm" "publish" "math"
+53 error cwd /Users/david/Documents/numeric.ly
+54 error node -v v0.8.8
+55 error npm -v 1.1.59
+56 error code EPUBLISHCONFLICT
+57 verbose exit [ 1, true ]
