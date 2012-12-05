@@ -1,1 +1,1 @@
-module.exports = require('./lib/numeric.ly.js');
+module.exports = require('./lib/numeric.js');
