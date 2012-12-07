@@ -89,6 +89,6 @@ make test
 ```
 
 ## Contributors
-Steve Kaliski - [@sjkaliski](http://twitter.com/sjkaliski)
-David Byrd - [@davidbyrd11](http://twitter.com/davidbyrd11)
-Ethan Resnick - [@studip101](http://twitter.com/studip101)
+* Steve Kaliski - [@sjkaliski](http://twitter.com/sjkaliski)
+* David Byrd - [@davidbyrd11](http://twitter.com/davidbyrd11)
+* Ethan Resnick - [@studip101](http://twitter.com/studip101)
