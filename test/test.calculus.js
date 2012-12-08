@@ -11,7 +11,7 @@ suite('numeric', function() {
       return 2 * x + 2;
     };
 
-    assert.equal(true, 2 - calculus.pointDiff(func, 5) < numeric.ERROR_BOUND);
+    assert.equal(true, 2 - calculus.pointDiff(func, 5) < numeric.EPSILON);
     done();
   });
 });
