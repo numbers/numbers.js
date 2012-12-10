@@ -19,7 +19,12 @@ The primary uses cases are client side operations which the DOM will recognize (
 
 ## How to use
 
-Numeric.ly is pretty straightforward to use.
+Numbers is pretty straightforward to use.
+
+With node, simply require it:
+```javascript
+var numbers = require('numbers');
+```
 
 For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we could:
 
