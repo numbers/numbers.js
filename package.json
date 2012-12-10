@@ -23,5 +23,8 @@
   ],
   "dependencies": {
     "mocha": "~1.5.0"
+  },
+  "scripts": {
+    "test": "make test"
   }
 }

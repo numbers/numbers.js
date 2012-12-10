@@ -80,12 +80,10 @@ For further documentation, check out our [JSDoc](http://jsdoc.info/sjkaliski/num
 
 ## Test
 
-Tests have been written for basic operations (addition, product, gcd, etc).
-
 To execute, run:
 
 ```
-make test
+npm test
 ```
 
 ## Contributors
