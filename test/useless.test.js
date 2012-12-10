@@ -1,12 +1,12 @@
 var assert = require('assert');
-var numeric = require('../index.js');
-var useless = numeric.useless;
+var numbers = require('../index.js');
+var useless = numbers.useless;
 
-suite('numeric', function() {
+suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Useless Mathematics\033[0m');
 
-  //numeric.useless.collatz
+  //numbers.useless.collatz
   test('collatz should populate the given array with a collatz sequence', function (done) {
     var result = [];
     useless.collatz(7, result);

@@ -1,8 +1,8 @@
 var assert = require('assert');
-var numeric = require('../index.js');
-var prime = numeric.prime;
+var numbers = require('../index.js');
+var prime = numbers.prime;
 
-suite('numeric', function() {
+suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Prime Number Mathematics\033[0m');
 

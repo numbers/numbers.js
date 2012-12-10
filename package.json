@@ -1,12 +1,12 @@
 {
   "author": "Steve Kaliski <sjkaliski@gmail.com> (https://github.com/sjkaliski)",
-  "name": "numeric.ly",
-  "description": "Advanced mathematics library for JavaScript",
+  "name": "numbers",
+  "description": "Advanced Mathematics Library for JavaScript",
   "version": "0.0.1",
-  "homepage": "https://github.com/sjkaliski/numeric.ly",
+  "homepage": "https://github.com/sjkaliski/numbers.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/sjkaliski/numeric.ly"
+    "url": "git://github.com/sjkaliski/numbers.js"
   },
   "contributors": [
     "David Byrd (https://github.com/davidbyrd11)",
@@ -19,7 +19,8 @@
   "keywords": [
     "math",
     "mathematics",
-    "numerical"
+    "numbers",
+    "statistics"
   ],
   "dependencies": {
     "mocha": "~1.5.0"

@@ -1,8 +1,8 @@
 var assert = require('assert');
-var numeric = require('../index.js');
-var calculus = numeric.calculus;
+var numbers = require('../index.js');
+var calculus = numbers.calculus;
 
-suite('numeric', function() {
+suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Calculus Mathematics\033[0m');
 
@@ -13,7 +13,7 @@ suite('numeric', function() {
 
     var res = calculus.pointDiff(func, 5);
     
-    assert.equal(true, 2 - res < numeric.EPSILON);
+    assert.equal(true, 2 - res < numbers.EPSILON);
     done();
   });
 
@@ -35,7 +35,7 @@ suite('numeric', function() {
 
     var res = calculus.adaptiveSimpson(func, 0, 100);
 
-    assert.equal(true, res - numeric.EPSILON < 666666.66667 < res + numeric.EPSILON);
+    assert.equal(true, res - numbers.EPSILON < 666666.66667 < res + numbers.EPSILON);
     done();
   });
 
@@ -46,7 +46,7 @@ suite('numeric', function() {
 
     var res = calculus.limit(func, 10, 'middle');
 
-    assert.equal(true, res - numeric.EPSILON < 91.29 < res + numeric.EPSILON);
+    assert.equal(true, res - numbers.EPSILON < 91.29 < res + numbers.EPSILON);
     done();
   });
 

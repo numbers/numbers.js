@@ -1,8 +1,8 @@
 var assert = require('assert');
-var numeric = require('../index.js');
-var statistic = numeric.statistic;
+var numbers = require('../index.js');
+var statistic = numbers.statistic;
 
-suite('numeric', function() {
+suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Statistics Mathematics\033[0m');
 
@@ -41,7 +41,7 @@ suite('numeric', function() {
 
   test('should return the standard deviation of an array of numbers', function(done) {
     var res = statistic.standardDev([-5, -4, -1, 0, 5, 100]);
-    assert.equal(true, res - numeric.EPSILON < 37.777 < res + numeric.EPSILON);
+    assert.equal(true, res - numbers.EPSILON < 37.777 < res + numbers.EPSILON);
     done();
   });
 

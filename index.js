@@ -1,1 +1,1 @@
-module.exports = require('./lib/numeric.js');
+module.exports = require('./lib/numbers.js');
