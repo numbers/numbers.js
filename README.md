@@ -62,7 +62,7 @@ We can transpose a matrix
 numbers.matrix.transpose(array);
 ```
 
-Numeric.ly also includes some basic prime number analysis.  We can check if a number is prime:
+Numbers also includes some basic prime number analysis.  We can check if a number is prime:
 
 ```javascript
 //basic check
