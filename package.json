@@ -22,7 +22,7 @@
     "numbers",
     "statistics"
   ],
-  "dependencies": {
+  "devDependencies": {
     "mocha": "~1.5.0"
   },
   "scripts": {
