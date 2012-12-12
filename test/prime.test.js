@@ -14,12 +14,12 @@ suite('numbers', function() {
     done();
   });
 
-  //prime.miller_rabin
+  //prime.millerRabin
   test('should be able to determine if a number is prime or not', function(done) {
-    assert.equal(false, prime.miller_rabin(1));
-    assert.equal(true, prime.miller_rabin(2));
-    assert.equal(true, prime.miller_rabin(17));
-    assert.equal(false, prime.miller_rabin(27));
+    assert.equal(false, prime.millerRabin(1));
+    assert.equal(true, prime.millerRabin(2));
+    assert.equal(true, prime.millerRabin(17));
+    assert.equal(false, prime.millerRabin(27));
     done();
   });
 
