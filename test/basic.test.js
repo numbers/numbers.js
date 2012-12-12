@@ -13,16 +13,83 @@ suite('numbers', function() {
     done();
   });
 
-  // basic.subtraction
+  test('addition should throw an exception when given anything but an array', function (done) {
+    assert.throws(
+      function() {
+        basic.addition(1);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
+  test('addition should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.addition([1,2,"error"]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
+  // basic.substraction
   test('subtraction should return the difference of items in an array', function (done) {
     assert.equal(0, basic.subtraction([0,1,2,3]));
     done();
   });
 
+  test('subtraction should throw an exception when given anything but an array', function (done) {
+    assert.throws(
+      function() {
+        basic.subtraction(1);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
+  test('subtraction should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.subtraction(["test",1,1,2]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
   // basic.product
+
   test('product should return the product of items in an array', function (done) {
     assert.equal(24, basic.product([1,2,3,4]));
     assert.equal(-6, basic.product([-3,2]));
+    done();
+  });
+
+  test('product should throw an exception when given anything but an array', function (done) {
+    assert.throws(
+      function() {
+        basic.product(1);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
+  test('product should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.product([1,2,"error"]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
+  // basic.binomial
+  test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
+    assert.equal(10, basic.binomial(5, 3));
     done();
   });
 
@@ -46,13 +113,13 @@ suite('numbers', function() {
     done();
   });
 
-  // numbers.max
+  // basic.max
   test('max should return the biggest number in an array', function (done) {
     assert.equal(42, basic.max([1,2,3,42]));
     done();
   });
 
-  // numbers.min
+  // basic.min
   test('min should return the smallest number in an array', function (done) {
     assert.equal(1, basic.min([2,1,3,42]));
     done();
