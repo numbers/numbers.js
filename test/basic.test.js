@@ -124,4 +124,10 @@ suite('numbers', function() {
     assert.equal(1, basic.min([2,1,3,42]));
     done();
   });
+
+  // numbers.sum
+  test('min should return the smallest number in an array', function (done) {
+    assert.equal(48, basic.sum([2,1,3,42]));
+    done();
+  });
 });
