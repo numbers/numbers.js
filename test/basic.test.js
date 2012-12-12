@@ -45,4 +45,16 @@ suite('numbers', function() {
     assert.equal(240, basic.lcm(12, 80));
     done();
   });
+
+  // numbers.max
+  test('max should return the biggest number in an array', function (done) {
+    assert.equal(42, basic.max([1,2,3,42]));
+    done();
+  });
+
+  // numbers.min
+  test('min should return the smallest number in an array', function (done) {
+    assert.equal(1, basic.min([2,1,3,42]));
+    done();
+  });
 });
