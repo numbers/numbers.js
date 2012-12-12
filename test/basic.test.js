@@ -13,9 +13,49 @@ suite('numbers', function() {
     done();
   });
 
+  test('addition should throw an exception when given anything but an array', function (done) {
+    assert.throws(
+      function() {
+        basic.addition(1);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
+  test('addition should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.addition([1,2,"error"]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
   // numbers.subtraction
   test('subtraction should return the difference of items in an array', function (done) {
     assert.equal(0, basic.subtraction([0,1,2,3]));
+    done();
+  });
+
+  test('subtraction should throw an exception when given anything but an array', function (done) {
+    assert.throws(
+      function() {
+        basic.subtraction(1);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
+  test('subtraction should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.subtraction(["test",1,1,2]);
+      },
+      /All elements in array must be numbers/
+    );
     done();
   });
 
@@ -23,6 +63,26 @@ suite('numbers', function() {
   test('product should return the product of items in an array', function (done) {
     assert.equal(24, basic.product([1,2,3,4]));
     assert.equal(-6, basic.product([-3,2]));
+    done();
+  });
+
+  test('product should throw an exception when given anything but an array', function (done) {
+    assert.throws(
+      function() {
+        basic.product(1);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
+  test('product should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.product([1,2,"error"]);
+      },
+      /All elements in array must be numbers/
+    );
     done();
   });
 
