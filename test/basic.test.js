@@ -87,6 +87,12 @@ suite('numbers', function() {
     done();
   });
 
+  // basic.binomial
+  test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
+    assert.equal(10, basic.binomial(5, 3));
+    done();
+  });
+
   // basic.factorial
   test('factorial should return the product of n * (n - 1) * (n - 2) * ... * 1', function (done) {
     assert.equal(24, basic.factorial(4));
