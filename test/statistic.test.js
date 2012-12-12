@@ -1,6 +1,7 @@
 var assert = require('assert');
 var numbers = require('../index.js');
 var statistic = numbers.statistic;
+var basic = numbers.basic;
 
 suite('numbers', function() {
 
@@ -8,7 +9,7 @@ suite('numbers', function() {
 
   test('mean should return average value amongst integers in an array', function(done) {
     var res = statistic.mean([0, 1, 2]);
-    assert.equal(1, res);    
+    assert.equal(1, res);
     done();
   });
 
@@ -66,6 +67,22 @@ suite('numbers', function() {
     var res = statistic.correlation(arr1, arr2);
 
     assert.equal(0.43413125731182345, res);
+    done();
+  });
+
+  test('should return a function to calculate the exponential regression of an array of numbers', function (done) {
+    var input = [10,9,8,8,7,7,6,6.5,6.4,6.3,6.2];
+    var output = [
+      9.077131929916444, 8.66937771538526, 8.279940244595563, 7.907996710352883,
+      7.552761266818376, 7.213483369166244, 6.8894461878255076, 6.579965093955639,
+      6.284386212956255, 6.002085042954625, 5.732465135352174
+    ];
+
+    var regression_function = statistic.exponentialRegression(input);
+
+    assert.deepEqual(output, regression_function(basic.range(1, input.length)));
+    assert.equal(9.077131929916444, regression_function(1));
+    assert.equal(4.769782016165231, regression_function(15));
     done();
   });
 
