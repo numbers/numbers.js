@@ -6,11 +6,28 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Prime Number Mathematics\033[0m');
 
+  //prime.simple
   test('should be able to determine if a number is prime or not', function(done) {
     assert.equal(false, prime.simple(1));
     assert.equal(true, prime.simple(2));
     assert.equal(true, prime.simple(17));
-    done()
+    done();
   });
 
+  //prime.miller_rabin
+  test('should be able to determine if a number is prime or not', function(done) {
+    assert.equal(false, prime.miller_rabin(1));
+    assert.equal(true, prime.miller_rabin(2));
+    assert.equal(true, prime.miller_rabin(17));
+    assert.equal(false, prime.miller_rabin(27));
+    done();
+  });
+
+  //prime.sieve
+  test('should be able to determine if a number is prime or not', function(done) {
+    assert.deepEqual([], prime.sieve(1));
+    assert.deepEqual([2], prime.sieve(2));
+    assert.deepEqual([2,3,5,7,11,13,17], prime.sieve(17));
+    done();
+  });
 });
