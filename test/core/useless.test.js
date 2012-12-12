@@ -1,6 +1,6 @@
 var assert = require('assert');
 var numbers = require('../index.js');
-var useless = numbers.useless;
+var useless = numbers.core.useless;
 
 suite('numbers', function() {
 

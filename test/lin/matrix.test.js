@@ -1,6 +1,6 @@
 var assert = require('assert');
 var numbers = require('../index.js');
-var matrix = numbers.matrix;
+var matrix = numbers.lin.matrix;
 
 suite('numbers', function() {
 

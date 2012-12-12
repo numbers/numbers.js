@@ -1,6 +1,6 @@
 var assert = require('assert');
 var numbers = require('../index.js');
-var calculus = numbers.calculus;
+var calculus = numbers.calc;
 
 suite('numbers', function() {
 

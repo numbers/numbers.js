@@ -1,6 +1,6 @@
 var assert = require('assert');
 var numbers = require('../index.js');
-var statistic = numbers.statistic;
+var statistic = numbers.stats;
 
 suite('numbers', function() {
 
@@ -12,13 +12,27 @@ suite('numbers', function() {
     done();
   });
 
-  test('median should return middle value in array', function(done) {
+  test('median should return middle value in array for a sorted array with an even number of values', function(done) {
     var res1 = statistic.median([0, 1, 2]);
     assert.equal(1, res1);
+    done();
+  });
 
+  test('median should return middle value in array for an unsorted array with an even number of values', function(done) {
+    var res1 = statistic.median([1, 0, 2]);
+    assert.equal(1, res1);
+    done();
+  });
+
+  test('median should return average of two middle values in array for a sorted array with an odd number of values', function(done) {
     var res2 = statistic.median([0, 1, 2, 3]);
     assert.equal(1.5, res2);
+    done();
+  });
 
+  test('median should return average of two middle values in array for an unsorted array with an odd number of values', function(done) {
+    var res2 = statistic.median([1, 3, 2, 0]);
+    assert.equal(1.5, res2);
     done();
   });
 
