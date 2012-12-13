@@ -136,10 +136,9 @@ suite('numbers', function() {
     done();
   }); 
 
-  test('should return a new vector that has been rotated by the rotation matrix', function(done) {
+  test('should return a new vector that has been rotated by the transformation matrix', function(done) {
     var vectorA = [[0], [1]];
     var degree = 90;
-    var expected = [ [ 1 ], [ 6.123031769111886e-17 ] ];
 
     var res = matrix.rotate(vectorA, degree, 'clockwise');
 
@@ -157,6 +156,70 @@ suite('numbers', function() {
     assert.throws(
       function() {
         matrix.rotate(vectorA, degree, 'clockwise');
+      },
+      /Only two dimensional operations are supported at this time/
+    );
+    done();
+  });
+
+  test('should return a new vector that has been scaled by the transformation matrix', function(done) {
+    var vectorA = [[2], [5]];
+    var sx = 10;
+    var sy = 5;
+    var expected = [ [20], [25] ];
+
+    var res = matrix.scale(vectorA, sx, sy);
+
+    assert.deepEqual(expected, res);
+    done();
+  });
+
+  test('should throw an error if a vector larger than two is given for scaling', function(done) {
+    var vectorA = [[0], [1], [2]];
+    var sx = 10;
+    var sy = 5;
+
+    assert.throws(
+      function() {
+        var res = matrix.scale(vectorA, sx, sy);
+      },
+      /Only two dimensional operations are supported at this time/
+    );
+    done();
+  });
+
+  test('should return a new vector that has been sheared in the x direction by the transformation matrix', function(done) {
+    var vectorA = [[2], [5]];
+    var k = 10;
+    var direction = "xaxis"
+    var expected = [ [52], [5] ];
+
+    var res = matrix.shear(vectorA, k, direction);
+
+    assert.deepEqual(expected, res);
+    done();
+  });
+
+  test('should return a new vector that has been sheared in the y direction by the transformation matrix', function(done) {
+    var vectorA = [[2], [5]];
+    var k = 10;
+    var direction = "yaxis"
+    var expected = [ [2], [25] ];
+
+    var res = matrix.shear(vectorA, k, direction);
+
+    assert.deepEqual(expected, res);
+    done();
+  });
+
+  test('should throw an error if a vector larger than two is given for shearing', function(done) {
+    var vectorA = [[0], [1], [2]];
+    var sx = 10;
+    var sy = 5;
+
+    assert.throws(
+      function() {
+        var res = matrix.scale(vectorA, sx, sy);
       },
       /Only two dimensional operations are supported at this time/
     );
