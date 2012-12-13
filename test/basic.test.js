@@ -124,4 +124,13 @@ suite('numbers', function() {
     assert.equal(1, basic.min([2,1,3,42]));
     done();
   });
+
+  // basic.range
+  test('range should return an appropriate range for the given start, stop, and step parameters', function (done) {
+    assert.deepEqual([1,2,3,4,5,6,7,8,9,10],basic.range(1,10));
+    assert.deepEqual([10,9,8,7,6,5,4,3,2,1],basic.range(10,1));
+    assert.deepEqual([1,1.5,2,2.5,3,3.5,4,4.5,5],basic.range(1,5,.5));
+    assert.deepEqual([5,4.5,4,3.5,3,2.5,2,1.5,1],basic.range(5,1,.5));
+    done();
+  })
 });
