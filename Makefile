@@ -4,4 +4,4 @@ test:
 
 build:
 	browserify ./lib/numbers.js -o ./public/numbers.js
-	uglifyjs -o ./public/numbers.js ./public/numbers.min.js
+	uglifyjs -o ./public/numbers.min.js ./public/numbers.js
