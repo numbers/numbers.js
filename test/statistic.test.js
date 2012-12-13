@@ -70,6 +70,16 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return a function to calculate the linear regression of a set of points', function (done) {
+    var arrX = [1,2,3,4,5,7,8,9];
+    var arrY = [1,2,3,4,5,7,7,9];
+
+    var regression_function = statistic.linearRegression(arrX,arrY);
+
+    assert.equal(19.07218683651805, regression_function(20));
+    done();
+  });
+
   test('should return a function to calculate the exponential regression of an array of numbers', function (done) {
     var input = [10,9,8,8,7,7,6,6.5,6.4,6.3,6.2];
     var output = [
