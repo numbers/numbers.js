@@ -13,8 +13,8 @@ suite('numbers', function() {
   });
 
   test('median should return middle value in array for a sorted array with an odd number of values', function(done) {
-    var res1 = statistic.median([0, 1, 2]);
-    assert.equal(1, res1);
+    var res1 = statistic.median([0, 2, 15]);
+    assert.equal(2, res1);
     done();
   });
 
