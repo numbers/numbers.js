@@ -214,12 +214,38 @@ suite('numbers', function() {
 
   test('should throw an error if a vector larger than two is given for shearing', function(done) {
     var vectorA = [[0], [1], [2]];
-    var sx = 10;
-    var sy = 5;
+    var k = 10;
+    var direction = "yaxis"
 
     assert.throws(
       function() {
-        var res = matrix.scale(vectorA, sx, sy);
+        var res = matrix.shear(vectorA, k, direction);
+      },
+      /Only two dimensional operations are supported at this time/
+    );
+    done();
+  });
+
+  test('should return a new vector that has been transformed by the affine transformation matrix', function(done) {
+    var vectorA = [[2], [5]];
+    var tx = 10;
+    var ty = 10;
+    var expected = [ [12], [15], [1] ];
+
+    var res = matrix.affine(vectorA, tx, ty);
+
+    assert.deepEqual(expected, res);
+    done();
+  });
+
+  test('should throw an error if a vector larger than two is given for the affine transform', function(done) {
+    var vectorA = [[0], [1], [2]];
+    var tx = 10;
+    var ty = 10;
+
+    assert.throws(
+      function() {
+        var res = matrix.affine(vectorA, tx, ty);
       },
       /Only two dimensional operations are supported at this time/
     );
