@@ -230,7 +230,7 @@ suite('numbers', function() {
     var vectorA = [[2], [5]];
     var tx = 10;
     var ty = 10;
-    var expected = [ [12], [15], [1] ];
+    var expected = [ [12], [15] ];
 
     var res = matrix.affine(vectorA, tx, ty);
 
