@@ -6,13 +6,6 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Standard Mathematics\033[0m');
 
-  // basic.addition
-  test('addition should return the sum of items in an array', function (done) {
-    assert.equal(6, basic.addition([0,1,2,3]));
-    assert.equal(0, basic.addition([0,-3,5,-2]));
-    done();
-  });
-
   test('addition should throw an exception when given anything but an array', function (done) {
     assert.throws(
       function() {
@@ -125,9 +118,10 @@ suite('numbers', function() {
     done();
   });
 
-  // numbers.sum
-  test('min should return the smallest number in an array', function (done) {
+  // basic.sum
+  test('sum should return the total of all numbers in an array', function (done) {
     assert.equal(48, basic.sum([2,1,3,42]));
+    assert.equal(0, basic.sum([0,-3,5,-2]));
     done();
   });
 });
