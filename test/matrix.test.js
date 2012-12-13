@@ -132,6 +132,15 @@ suite('numbers', function() {
 
     var res2 = matrix.determinant(m2);
     assert.equal(0, res2);
+
+    var m3 = [
+      [3, -7, 8, 9, -6],
+      [0, 2, -5, 7, 3],
+      [0, 0, 1, 5, 0],
+      [0, 0, 0, -2, 0],
+    ];
+    var res3 = matrix.determinant(m3);
+    assert.equal(-12,res3);
     
     done();
   }); 
