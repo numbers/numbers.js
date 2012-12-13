@@ -8,29 +8,29 @@ suite('numbers', function() {
 
   test('mean should return average value amongst integers in an array', function(done) {
     var res = statistic.mean([0, 1, 2]);
-    assert.equal(1, res);    
+    assert.equal(1, res);
     done();
   });
 
-  test('median should return middle value in array for a sorted array with an even number of values', function(done) {
-    var res1 = statistic.median([0, 1, 2]);
-    assert.equal(1, res1);
+  test('median should return middle value in array for a sorted array with an odd number of values', function(done) {
+    var res1 = statistic.median([0, 2, 15]);
+    assert.equal(2, res1);
     done();
   });
 
-  test('median should return middle value in array for an unsorted array with an even number of values', function(done) {
+  test('median should return middle value in array for an unsorted array with an odd number of values', function(done) {
     var res1 = statistic.median([1, 0, 2]);
     assert.equal(1, res1);
     done();
   });
 
-  test('median should return average of two middle values in array for a sorted array with an odd number of values', function(done) {
+  test('median should return average of two middle values in array for a sorted array with an even number of values', function(done) {
     var res2 = statistic.median([0, 1, 2, 3]);
     assert.equal(1.5, res2);
     done();
   });
 
-  test('median should return average of two middle values in array for an unsorted array with an odd number of values', function(done) {
+  test('median should return average of two middle values in array for an unsorted array with an even number of values', function(done) {
     var res2 = statistic.median([1, 3, 2, 0]);
     assert.equal(1.5, res2);
     done();
@@ -39,6 +39,32 @@ suite('numbers', function() {
   test('mode should return most common value in array', function(done) {
     var res = statistic.mode([0, 1, 1, 1, 2, 4, 6]);
     assert.equal(1, res);
+    done();
+  });
+
+  test('quantile should return lowest value in array for 0th q-quantile of an unsorted array', function(done) {
+    var arr = [5, 2, 4];
+    var res = statistic.quantile(arr, 0, 1);
+    assert.equal(2, res);
+    done();
+  });
+
+  test('quantile should return highest value in array for qth q-quantile of an unsorted array', function(done) {
+    var arr = [5, 2, 4];
+    var res = statistic.quantile(arr, 6, 6);
+    assert.equal(5, res);
+    done();
+  });
+
+  test('quantile should return average of two values in array for an unsorted array\'s length is a multiple of (k / q)', function(done) {
+    var res = statistic.quantile([9, 1, 1, 9], 2, 4);
+    assert.equal(5, res);
+    done();
+  });
+
+  test('quantile should return value at 0-based index floor(k/q) in array for an unsorted array\'s length is not a multiple of (k/q)', function(done) {
+    var res = statistic.quantile([3, 6, 7, 8, 8, 9, 10, 13, 15, 16, 20], 1, 4);
+    assert.equal(7, res);
     done();
   });
 
