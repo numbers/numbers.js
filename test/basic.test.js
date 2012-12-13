@@ -87,6 +87,11 @@ suite('numbers', function() {
     done();
   });
 
+  test('square should return the square of a number', function(done) {
+    assert.equal(16, basic.square(4));
+    done();
+  });
+
   // basic.binomial
   test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
     assert.equal(10, basic.binomial(5, 3));
