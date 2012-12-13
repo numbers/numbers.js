@@ -98,6 +98,23 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return product of matrix and a vector', function(done) {
+    var matrixA = [
+      [0, 1, 2],
+      [3, 4, 5]
+    ];
+    var matrixB = [
+      [0],
+      [1],
+      [2]
+    ];
+
+    var res = matrix.multiply(matrixA, matrixB);
+
+    assert.deepEqual([[5], [14]], res);
+    done();
+  });
+
   test('should return determinant of matrix', function(done) {
     var m1 = [
       [2, 3],
@@ -118,5 +135,32 @@ suite('numbers', function() {
     
     done();
   }); 
+
+  test('should return a new vector that has been rotated by the rotation matrix', function(done) {
+    var vectorA = [[0], [1]];
+    var degree = 90;
+    var expected = [ [ 1 ], [ 6.123031769111886e-17 ] ];
+
+    var res = matrix.rotate(vectorA, degree, 'clockwise');
+
+    assert.equal((res[0][0] > (1 - numbers.EPSILON)), true);
+    assert.equal((res[0][0] < (1 + numbers.EPSILON)), true);
+    assert.equal((res[1][0] > (0 - numbers.EPSILON)), true);
+    assert.equal((res[1][0] < (0 + numbers.EPSILON)), true);
+    done();
+  });
+
+  test('should throw an error if a vector larger than two is given for rotation', function(done) {
+    var vectorA = [[0], [1], [2]];
+    var degree = 90;
+
+    assert.throws(
+      function() {
+        matrix.rotate(vectorA, degree, 'clockwise');
+      },
+      /Only two dimensional operations are supported at this time/
+    );
+    done();
+  });
 
 });
