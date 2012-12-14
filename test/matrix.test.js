@@ -116,6 +116,14 @@ suite('numbers', function() {
   });
 
   test('should return determinant of matrix', function(done) {
+
+    var m0 = [
+      [1]
+    ];
+
+    var res0 = matrix.determinant(m0);
+    assert.equal(1,m0);
+    
     var m1 = [
       [2, 3],
       [6, 7]
