@@ -269,7 +269,7 @@ suite('numbers', function() {
 
     done();
   });
-  
+
   test('should return a new matrix that has a scaled row for the rowScale function', function(done) {
     var m = [
       [0, 1, 2],
@@ -326,6 +326,29 @@ suite('numbers', function() {
     
     done();
   });
+  test('should return a new matrix that has a multiple of one row added to another using the rowAddMultiple function', function(done) {
+    var m = [
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ];
 
+    var expected1 = [
+      [0, 1, 2],
+      [3, 1, 9],
+      [1, 2, 5]
+      ];
+    var res1 = matrix.rowAddMultiple(m,0,1,2);
+
+    assert.deepEqual(res1,expected1);
+
+
+    var res2 = matrix.rowScale(m,1,1,0);
+
+    assert.deepEqual(res2,m);
+
+    
+    done();
+  });
 
 });
