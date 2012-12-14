@@ -1,6 +1,7 @@
 var assert = require('assert');
 var numbers = require('../index.js');
 var matrix = numbers.matrix;
+var transformation = numbers.transformation;
 
 suite('numbers', function() {
 
@@ -10,7 +11,7 @@ suite('numbers', function() {
     var vectorA = [[0], [1]];
     var degree = 90;
 
-    var res = matrix.rotate(vectorA, degree, 'clockwise');
+    var res = transformation.rotate(vectorA, degree, 'clockwise');
 
     assert.equal((res[0][0] > (1 - numbers.EPSILON)), true);
     assert.equal((res[0][0] < (1 + numbers.EPSILON)), true);
@@ -25,7 +26,7 @@ suite('numbers', function() {
 
     assert.throws(
       function() {
-        matrix.rotate(vectorA, degree, 'clockwise');
+        transformation.rotate(vectorA, degree, 'clockwise');
       },
       /Only two dimensional operations are supported at this time/
     );
@@ -38,7 +39,7 @@ suite('numbers', function() {
     var sy = 5;
     var expected = [ [20], [25] ];
 
-    var res = matrix.scale(vectorA, sx, sy);
+    var res = transformation.scale(vectorA, sx, sy);
 
     assert.deepEqual(expected, res);
     done();
@@ -51,7 +52,7 @@ suite('numbers', function() {
 
     assert.throws(
       function() {
-        var res = matrix.scale(vectorA, sx, sy);
+        var res = transformation.scale(vectorA, sx, sy);
       },
       /Only two dimensional operations are supported at this time/
     );
@@ -64,7 +65,7 @@ suite('numbers', function() {
     var direction = "xaxis"
     var expected = [ [52], [5] ];
 
-    var res = matrix.shear(vectorA, k, direction);
+    var res = transformation.shear(vectorA, k, direction);
 
     assert.deepEqual(expected, res);
     done();
@@ -76,7 +77,7 @@ suite('numbers', function() {
     var direction = "yaxis"
     var expected = [ [2], [25] ];
 
-    var res = matrix.shear(vectorA, k, direction);
+    var res = transformation.shear(vectorA, k, direction);
 
     assert.deepEqual(expected, res);
     done();
@@ -89,7 +90,7 @@ suite('numbers', function() {
 
     assert.throws(
       function() {
-        var res = matrix.shear(vectorA, k, direction);
+        var res = transformation.shear(vectorA, k, direction);
       },
       /Only two dimensional operations are supported at this time/
     );
@@ -102,7 +103,7 @@ suite('numbers', function() {
     var ty = 10;
     var expected = [ [12], [15] ];
 
-    var res = matrix.affine(vectorA, tx, ty);
+    var res = transformation.affine(vectorA, tx, ty);
 
     assert.deepEqual(expected, res);
     done();
@@ -115,7 +116,7 @@ suite('numbers', function() {
 
     assert.throws(
       function() {
-        var res = matrix.affine(vectorA, tx, ty);
+        var res = transformation.affine(vectorA, tx, ty);
       },
       /Only two dimensional operations are supported at this time/
     );
