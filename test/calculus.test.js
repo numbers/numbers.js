@@ -50,4 +50,19 @@ suite('numbers', function() {
     done();
   });
 
+  test('Stirling approximation gamma should return correct values', function (done) {
+    assert.equal(5.69718714897717, calculus.st_gamma(0.1));
+    assert.equal(3.3259984240223925, calculus.st_gamma(0.2));
+    assert.equal(2.3625300362696198, calculus.st_gamma(0.3));
+    assert.equal(0.8426782594483921, calculus.st_gamma(1.3));
+    done();
+  });
+
+  test('Lanczos approximation gamma should return correct values', function (done) {
+    assert.equal(9.513507698668736, calculus.la_gamma(0.1));
+    assert.equal(4.590843711998803, calculus.la_gamma(0.2));
+    assert.equal(2.9915689876875904, calculus.la_gamma(0.3));
+    assert.equal(0.8974706963062777, calculus.la_gamma(1.3));
+    done();
+  });
 });
