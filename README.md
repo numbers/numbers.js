@@ -1,3 +1,4 @@
+# numbers.js [![Build Status](https://travis-ci.org/sjkaliski/numbers.js.png)](https://travis-ci.org/sjkaliski/numbers.js)
 Numbers - an advanced mathematics toolkit for JavaScript and Node.js
 developed by Steve Kaliski, [@sjkaliski](http://twitter.com/sjkaliski)
 
