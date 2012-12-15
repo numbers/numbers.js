@@ -1,3 +1,4 @@
+# numbers.js [![Build Status](https://travis-ci.org/sjkaliski/numbers.js.png)](https://travis-ci.org/sjkaliski/numbers.js)
 Numbers - an advanced mathematics toolkit for JavaScript and Node.js
 developed by Steve Kaliski, [@sjkaliski](http://twitter.com/sjkaliski)
 
@@ -29,23 +30,30 @@ var numbers = require('numbers');
 For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we could:
 
 Use riemann integrals (with 200 subdivisions)
-
 ```javascript
 var numbers = require('numbers');
-var func = function(x) {
-  return Math.sin(x);
-}
 
-numbers.calculus.riemann(func, -2, 4, 200);
+numbers.calculus.riemann(Math.sin, -2, 4, 200);
 ```
 
-Or adaptive simpson quadrature (with epsilon .0001)
+Or use adaptive simpson quadrature (with epsilon .0001)
 
 ```javascript
-numbers.calculus.adaptiveSimpson(func, -2, 4, .0001);
+numbers.calculus.adaptiveSimpson(Math.sin, -2, 4, .0001);
 ```
 
-Say we wanted to run some matrix calculations:
+User-defined functions can be used too:
+
+```
+var myFunc = function(x) {
+  return 2*Math.pow(x,2) + 1;
+}
+
+numbers.calculus.riemann(myFunc, -2, 4, 200);
+numbers.calculus.adaptiveSimpson(myFunc, -2, 4, .0001);
+```
+
+Now say we wanted to run some matrix calculations:
 
 We can add two matrices
 
@@ -91,6 +99,16 @@ To execute, run:
 ```
 npm test
 ```
+
+## Build
+
+To update the public JavaScript, run
+
+```
+make build
+```
+
+This will compile the entire library into a single file accessible at public/numbers.js. It will also minify the file into public/numbers.min.js.
 
 ## Contributors
 * Steve Kaliski - [@sjkaliski](http://twitter.com/sjkaliski)

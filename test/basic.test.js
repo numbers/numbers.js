@@ -87,6 +87,11 @@ suite('numbers', function() {
     done();
   });
 
+  test('square should return the square of a number', function(done) {
+    assert.equal(16, basic.square(4));
+    done();
+  });
+
   // basic.binomial
   test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
     assert.equal(10, basic.binomial(5, 3));
@@ -125,9 +130,12 @@ suite('numbers', function() {
     done();
   });
 
-  // numbers.sum
-  test('min should return the smallest number in an array', function (done) {
-    assert.equal(48, basic.sum([2,1,3,42]));
+  // basic.range
+  test('range should return an appropriate range for the given start, stop, and step parameters', function (done) {
+    assert.deepEqual([1,2,3,4,5,6,7,8,9,10],basic.range(1,10));
+    assert.deepEqual([10,9,8,7,6,5,4,3,2,1],basic.range(10,1));
+    assert.deepEqual([1,1.5,2,2.5,3,3.5,4,4.5,5],basic.range(1,5,.5));
+    assert.deepEqual([5,4.5,4,3.5,3,2.5,2,1.5,1],basic.range(5,1,.5));
     done();
-  });
+  })
 });

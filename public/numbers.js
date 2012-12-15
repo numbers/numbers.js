@@ -391,42 +391,7 @@ process.binding = function (name) {
 
 });
 
-require.define("/lib/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
- * numbers.js
- *
- * top level management of numbers extensions
- *
- * (C) 2012 Steve Kaliski
- * MIT License
- *
- */
-var numbers = exports;
-
-
-// Expose methods
-numbers.basic = require('./numbers/basic');
-numbers.calculus = require('./numbers/calculus');
-numbers.matrix = require('./numbers/matrix');
-numbers.prime = require('./numbers/prime');
-numbers.statistic = require('./numbers/statistic');
-numbers.useless = require('./numbers/useless');
-
-/** 
- * @property {Number} EPSILON Epsilon (error bound) to be used 
- * in calculations. Can be set and retrieved freely. 
- * 
- * Given the float-point handling by JavaScript, as well as
- * the numbersal proficiency of some methods, it is common 
- * practice to include a bound by which discrepency between 
- * the "true" answer and the returned value is acceptable.
- *
- * If no value is provided, 0.001 is default.
- */
-numbers.EPSILON = 0.001;
-
-});
-
-require.define("/lib/numbers/basic.js",function(require,module,exports,__dirname,__filename,process,global){var basic = exports;
+require.define("/numbers/basic.js",function(require,module,exports,__dirname,__filename,process,global){var basic = exports;
 
 /**
  * Determine the summation of numbers in a given array
@@ -494,13 +459,40 @@ basic.product = function (arr) {
 };
 
 /**
+ * Calculate the binomial coefficient (n choose k)
+ *
+ * @param {Number} available choices
+ * @param {Number} number chosen
+ * @return {Number} number of possible choices
+ */
+basic.binomial = function(n, k) {
+
+  var arr = [];
+
+  function _binomial(n, k) {
+    if(n >= 0 && k === 0) return 1;
+
+    if(n === 0 && k > 0) return 0;
+
+    if(arr[n] && arr[n][k] > 0) return arr[n][k];
+
+    if(!arr[n])
+      arr[n] = [];
+
+    return arr[n][k] = _binomial(n - 1, k - 1) + _binomial(n - 1, k);
+  }
+
+  return _binomial(n, k);
+};
+
+/**
  * Factorial for some integer
  *
  * @param {Number} integer
  * @return {Number} result
  */
 basic.factorial = function (num) {
-  
+
   var arr = [];
 
   function _factorial(n) {
@@ -595,9 +587,64 @@ basic.shuffle = function (array) {
   return array;
 };
 
+
+/**
+ * Find maximum value in an array
+ *
+ * @param {Array} array to be traversed
+ * @return {Number} maximum value in the array
+ */
+basic.max = function (array) {
+    return Math.max.apply(Math, array);
+};
+
+
+/**
+ * Find minimum value in an array
+ *
+ * @param {Array} array to be traversed
+ * @return {Number} minimum value in the array
+ */
+basic.min = function (array) {
+    return Math.min.apply(Math, array);
+};
+
+/**
+ * Create a range of numbers
+ *
+ * @param {Number} The start of the range
+ * @param {Number} The end of the range
+ * @return {Array} An array containing numbers within the range
+ */
+basic.range = function (start,stop,step) {
+  var array, i = 0, len;
+
+  if (arguments.length <= 1) {
+    stop = start || 0;
+    start = 0;
+  }
+
+  step = step || 1;
+
+  if (stop < start) {
+    step = 0-Math.abs(step);
+  }
+
+  len = Math.max(Math.ceil((stop - start) / step) + 1, 0);
+
+  array = new Array(len);
+
+  while (i < len) {
+    array[i++] = start;
+    start += step;
+  }
+
+  return array;
+}
+
 });
 
-require.define("/lib/numbers/calculus.js",function(require,module,exports,__dirname,__filename,process,global){var numbers = require('../numbers');
+require.define("/numbers/calculus.js",function(require,module,exports,__dirname,__filename,process,global){var numbers = require('../numbers');
 var calculus = exports;
 
 
@@ -610,10 +657,10 @@ var calculus = exports;
  * @return {Number} result
  */
 calculus.pointDiff = function (func, point) {
-  var a = func(point - 0.00001);
-  var b = func(point + 0.00001);
+  var a = func(point - .001);
+  var b = func(point + .001);
 
-  return (b - a) / (0.00002);
+  return (b - a) / (.002);
 };
 
 
@@ -631,7 +678,9 @@ calculus.pointDiff = function (func, point) {
  * @return {Number} result
  */
 calculus.riemann = function (func, start, finish, n, sampler) {
-  var inc = (finish - start) / n, totalHeight = 0, i;
+  var inc = (finish - start) / n;
+  var totalHeight = 0;
+  var i;
   
   if (typeof sampler === 'function') {
     for (i = start; i < finish; i += inc) {
@@ -716,9 +765,9 @@ calculus.adaptiveSimpson = function (func, a, b, eps) {
  */
 calculus.limit = function (func, point, approach) {
   if (approach === 'left') {
-    return func(point - 0.001);
+    return func(point - 1e-15);
   } else if (approach === 'right') {
-    return func(point + 0.001);
+    return func(point + 1e-15);
   } else if (approach === 'middle') {
     return (calculus.limit(func, point, 'left') + calculus.limit(func, point, 'right')) / 2;
   } else {
@@ -728,7 +777,42 @@ calculus.limit = function (func, point, approach) {
 
 });
 
-require.define("/lib/numbers/matrix.js",function(require,module,exports,__dirname,__filename,process,global){var matrix = exports;
+require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * numbers.js
+ *
+ * top level management of numbers extensions
+ *
+ * (C) 2012 Steve Kaliski
+ * MIT License
+ *
+ */
+var numbers = exports;
+
+
+// Expose methods
+numbers.basic = require('./numbers/basic');
+numbers.calculus = require('./numbers/calculus');
+numbers.matrix = require('./numbers/matrix');
+numbers.prime = require('./numbers/prime');
+numbers.statistic = require('./numbers/statistic');
+numbers.useless = require('./numbers/useless');
+
+/** 
+ * @property {Number} EPSILON Epsilon (error bound) to be used 
+ * in calculations. Can be set and retrieved freely. 
+ * 
+ * Given the float-point handling by JavaScript, as well as
+ * the numbersal proficiency of some methods, it is common 
+ * practice to include a bound by which discrepency between 
+ * the "true" answer and the returned value is acceptable.
+ *
+ * If no value is provided, 0.001 is default.
+ */
+numbers.EPSILON = 0.001;
+
+});
+
+require.define("/numbers/matrix.js",function(require,module,exports,__dirname,__filename,process,global){var matrix = exports;
 
 /**
  * Add two matrices together.  Matrices must be of same dimension.
@@ -885,9 +969,34 @@ matrix.determinant = function (m) {
   }
 };
 
+
+/**
+ * Rotate a two dimensional vector by degree.
+ *
+ * @param {Array} point 
+ * @param {Number} degree
+ * @param {String} direction - clockwise or counterclockwise
+ * @return {Array} vector
+ */
+matrix.rotate = function (point, degree, direction) {
+  if (point.length === 2) {
+    var negate = direction === "clockwise" ? -1 : 1;
+    var radians = degree * (Math.PI / 180);
+
+    var transformation = [
+      [Math.cos(radians), -1*negate*Math.sin(radians)],
+      [negate*Math.sin(radians), Math.cos(radians)]
+    ];
+
+    return matrix.multiply(transformation, point);
+  } else {
+    throw new Error("Only two dimensional operations are supported at this time");
+  }
+};
+
 });
 
-require.define("/lib/numbers/prime.js",function(require,module,exports,__dirname,__filename,process,global){var basic = require('./basic');
+require.define("/numbers/prime.js",function(require,module,exports,__dirname,__filename,process,global){var basic = require('./basic');
 var prime = exports;
 
 /**
@@ -900,17 +1009,14 @@ prime.simple = function (val) {
   if (val === 1) return false;
   else if (val === 2) return true;
   else if (val !== undefined) {
-    var start = 2;
-    var result = true;
-    while (start < val) {
+    var start = 1;
+    var valSqrt = Math.ceil(Math.sqrt(val));
+    while (++start <= valSqrt) {
       if (val % start === 0) {
-        result = false;
-        break;
-      } else {
-        start++;
+        return false;
       }
     }
-    return result;
+    return true;
   }
 };
 
@@ -952,7 +1058,7 @@ prime.simple = function (val) {
 
 });
 
-require.define("/lib/numbers/statistic.js",function(require,module,exports,__dirname,__filename,process,global){var basic = require('./basic');
+require.define("/numbers/statistic.js",function(require,module,exports,__dirname,__filename,process,global){var basic = require('./basic');
 var statistic = exports;
 
 /**
@@ -975,13 +1081,7 @@ statistic.mean = function (arr) {
  * @return {Number} median value
  */
 statistic.median = function (arr) {
-  var count = arr.length;
-  var middle;
-  if (count % 2 === 0) {
-    return (arr[count/2] + arr[(count/2 - 1)])/2;
-  } else {
-    return arr[Math.floor(count / 2)];
-  }
+  return statistic.quantile(arr, 1, 2);
 };
 
 
@@ -992,26 +1092,50 @@ statistic.median = function (arr) {
  * @return {Number} mode value
  */
 statistic.mode = function (arr) {
-  //sort array
-  var maxIndex = 0, maxOccurence = 0, tempIndex = 0, tempOccurence = 0;
-  arr = arr.sort();
-  while (tempIndex < arr.length) {
-    for (var j = tempIndex; j < arr.length; j++) {
-      if (arr[j] == arr[tempIndex]) {
-        tempOccurence++;
-      } else {
-        break;
-      }
-    }
-    if (tempOccurence > maxOccurence) {
-      maxOccurence = tempOccurence;
-      maxIndex = tempIndex;
-    }
-
-    tempIndex = j;
-    tempOccurence = 0;
+  var counts = {};
+  for (var i = 0, n = arr.length ; i < n ; i++) {
+    if (counts[arr[i]] === undefined)
+      counts[arr[i]] = 0;
+    else
+      counts[arr[i]]++;
   }
-  return arr[maxIndex];
+  var highest;
+  for (var number in counts) {
+    if (counts.hasOwnProperty(number)) {
+      if (highest === undefined || counts[number] > counts[highest])
+        highest = number;
+    }
+  }
+  return Number(highest);
+};
+
+
+/**
+ * Calculate the kth q-quantile of a set of numbers in an array.
+ * As per http://en.wikipedia.org/wiki/Quantile#Quantiles_of_a_population
+ * Ex: Median is 1st 2-quantile
+ * Ex: Upper quartile is 3rd 4-quantile
+ *
+ * @param {Array} set of values
+ * @param {Number} index of quantile
+ * @param {Number} number of quantiles
+ * @return {Number} kth q-quantile of values
+ */
+statistic.quantile = function (arr, k, q) {
+  var sorted, count, index;
+
+  if(k === 0) return Math.min.apply(null, arr);
+
+  if (k === q) return Math.max.apply(null, arr);
+
+  sorted = arr.slice(0);
+  sorted.sort(function (a, b) { return a - b; });
+  count = sorted.length;
+  index = count * k / q;
+
+  if (index % 1 === 0) return 0.5 * sorted[index - 1] + 0.5 * sorted[index];
+
+  return sorted[Math.floor(index)];
 };
 
 
@@ -1080,9 +1204,96 @@ statistic.correlation = function (arrX, arrY) {
   }
 };
 
+/**
+ * Calculate the Coefficient of Determination of a dataset and regression line.
+ *
+ * @param {Array} Source data
+ * @param {Array} Regression data
+ * @return {Number} A number between 0 and 1.0 that represents how well the regression line fits the data.
+ */
+statistic.rSquared = function (source,regression) {
+  function square (x) { return x*x; }
+  var residualSumOfSquares = basic.addition(source.map(function(d,i){ return square(d-regression[i]); }));
+  var totalSumOfSquares = basic.addition(source.map(function(d){ return square(d - statistic.mean(source)) }));
+  return 1 - (residualSumOfSquares / totalSumOfSquares);
+}
+
+/**
+ * Create a function to calculate the exponential regression of a dataset.
+ *
+ * @param {Array} set of values
+ * @return {Function} function to accept X values and return corresponding regression Y values
+ */
+statistic.exponentialRegression = function (arrY) {
+  var n = arrY.length;
+  var arrX = basic.range(1,n);
+
+  var xSum = basic.addition(arrX);
+  var ySum = basic.addition(arrY);
+  var yMean = statistic.mean(arrY);
+  var yLog = arrY.map(function(d){ return Math.log(d); });
+  var xSquared = arrX.map(function(d){ return d*d; });
+  var xSquaredSum = basic.addition(xSquared);
+  var yLogSum = basic.addition(yLog);
+  var xyLog = arrX.map(function(d, i){ return d*yLog[i]; });
+  var xyLogSum = basic.addition(xyLog);
+
+  var a = (yLogSum * xSquaredSum - xSum * xyLogSum) /
+          (n * xSquaredSum - (xSum * xSum));
+
+  var b = (n * xyLogSum - xSum * yLogSum) /
+          (n * xSquaredSum - (xSum * xSum));
+
+  var fn = function(x) {
+    if (typeof x == 'number') {
+      return Math.exp(a) * Math.exp(b * x);
+    } else {
+      // If not number, assume array
+      return x.map(function (d) {
+        return Math.exp(a) * Math.exp(b * d);
+      });
+    }
+  };
+
+  fn.rSquared = statistic.rSquared(arrY, arrX.map(fn));
+
+  return fn;
+}
+
+/**
+ * Create a function to calculate the linear regression of a dataset.
+ *
+ * @param {Array} X array
+ * @param {Array} Y array
+ * @return {Function} A function which given X or array of X values will return Y
+ */
+statistic.linearRegression = function (arrX, arrY) {
+  var n = arrX.length;
+  var xSum = basic.addition(arrX);
+  var ySum = basic.addition(arrY);
+  var xySum = basic.addition(arrX.map(function(d, i){ return d * arrY[i]; }));
+  var xSquaredSum = basic.addition(arrX.map(function(d){ return d*d; }));
+  var xMean = statistic.mean(arrX);
+  var yMean = statistic.mean(arrY);
+  var b = (xySum - 1/n * xSum * ySum) /
+          (xSquaredSum - 1/n * (xSum * xSum));
+  var a = yMean - b*xMean;
+
+  return function(x) {
+    if(typeof x == 'number'){
+      return a + b*x;
+    }else{
+      // If not a number, assume array
+      return x.map(function(d){
+        return a + b*d;
+      });
+    }
+  }
+}
+
 });
 
-require.define("/lib/numbers/useless.js",function(require,module,exports,__dirname,__filename,process,global){var useless = exports;
+require.define("/numbers/useless.js",function(require,module,exports,__dirname,__filename,process,global){var useless = exports;
 
 /**
  * Populate the given array with a Collatz Sequence
@@ -1104,8 +1315,39 @@ useless.collatz = function (n, result) {
 
 });
 
-require.define("/index.js",function(require,module,exports,__dirname,__filename,process,global){module.exports = require('./lib/numbers.js');
+require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * numbers.js
+ *
+ * top level management of numbers extensions
+ *
+ * (C) 2012 Steve Kaliski
+ * MIT License
+ *
+ */
+var numbers = exports;
+
+
+// Expose methods
+numbers.basic = require('./numbers/basic');
+numbers.calculus = require('./numbers/calculus');
+numbers.matrix = require('./numbers/matrix');
+numbers.prime = require('./numbers/prime');
+numbers.statistic = require('./numbers/statistic');
+numbers.useless = require('./numbers/useless');
+
+/** 
+ * @property {Number} EPSILON Epsilon (error bound) to be used 
+ * in calculations. Can be set and retrieved freely. 
+ * 
+ * Given the float-point handling by JavaScript, as well as
+ * the numbersal proficiency of some methods, it is common 
+ * practice to include a bound by which discrepency between 
+ * the "true" answer and the returned value is acceptable.
+ *
+ * If no value is provided, 0.001 is default.
+ */
+numbers.EPSILON = 0.001;
 
 });
-require("/index.js");
+require("/numbers.js");
 })();
