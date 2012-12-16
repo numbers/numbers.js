@@ -135,4 +135,14 @@ suite('numbers', function() {
     assert.equal(0.8491729985314136, statistic.rSquared(input, output));
     done();
   });
+
+  test('should return covariance between two arrays', function(done) {
+    var arr1 = [-5, -4, -1, 0, 5, 100];
+    var arr2 = [-6, 5, 2, 5, 2, 6];
+
+    var res = statistic.covariance(arr1, arr2);
+
+    assert.equal(66.05555555555556, res);
+    done();
+  });
 });
