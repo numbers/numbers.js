@@ -6,16 +6,6 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Standard Mathematics\033[0m');
 
-<<<<<<< HEAD
-  // basic.addition
-  test('addition should return the sum of items in an array', function (done) {
-    assert.equal(6, basic.addition([0,1,2,3]));
-    assert.equal(0, basic.addition([0,-3,5,-2]));
-    done();
-  });
-
-  // basic.subtraction
-=======
   // basic.sum
   test('sum should return the sum of items in an array', function (done) {
     assert.equal(6, basic.sum([0,1,2,3]));
@@ -44,15 +34,11 @@ suite('numbers', function() {
   });
 
   // basic.substraction
->>>>>>> sjkaliski/master
   test('subtraction should return the difference of items in an array', function (done) {
     assert.equal(0, basic.subtraction([0,1,2,3]));
     done();
   });
 
-<<<<<<< HEAD
-  // basic.product
-=======
   test('subtraction should throw an exception when given anything but an array', function (done) {
     assert.throws(
       function() {
@@ -75,15 +61,12 @@ suite('numbers', function() {
 
   // basic.product
 
->>>>>>> sjkaliski/master
   test('product should return the product of items in an array', function (done) {
     assert.equal(24, basic.product([1,2,3,4]));
     assert.equal(-6, basic.product([-3,2]));
     done();
   });
 
-<<<<<<< HEAD
-=======
   test('product should throw an exception when given anything but an array', function (done) {
     assert.throws(
       function() {
@@ -115,7 +98,6 @@ suite('numbers', function() {
     done();
   });
 
->>>>>>> sjkaliski/master
   // basic.factorial
   test('factorial should return the product of n * (n - 1) * (n - 2) * ... * 1', function (done) {
     assert.equal(24, basic.factorial(4));
@@ -136,26 +118,6 @@ suite('numbers', function() {
     done();
   });
 
-<<<<<<< HEAD
-  // basic.isInt
-  test('isInt checks for an integer', function (done) {
-    assert.equal(false, basic.isInt(2.32));
-    assert.equal(false, basic.isInt("true"));
-    assert.equal(true, basic.isInt("2")); //based off impelementation change
-    assert.equal(true, basic.isInt(2));
-    done();
-  });  
-
-  // basic.divMod
-  test('divMod should return an array of both the division and modulus values of two integers', function (done) {
-    assert.deepEqual([2, 0], basic.divMod(12, 6));
-    assert.deepEqual([3, 1], basic.divMod(10, 3)); 
-    done();
-  });
-
-
-
-=======
   // basic.max
   test('max should return the biggest number in an array', function (done) {
     assert.equal(42, basic.max([1,2,3,42]));
@@ -175,6 +137,28 @@ suite('numbers', function() {
     assert.deepEqual([1,1.5,2,2.5,3,3.5,4,4.5,5],basic.range(1,5,.5));
     assert.deepEqual([5,4.5,4,3.5,3,2.5,2,1.5,1],basic.range(5,1,.5));
     done();
-  })
->>>>>>> sjkaliski/master
+  });
+
+  // basic.isInt
+  test('isInt checks for an integer', function (done) {
+    assert.equal(false, basic.isInt(2.32));
+    assert.equal(false, basic.isInt("true"));
+    assert.equal(true, basic.isInt("2")); //based off impelementation change
+    assert.equal(true, basic.isInt(2));
+    done();
+  });  
+
+  // basic.divMod
+  test('divMod should return an array of both the division and modulus values of two integers', function (done) {
+    assert.deepEqual([2, 0], basic.divMod(12, 6));
+    assert.deepEqual([3, 1], basic.divMod(10, 3)); 
+    done();
+  });
+
+  // basic.powerMod
+
+  // basic.egcd
+
+  // basic.modInverse
+
 });
