@@ -8,9 +8,23 @@ suite('numbers', function() {
 
   //prime.simple
   test('should be able to determine if a number is prime or not', function(done) {
+<<<<<<< HEAD
     assert.equal(false, prime.simple(1));
     assert.equal(true, prime.simple(2));
     assert.equal(true, prime.simple(17));
+=======
+    assert.equal(false, prime.simple(1), "1 should not be prime");
+    assert.equal(true,  prime.simple(2), "2 should be prime");
+    assert.equal(false, prime.simple(4), "4 should not be prime");
+    assert.equal(true,  prime.simple(17), "17 should be prime");
+    assert.equal(false, prime.simple(18), "18 should not be prime");
+    assert.equal(false, prime.simple(25), "25 should not be prime");
+    assert.equal(false, prime.simple(838), "838 should not be prime");
+    assert.equal(true,  prime.simple(839), "839 should be prime");
+    assert.equal(false, prime.simple(3007), "3007 should not be prime");
+    assert.equal(true,  prime.simple(3733), "3733 should be prime");
+    assert.equal(true,  prime.simple(999983), "999983 should be prime");
+>>>>>>> sjkaliski/master
     done();
   });
 

@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - 0.8
+  - 0.6
+
+notifications:
+  email:
+    - sjkaliski@gmail.com
+    - david.byrd11@gmail.com
+    - ethan.resnick@gmail.com
