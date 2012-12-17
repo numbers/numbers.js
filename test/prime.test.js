@@ -28,7 +28,8 @@ suite('numbers', function() {
   //prime.factorization
 
   //prime.sieve
-  test('should be able to determine if a number is prime or not', function(done) {
+  test('should return with array of primes up to that number', function(done) {
+ 
     assert.deepEqual([], prime.sieve(1));
     assert.deepEqual([2], prime.sieve(2));
     assert.deepEqual([2,3,5,7,11,13,17], prime.sieve(17));

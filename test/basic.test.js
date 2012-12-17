@@ -60,7 +60,6 @@ suite('numbers', function() {
   });
 
   // basic.product
-
   test('product should return the product of items in an array', function (done) {
     assert.equal(24, basic.product([1,2,3,4]));
     assert.equal(-6, basic.product([-3,2]));
@@ -137,6 +136,7 @@ suite('numbers', function() {
     assert.deepEqual([1,1.5,2,2.5,3,3.5,4,4.5,5],basic.range(1,5,.5));
     assert.deepEqual([5,4.5,4,3.5,3,2.5,2,1.5,1],basic.range(5,1,.5));
     done();
+ 
   });
 
   // basic.isInt
