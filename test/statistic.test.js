@@ -92,7 +92,7 @@ suite('numbers', function() {
 
     var res = statistic.correlation(arr1, arr2);
 
-    assert.equal(0.43413125731182345, res);
+    assert.equal(0.43413125731182334, res);
     done();
   });
 
