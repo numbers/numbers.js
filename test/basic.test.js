@@ -137,5 +137,11 @@ suite('numbers', function() {
     assert.deepEqual([1,1.5,2,2.5,3,3.5,4,4.5,5],basic.range(1,5,.5));
     assert.deepEqual([5,4.5,4,3.5,3,2.5,2,1.5,1],basic.range(5,1,.5));
     done();
-  })
+  });
+
+  // basic.expmod
+  test('expmod should return an accurate result', function (done) {
+    assert.equal(445, basic.expmod(4, 13, 497));
+    done();
+  });
 });
