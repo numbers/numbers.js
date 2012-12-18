@@ -60,7 +60,6 @@ suite('numbers', function() {
   });
 
   // basic.product
-
   test('product should return the product of items in an array', function (done) {
     assert.equal(24, basic.product([1,2,3,4]));
     assert.equal(-6, basic.product([-3,2]));
@@ -137,5 +136,59 @@ suite('numbers', function() {
     assert.deepEqual([1,1.5,2,2.5,3,3.5,4,4.5,5],basic.range(1,5,.5));
     assert.deepEqual([5,4.5,4,3.5,3,2.5,2,1.5,1],basic.range(5,1,.5));
     done();
-  })
+ 
+  });
+
+  // basic.isInt
+  test('isInt checks for an integer', function (done) {
+    assert.equal(false, basic.isInt(2.32));
+    assert.equal(false, basic.isInt("true"));
+    assert.equal(true, basic.isInt("2")); //based off impelementation change
+    assert.equal(true, basic.isInt(2));
+    done();
+  });  
+
+  // basic.divMod
+  test('divMod should return an array of both the division and modulus values of two integers', function (done) {
+    assert.deepEqual([2, 0], basic.divMod(12, 6));
+    assert.deepEqual([3, 1], basic.divMod(10, 3)); 
+    done();
+  });
+
+  // basic.egcd
+  test('egcd should return the array [a, x, y] which is the solved linear equation for GCD', function(done) {
+    assert.deepEqual([5, -3, 5], basic.egcd(65, 40));
+    assert.deepEqual([5, 5, -3], basic.egcd(40, 65));
+    assert.deepEqual([21, -16, 27], basic.egcd(1239, 735));
+    assert.deepEqual([21, 5, -2], basic.egcd(105, 252));
+    assert.deepEqual([21, -2, 5], basic.egcd(252, 105));
+    done();
+  });
+
+  // basic.modInverse
+  test('modInverse will return the modulo m inverse of a', function(done) {
+    assert.equal(1, basic.modInverse(1, 5));
+    done();
+  });
+
+  test('modInverse will throw an exception if no modular inverse exists', function(done) {
+    assert.throws(
+      function() {
+        basic.modInverse(65, 40);
+      },
+      /No modular inverse exists/
+    );
+    done();
+  });
+
+  // basic.powerMod
+  test('powerMod should return the answer to a^b mod m', function (done) {
+    assert.equal(1, basic.powerMod(1, -1, 5));
+    assert.equal(1, basic.powerMod(2, 10, 3));
+    assert.equal(16, basic.powerMod(2, Math.pow(10, 9), 18));
+    assert.equal(6, basic.powerMod(6, .5, 10));
+    done();
+  });
+
 });
+
