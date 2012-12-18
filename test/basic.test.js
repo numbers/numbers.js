@@ -179,7 +179,7 @@ suite('numbers', function() {
       /No modular inverse exists/
     );
     done();
-  })
+  });
 
   // basic.powerMod
   test('powerMod should return the answer to a^b mod m', function (done) {
