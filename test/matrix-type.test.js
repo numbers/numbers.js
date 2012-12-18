@@ -195,5 +195,28 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return the original matrix whose scale and rotation transform has been undone', function(done) {
+    var matrixA = new Matrix([[2], [5]]);
+    var expected = new Matrix([ [2], [5] ]);
+    var sx = 10;
+    var sy = 5;
+    var degree = 90;
+
+    matrixA.scale(sx, sy).rotate(degree, 'clockwise').undo().undo();
+
+    assert.deepEqual(expected.data, matrixA.data);
+    done();
+  });
+
+  test('should return the original matrix when an untransformed matrix has been undone', function(done) {
+    var matrixA = new Matrix([[2], [5]]);
+    var expected = new Matrix([ [2], [5] ]);
+
+    matrixA.undo();
+
+    assert.deepEqual(expected.data, matrixA.data);
+    done();
+  });
+
 
 });
