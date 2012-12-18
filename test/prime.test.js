@@ -10,22 +10,22 @@ suite('numbers', function() {
 
   // prime.simple
   test('simple should be able to determine if a number is prime or not', function(done) {
-      for (var j = 0; j < primes.length; j++) {
-        assert.equal(true, prime.simple(primes[j]), primes[j] + " should not be prime");  
+      for (var i = 0; i < primes.length; i++) {
+        assert.equal(true, prime.simple(primes[i]), primes[i] + " should be prime");  
       }
-      for (var j = 0; j < composites.length; j++) {
-        assert.equal(false, prime.simple(composites[j]), composites[j] + " should not be prime");
+      for (var i = 0; i < composites.length; i++) {
+        assert.equal(false, prime.simple(composites[i]), composites[i] + " should not be prime");
       }
       done();
   });
 
   // prime.millerRabin
   test('millerRabin should be able to determine if a number is prime or not', function(done) {
-      for (var j = 0; j < primes.length; j++) {
-        assert.equal(true, prime.millerRabin(primes[j]), primes[j] + " should not be prime");  
+      for (var i = 0; i < primes.length; i++) {
+        assert.equal(true, prime.millerRabin(primes[i]), primes[i] + " should be prime");  
       }
-      for (var j = 0; j < composites.length; j++) {
-        assert.equal(false, prime.millerRabin(composites[j]), composites[j] + " should not be prime");
+      for (var i = 0; i < composites.length; i++) {
+        assert.equal(false, prime.millerRabin(composites[i]), composites[i] + " should not be prime");
       }
       done();
   });
