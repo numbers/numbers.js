@@ -114,3 +114,4 @@ This will compile the entire library into a single file accessible at public/num
 * Steve Kaliski - [@sjkaliski](http://twitter.com/sjkaliski)
 * David Byrd - [@davidbyrd11](http://twitter.com/davidbyrd11)
 * Ethan Resnick - [@studip101](http://twitter.com/studip101)
+* Larry Battle - [@LarryBattle](https://github.com/LarryBattle)
