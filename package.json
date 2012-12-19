@@ -25,7 +25,8 @@
   "devDependencies": {
     "mocha": "~1.5.0",
     "browserify": "~1.16.6",
-    "uglify-js": "~2.2.2"
+    "uglify-js": "~2.2.2",
+    "jshint": "~0.9.1"
   },
   "scripts": {
     "test": "make test",
