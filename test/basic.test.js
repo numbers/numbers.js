@@ -187,6 +187,7 @@ suite('numbers', function() {
     assert.equal(1, basic.powerMod(2, 10, 3));
     assert.equal(16, basic.powerMod(2, Math.pow(10, 9), 18));
     assert.equal(6, basic.powerMod(6, .5, 10));
+    assert.equal(445, basic.powerMod(4, 13, 497));
     done();
   });
 
