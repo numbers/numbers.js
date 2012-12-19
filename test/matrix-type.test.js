@@ -54,7 +54,7 @@ suite('numbers', function() {
     [0, 1, 2, 3]
     ]);
 
-    m.swapElement(3,0, 0,0);
+    m.swapElements(3,0, 0,0);
 
     assert.equal(3, m.getElement(0,0));
     assert.equal(0, m.getElement(3,0));
