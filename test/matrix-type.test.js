@@ -100,8 +100,8 @@ suite('numbers', function() {
 
     assert.equal((matrixA.getElement(0,0) > (1 - numbers.EPSILON)), true);
     assert.equal((matrixA.getElement(0,0) < (1 + numbers.EPSILON)), true);
-    assert.equal((matrixA.getElement(1,0) > (0 - numbers.EPSILON)), true);
-    assert.equal((matrixA.getElement(1,0) < (0 + numbers.EPSILON)), true);
+    assert.equal((matrixA.getElement(0,1) > (0 - numbers.EPSILON)), true);
+    assert.equal((matrixA.getElement(0,1) < (0 + numbers.EPSILON)), true);
     done();
   });
 
