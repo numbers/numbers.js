@@ -19,5 +19,5 @@ The realm of mathematics we're exploring includes basic mathematics, calculus, l
 Take a swing through the repo and you'll get a sense of the style more rigorously.
 
 ## License
-By contributing, you agree to license your contribution under the terms of APLv2
+By contributing, you agree to license your contribution under the terms of APLv2, which is a standard open-source license approved by the Free Software Foundation
 [https://github.com/sjkaliski/numbers.js/blob/master/LICENSE](https://github.com/sjkaliski/numbers.js/blob/master/LICENSE)
