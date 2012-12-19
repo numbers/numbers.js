@@ -29,6 +29,42 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return transposed matrix', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var transposed = [
+      [0, 3],
+      [1, 4],
+      [2, 5]
+    ];
+
+    matrixA.transpose();
+
+    assert.deepEqual(transposed, matrixA.data);
+    done();
+  });
+
+  test('should return product of two matrices', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var matrixB = new Matrix([
+      [0, 3],
+      [1, 4],
+      [2, 5]
+    ]);
+
+    var res = matrixA.multiply(matrixB);
+
+    assert.deepEqual([[5, 14], [14, 50]], res.data);
+    done();
+  });
+
   test('should return inverse of a 2x2 matrix', function(done) {
     var matrixA = new Matrix([
       [0, 1],
