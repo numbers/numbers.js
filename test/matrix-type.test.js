@@ -7,6 +7,23 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Matrix Type Mathematics\033[0m');
 
+    test('Should return the number of columns and rows correctly', function(done) {
+    var m = new Matrix([
+    [0, 1, 2, 3],
+    [4, 5, 6, 7],
+    [1, 3, 4, 6],
+    ]);
+
+    var rows = m.getRowCount();
+    assert.equal(3,rows);
+
+    var cols = m.getColumnCount();
+    assert.equal(4,cols);
+
+    done();
+  });
+
+  
   test('should return sum of two matrices', function(done) {
     var matrixA = new Matrix([
       [0, 1, 2],
