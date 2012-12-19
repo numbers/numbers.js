@@ -29,7 +29,80 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new vector that has been rotated by the transformation matrix', function(done) {
+  test('should return transposed matrix', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var transposed = [
+      [0, 3],
+      [1, 4],
+      [2, 5]
+    ];
+
+    matrixA.transpose();
+
+    assert.deepEqual(transposed, matrixA.data);
+    done();
+  });
+
+  test('should return product of two matrices', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var matrixB = new Matrix([
+      [0, 3],
+      [1, 4],
+      [2, 5]
+    ]);
+
+    var res = matrixA.multiply(matrixB);
+
+    assert.deepEqual([[5, 14], [14, 50]], res.data);
+    done();
+  });
+
+  test('should return inverse of a 2x2 matrix', function(done) {
+    var matrixA = new Matrix([
+      [0, 1],
+      [3, 4]
+    ]);
+
+    var expected = new Matrix([
+      [-1.333, 0.333],
+      [1, 0]
+    ]);
+
+    var actual = matrixA.invert();
+    
+    assert.equal((actual.getElement(0,0) > (expected.getElement(0,0) - numbers.EPSILON)), true);
+    assert.equal((actual.getElement(0,0) < (expected.getElement(0,0) + numbers.EPSILON)), true);
+    assert.equal((actual.getElement(0,1) > (expected.getElement(0,1) - numbers.EPSILON)), true);
+    assert.equal((actual.getElement(0,1) < (expected.getElement(0,1) + numbers.EPSILON)), true);
+    assert.equal((actual.getElement(1,0) > (expected.getElement(1,0) - numbers.EPSILON)), true);
+    assert.equal((actual.getElement(1,0) < (expected.getElement(1,0) + numbers.EPSILON)), true);
+    assert.equal((actual.getElement(1,1) > (expected.getElement(1,1) - numbers.EPSILON)), true);
+    assert.equal((actual.getElement(1,1) < (expected.getElement(1,1) + numbers.EPSILON)), true);
+
+    done();
+  });
+
+  test('should throw an error if a vector larger than 2x2 is given for invert', function(done) {
+    var matrixA = new Matrix([[0], [1], [2]]);
+
+    assert.throws(
+      function() {
+        matrixA.invert();
+      },
+      /Only two by two matrices currently supported/
+    );
+    done();
+  });
+
+  test('should transform a matrix that has been rotated by the transformation matrix', function(done) {
     var matrixA = new Matrix([[0], [1]]);
     var degree = 90;
 
@@ -55,7 +128,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new vector that has been scaled by the transformation matrix', function(done) {
+  test('should transform a matrix that has been scaled by the transformation matrix', function(done) {
     var matrixA = new Matrix([[2], [5]]);
     var sx = 10;
     var sy = 5;
@@ -63,7 +136,7 @@ suite('numbers', function() {
 
     matrixA.scale(sx, sy);
 
-    assert.deepEqual(expected, matrixA);
+    assert.deepEqual(expected.data, matrixA.data);
     done();
   });
 
@@ -81,7 +154,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new vector that has been sheared in the x direction by the transformation matrix', function(done) {
+  test('should transform a matrix that has been sheared in the x direction by the transformation matrix', function(done) {
     var matrixA = new Matrix([[2], [5]]);
     var k = 10;
     var direction = "xaxis"
@@ -89,11 +162,11 @@ suite('numbers', function() {
 
     matrixA.shear(k, direction);
 
-    assert.deepEqual(expected, matrixA);
+    assert.deepEqual(expected.data, matrixA.data);
     done();
   });
 
-  test('should return a new vector that has been sheared in the y direction by the transformation matrix', function(done) {
+  test('should transform a matrix that has been sheared in the y direction by the transformation matrix', function(done) {
     var matrixA = new Matrix([[2], [5]]);
     var k = 10;
     var direction = "yaxis"
@@ -101,7 +174,7 @@ suite('numbers', function() {
 
     matrixA.shear(k, direction);
 
-    assert.deepEqual(expected, matrixA);
+    assert.deepEqual(expected.data, matrixA.data);
     done();
   });
 
@@ -119,7 +192,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new vector that has been transformed by the affine transformation matrix', function(done) {
+  test('should transform a matrix by the affine transformation matrix', function(done) {
     var matrixA = new Matrix([[2], [5]]);
     var tx = 10;
     var ty = 10;
@@ -143,6 +216,41 @@ suite('numbers', function() {
       /Only two dimensional operations are supported/
     );
 
+    done();
+  });
+
+  test('should return the original matrix whose scale transform has been undone', function(done) {
+    var matrixA = new Matrix([[2], [5]]);
+    var expected = new Matrix([ [2], [5] ]);
+    var sx = 10;
+    var sy = 5;
+
+    matrixA.scale(sx, sy).undo();
+
+    assert.deepEqual(expected.data, matrixA.data);
+    done();
+  });
+
+  test('should return the original matrix whose scale and rotation transform has been undone', function(done) {
+    var matrixA = new Matrix([[2], [5]]);
+    var expected = new Matrix([ [2], [5] ]);
+    var sx = 10;
+    var sy = 5;
+    var degree = 90;
+
+    matrixA.scale(sx, sy).rotate(degree, 'clockwise').undo().undo();
+
+    assert.deepEqual(expected.data, matrixA.data);
+    done();
+  });
+
+  test('should return the original matrix when an untransformed matrix has been undone', function(done) {
+    var matrixA = new Matrix([[2], [5]]);
+    var expected = new Matrix([ [2], [5] ]);
+
+    matrixA.undo();
+
+    assert.deepEqual(expected.data, matrixA.data);
     done();
   });
 
