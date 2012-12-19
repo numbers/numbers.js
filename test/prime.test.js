@@ -42,9 +42,7 @@ suite('numbers', function() {
     done();
   });
 
-<<<<<<< HEAD
-});
-=======
+  //prime.factorization when values < 2
   test("factorization should return an empty array for values < 2, infinite or not numeric", function (done) {
   	var func = prime.factorization;
 		assert.deepEqual(func(Infinity), []);
@@ -55,7 +53,9 @@ suite('numbers', function() {
 		assert.deepEqual(func(1), []);
 		done();
 	});
-	test("factorization should return the prime factors for x where 1 < x < Infinity", function (done) {
+
+  //prime.factorization when 1 < values < infinity
+	test("factorization should return the prime factors for x where 1 < x < infinity", function (done) {
 		var func = prime.factorization;
 		assert.deepEqual(func(2), [2]);
 		assert.deepEqual(func(6), [2, 3]);
@@ -69,4 +69,3 @@ suite('numbers', function() {
 	});
 
 });
->>>>>>> 2edfec5a8362bbdec35002252cddd0446a76eda3
