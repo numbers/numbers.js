@@ -29,8 +29,15 @@ suite('numbers', function() {
     [4, 5, 6, 7],
     ]);
 
-    assert.equal(3, m.getElement(3,0));
-    assert.equal(4, m.getElement(0,1));
+    assert.equal(3, m.getElement(0,3));
+    assert.equal(4, m.getElement(1,0));
+    
+    assert.throws(
+      function() {
+        m.getElement(2,0);
+      },
+      /Invalid Element/
+    );
 
     done();
   });
@@ -41,9 +48,9 @@ suite('numbers', function() {
     [4, 5, 6, 7],
     ]);
 
-    m.setElement(3,0,9).setElement(1,1,7);
+    m.setElement(0,3,9).setElement(1,1,7);
 
-    assert.equal(9, m.getElement(3,0));
+    assert.equal(9, m.getElement(0,3));
     assert.equal(7, m.getElement(1,1));
 
     done();
@@ -54,10 +61,10 @@ suite('numbers', function() {
     [0, 1, 2, 3]
     ]);
 
-    m.swapElements(3,0, 0,0);
+    m.swapElements(0,3, 0,0);
 
     assert.equal(3, m.getElement(0,0));
-    assert.equal(0, m.getElement(3,0));
+    assert.equal(0, m.getElement(0,3));
 
     done();
   });
