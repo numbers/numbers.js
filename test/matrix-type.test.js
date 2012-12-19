@@ -7,7 +7,7 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Matrix Type Mathematics\033[0m');
 
-    test('Should return the number of columns and rows correctly', function(done) {
+  test('Should return the number of columns and rows correctly', function(done) {
     var m = new Matrix([
     [0, 1, 2, 3],
     [4, 5, 6, 7],
@@ -19,6 +19,45 @@ suite('numbers', function() {
 
     var cols = m.getColumnCount();
     assert.equal(4,cols);
+
+    done();
+  });
+
+  test('should return the proper element', function(done) {
+    var m = new Matrix([
+    [0, 1, 2, 3],
+    [4, 5, 6, 7],
+    ]);
+
+    assert.equal(3, m.getElement(3,0));
+    assert.equal(4, m.getElement(0,1));
+
+    done();
+  });
+    
+  test('should modify the proper element', function(done) {
+    var m = new Matrix([
+    [0, 1, 2, 3],
+    [4, 5, 6, 7],
+    ]);
+
+    m.setElement(3,0,9).setElement(1,1,7);
+
+    assert.equal(9, m.getElement(3,0));
+    assert.equal(7, m.getElement(1,1));
+
+    done();
+  });
+    
+  test('should swap the proper elements', function(done) {
+    var m = new Matrix([
+    [0, 1, 2, 3]
+    ]);
+
+    m.swapElement(3,0, 0,0);
+
+    assert.equal(3, m.getElement(0,0));
+    assert.equal(0, m.getElement(3,0));
 
     done();
   });
