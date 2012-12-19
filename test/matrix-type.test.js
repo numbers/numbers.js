@@ -43,7 +43,17 @@ suite('numbers', function() {
 
     matrixA.transpose();
 
-    assert.deepEqual(transposed, matrixA.data);
+    assert.deepEqual(transposed, matrixA.toArray());
+    done();
+  });
+
+  test('should return dot product of two vectors', function(done) {
+    var vectorA = new Matrix([[0, 1, 2, 3]]);
+    var vectorB = new Matrix([[-1, 2, 4, 6]]);
+
+    var res = vectorA.dotproduct(vectorB);
+
+    assert.equal(28, res);
     done();
   });
 
@@ -61,7 +71,7 @@ suite('numbers', function() {
 
     var res = matrixA.multiply(matrixB);
 
-    assert.deepEqual([[5, 14], [14, 50]], res.data);
+    assert.deepEqual([[5, 14], [14, 50]], res.toArray());
     done();
   });
 
@@ -136,7 +146,7 @@ suite('numbers', function() {
 
     matrixA.scale(sx, sy);
 
-    assert.deepEqual(expected.data, matrixA.data);
+    assert.deepEqual(expected.toArray(), matrixA.toArray());
     done();
   });
 
@@ -162,7 +172,7 @@ suite('numbers', function() {
 
     matrixA.shear(k, direction);
 
-    assert.deepEqual(expected.data, matrixA.data);
+    assert.deepEqual(expected.toArray(), matrixA.toArray());
     done();
   });
 
@@ -174,7 +184,7 @@ suite('numbers', function() {
 
     matrixA.shear(k, direction);
 
-    assert.deepEqual(expected.data, matrixA.data);
+    assert.deepEqual(expected.toArray(), matrixA.toArray());
     done();
   });
 
@@ -227,7 +237,7 @@ suite('numbers', function() {
 
     matrixA.scale(sx, sy).undo();
 
-    assert.deepEqual(expected.data, matrixA.data);
+    assert.deepEqual(expected.toArray(), matrixA.toArray());
     done();
   });
 
@@ -240,7 +250,7 @@ suite('numbers', function() {
 
     matrixA.scale(sx, sy).rotate(degree, 'clockwise').undo().undo();
 
-    assert.deepEqual(expected.data, matrixA.data);
+    assert.deepEqual(expected.toArray(), matrixA.toArray());
     done();
   });
 
@@ -250,7 +260,7 @@ suite('numbers', function() {
 
     matrixA.undo();
 
-    assert.deepEqual(expected.data, matrixA.data);
+    assert.deepEqual(expected.toArray(), matrixA.toArray());
     done();
   });
 
