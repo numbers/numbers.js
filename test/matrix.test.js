@@ -152,8 +152,7 @@ suite('numbers', function() {
       [0, 0, 0, -2, 0]
     ];
 
-    assert.throws
-      function() {
+    assert.throws(function() {
         matrix.determinant(m3);
       },
       /Not a square matrix/
