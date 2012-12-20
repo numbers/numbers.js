@@ -140,18 +140,26 @@ suite('numbers', function() {
 
     var res2 = matrix.determinant(m2);
     assert.equal(0, res2);
-
+    
+    done();
+  }); 
+  
+  test('should throw an error for calculating the determinant of a non-square matrix', function(done) {    
     var m3 = [
       [3, -7, 8, 9, -6],
       [0, 2, -5, 7, 3],
       [0, 0, 1, 5, 0],
       [0, 0, 0, -2, 0]
     ];
-    var res3 = matrix.determinant(m3);
-    assert.equal(-12,res3);
-    
-    done();
-  }); 
+
+    assert.throws
+      function() {
+        matrix.determinant(m3);
+      },
+      /Not a square matrix/
+    );
+  
+  });
 
   test('should return a new vector that has been rotated by the transformation matrix', function(done) {
     var vectorA = [[0], [1]];
