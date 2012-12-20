@@ -157,7 +157,7 @@ suite('numbers', function() {
       },
       /Not a square matrix/
     );
-  
+    done();
   });
 
   test('should return a new vector that has been rotated by the transformation matrix', function(done) {
