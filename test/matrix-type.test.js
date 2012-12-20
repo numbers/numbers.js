@@ -106,7 +106,7 @@ suite('numbers', function() {
 
     matrixA.transpose();
 
-    assert.deepEqual(transposed, matrixA.toArray());
+    assert.deepEqual(transposed, matrixA.getData());
     done();
   });
 
@@ -134,7 +134,7 @@ suite('numbers', function() {
 
     var res = matrixA.multiply(matrixB);
 
-    assert.deepEqual([[5, 14], [14, 50]], res.toArray());
+    assert.deepEqual([[5, 14], [14, 50]], res.getData());
     done();
   });
 
@@ -209,7 +209,7 @@ suite('numbers', function() {
 
     matrixA.scale(sx, sy);
 
-    assert.deepEqual(expected.toArray(), matrixA.toArray());
+    assert.deepEqual(expected.getData(), matrixA.getData());
     done();
   });
 
@@ -235,7 +235,7 @@ suite('numbers', function() {
 
     matrixA.shear(k, direction);
 
-    assert.deepEqual(expected.toArray(), matrixA.toArray());
+    assert.deepEqual(expected.getData(), matrixA.getData());
     done();
   });
 
@@ -247,7 +247,7 @@ suite('numbers', function() {
 
     matrixA.shear(k, direction);
 
-    assert.deepEqual(expected.toArray(), matrixA.toArray());
+    assert.deepEqual(expected.getData(), matrixA.getData());
     done();
   });
 
@@ -300,7 +300,7 @@ suite('numbers', function() {
 
     matrixA.scale(sx, sy).undo();
 
-    assert.deepEqual(expected.toArray(), matrixA.toArray());
+    assert.deepEqual(expected.getData(), matrixA.getData());
     done();
   });
 
@@ -313,7 +313,7 @@ suite('numbers', function() {
 
     matrixA.scale(sx, sy).rotate(degree, 'clockwise').undo().undo();
 
-    assert.deepEqual(expected.toArray(), matrixA.toArray());
+    assert.deepEqual(expected.getData(), matrixA.getData());
     done();
   });
 
@@ -323,7 +323,7 @@ suite('numbers', function() {
 
     matrixA.undo();
 
-    assert.deepEqual(expected.toArray(), matrixA.toArray());
+    assert.deepEqual(expected.getData(), matrixA.getData());
     done();
   });
 
