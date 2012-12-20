@@ -68,7 +68,6 @@ suite('numbers', function() {
 
     done();
   });
-
   
   test('should return sum of two matrices', function(done) {
     var matrixA = new Matrix([
@@ -89,6 +88,18 @@ suite('numbers', function() {
     matrixA.add(matrixB);
     
     assert.deepEqual(matrixC, matrixA);
+    done();
+  });
+
+  test('should returned scaled matrix', function(done) {
+    var matrix = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var res = matrix.scaleBy(5).getData();
+
+    assert.deepEqual([[0, 5, 10], [15, 20, 25]], res);
     done();
   });
 
@@ -138,6 +149,23 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return product of matrix and a vector', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+    var matrixB = new Matrix([
+      [0],
+      [1],
+      [2]
+    ]);
+
+    var res = matrixA.multiply(matrixB).getData();
+
+    assert.deepEqual([[5], [14]], res);
+    done();
+  });
+
   test('should return inverse of a 2x2 matrix', function(done) {
     var matrixA = new Matrix([
       [0, 1],
@@ -172,6 +200,43 @@ suite('numbers', function() {
       },
       /Only two by two matrices currently supported/
     );
+    done();
+  });
+
+  test('should return determinant of matrix', function(done) {
+
+    var m0 = new Matrix([[1]]);
+    
+    var res0 = m0.determinant();
+    assert.equal(1, res0);
+    
+    var m1 = new Matrix([
+      [2, 3],
+      [6, 7]
+    ]);
+
+    var res1 = m1.determinant();
+    assert.equal(-4, res1);
+
+    var m2 = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8]
+    ]);
+
+    var res2 = m2.determinant();
+    assert.equal(0, res2);
+
+    var m3 = new Matrix([
+      [3, -7, 8, 9, -6],
+      [0, 2, -5, 7, 3],
+      [0, 0, 1, 5, 0],
+      [0, 0, 0, -2, 0],
+    ]);
+
+    var res3 = m3.determinant();
+    assert.equal(-12,res3);
+    
     done();
   });
 
@@ -324,6 +389,18 @@ suite('numbers', function() {
     matrixA.undo();
 
     assert.deepEqual(expected.getData(), matrixA.getData());
+    done();
+  });
+  
+  test('should return identity matrix of dimension n', function(done) {
+    var identity = [
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1]
+    ];
+    var res = Matrix.identity(3).getData();
+
+    assert.deepEqual(identity, res);
     done();
   });
 
