@@ -58,16 +58,37 @@ Now say we wanted to run some matrix calculations:
 We can add two matrices
 
 ```javascript
-var array1 = [0, 1, 2];
-var array2 = [3, 4, 5];
+var matrixA = new Matrix([0, 1, 2]);
+var matrixB = new Matrix([3, 4, 5]);
 
-numbers.matrix.addition(array1, array2);
+matrixA.add(matrixB);
 ```
 
 We can transpose a matrix
 
 ```javascript
-numbers.matrix.transpose(array);
+matrix.transpose();
+```
+
+We also support a number of matrix transformations for two dimensional vectors
+
+```javascript
+var matrixA = new Matrix([0, 1]);
+var degree = 90;
+
+matrixA.rotate(degree, 'clockwise');
+```
+
+You can even compose and undo transformations
+
+```javascript
+var matrixA = new Matrix([0, 1]);
+var degree = 90;
+var shearfactor = 5;
+
+//will transform matrix A with two transformations
+//and then reset it back to original matrixA
+matrixA.rotate(degree, 'clockwise').shear(shearfactor, 'xaxis').undo().undo();
 ```
 
 Numbers also includes some basic prime number analysis.  We can check if a number is prime:
