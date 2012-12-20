@@ -226,17 +226,25 @@ suite('numbers', function() {
 
     var res2 = m2.determinant();
     assert.equal(0, res2);
+    
+    done();
+  });
 
+  test('should throw an error for calculating the determinant of a non-square matrix', function(done) {    
     var m3 = new Matrix([
       [3, -7, 8, 9, -6],
       [0, 2, -5, 7, 3],
       [0, 0, 1, 5, 0],
-      [0, 0, 0, -2, 0],
+      [0, 0, 0, -2, 0]
     ]);
 
-    var res3 = m3.determinant();
-    assert.equal(-12,res3);
-    
+    assert.throws(
+      function() {
+        m3.determinant();
+      },
+      /Not a square matrix/
+    );
+
     done();
   });
 
