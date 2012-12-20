@@ -122,7 +122,7 @@ suite('numbers', function() {
     ];
 
     var res0 = matrix.determinant(m0);
-    assert.equal(1,m0);
+    assert.equal(1, res0);
     
     var m1 = [
       [2, 3],
