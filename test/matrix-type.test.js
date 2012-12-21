@@ -68,7 +68,53 @@ suite('numbers', function() {
 
     done();
   });
-  
+
+  test('should return true for matrix equality', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var matrixB = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    assert.equal(true, matrixA.equals(matrixB));
+    done();
+  });
+
+  test('should return false for matrix equality', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var matrixB = new Matrix([
+      [0, 1, 2],
+      [3, 4, 0]
+    ]);
+
+    assert.equal(false, matrixA.equals(matrixB));
+    done();
+  });
+
+  test('should return false for matrix equality', function(done) {
+    var matrixA = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5]
+    ]);
+
+    var matrixB = new Matrix([
+      [0, 1, 2],
+      [3, 4, 5],
+      [3, 4, 5]
+    ]);
+
+    assert.equal(false, matrixA.equals(matrixB));
+    done();
+  });
+
   test('should return sum of two matrices', function(done) {
     var matrixA = new Matrix([
       [0, 1, 2],
