@@ -69,6 +69,72 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return a new matrix that has a scaled row', function(done) {
+    var m = new Matrix([
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ]);
+
+    var expected1 = [
+      [0, 0, 0],
+      [3, -1, 5],
+      [1, 2, 5]
+    ];
+    
+    var res1 = m.scaleRowBy(0,0).getData();
+    assert.deepEqual(res1, expected1);
+    
+    var expected2 = [
+      [0, 0, 0],
+      [-6, 2, -10],
+      [1, 2, 5]
+      ];
+
+    var res2 = m.scaleRowBy(1 , -2).getData();
+    assert.deepEqual( res2 , expected2 );
+
+    done();
+  });
+
+  test('should return a new matrix that has rows changed with the swapRows function', function(done) {
+    var m = new Matrix([
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ]);
+
+    var expected1 = [
+      [3, -1, 5],
+      [0, 1, 2],
+      [1, 2, 5]
+      ];
+
+    var res1 = m.swapRows(0,1).getData();
+    assert.deepEqual(res1,expected1);
+
+    done();
+  });
+
+  test('should return a new matrix that has a multiple of one row added to another using the rowAddMultiple function', function(done) {
+    var m = new Matrix([
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ]);
+
+    var expected1 = [
+      [0, 1, 2],
+      [3, 1, 9],
+      [1, 2, 5]
+    ];
+    
+    var res1 = m.rowAddMultiple(0,1,2).getData();
+    assert.deepEqual(res1,expected1);
+    
+    done();
+  });
+
   test('should return true for matrix equality', function(done) {
     var matrixA = new Matrix([
       [0, 1, 2],
