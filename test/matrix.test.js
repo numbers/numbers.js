@@ -22,6 +22,12 @@ suite('numbers', function() {
       done();
   });
 
+  test('should be able to tell if a matrix is square', function(done) {
+      assert.equal(matrix.isSquare([[1,2],[3,4]]), true);
+      assert.equal(matrix.isSquare([[1,2,3],[4,5,6]]), false);
+      done();
+  });
+
   test('should return sum of two matrices', function(done) {
     var arrA = [
       [0, 1, 2],
