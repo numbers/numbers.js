@@ -6,6 +6,22 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Matrix Mathematics\033[0m');
 
+  test('should create a deep copy of a matrix', function(done) {
+      var input = [[1,2],[2,1]];
+
+      var copy = matrix.deepCopy(input);
+
+      assert.notEqual(input, copy);
+
+      assert.throws(
+          function() {
+              matrix.deepCopy([1,2])
+          },
+          /Input cannot be a vector./
+      );
+      done();
+  });
+
   test('should return sum of two matrices', function(done) {
     var arrA = [
       [0, 1, 2],
