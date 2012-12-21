@@ -1,7 +1,7 @@
 var assert = require('assert');
 var numbers = require('../index.js');
 var matrix = numbers.matrix;
-var Matrix = numbers.matrix.Matrix;
+var Matrix = numbers.linear.Matrix;
 
 suite('numbers', function() {
 
@@ -164,16 +164,6 @@ suite('numbers', function() {
     matrixA.transpose();
 
     assert.deepEqual(transposed, matrixA.getData());
-    done();
-  });
-
-  test('should return dot product of two vectors', function(done) {
-    var vectorA = new Matrix([[0, 1, 2, 3]]);
-    var vectorB = new Matrix([[-1, 2, 4, 6]]);
-
-    var res = vectorA.dotproduct(vectorB);
-
-    assert.equal(28, res);
     done();
   });
 
