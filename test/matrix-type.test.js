@@ -2,6 +2,7 @@ var assert = require('assert');
 var numbers = require('../index.js');
 var matrix = numbers.matrix;
 var Matrix = numbers.linear.Matrix;
+var SquareMatrix = numbers.linear.SquareMatrix;
 
 suite('numbers', function() {
 
@@ -511,6 +512,48 @@ suite('numbers', function() {
     var res = Matrix.identity(3).getData();
 
     assert.deepEqual(identity, res);
+    done();
+  });
+
+
+  test('should test the determinant of a square matrix', function(done) {
+    var squareMatrix = new SquareMatrix(
+      [[3, -1, 0.2, 2],
+      [3, 1, 5, 1],
+      [6, 3, -5, 0],
+      [7, 7, 7, 1]]
+    );
+
+    var res = squareMatrix.determinant();
+    assert.equal(-247.2, res);
+    done();
+  });
+
+  test('should remove a row correctly', function(done) {
+    var m = new Matrix([
+      [1, 2, 0],
+      [1, 1, 0],
+      [0, 2, 1]
+    ]);
+
+    m.removeRow(1);
+    assert.equal(2, m.getRowCount());
+    assert.equal(3, m.getColumnCount());
+
+    done();
+  });
+
+  test('should remove a column correctly', function(done) {
+    var m = new Matrix([
+      [1, 2, 0, 2],
+      [1, 1, 0, 2],
+      [0, 2, 1, 15]
+    ]);
+
+    m.removeColumn(3);
+    assert.equal(3, m.getRowCount());
+    assert.equal(3, m.getColumnCount());
+
     done();
   });
 
