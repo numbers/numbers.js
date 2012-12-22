@@ -308,12 +308,12 @@ suite('numbers', function() {
 
   test('should return determinant of matrix', function(done) {
 
-    var m0 = new Matrix([[1]]);
+    var m0 = new SquareMatrix([[1]]);
     
     var res0 = m0.determinant();
     assert.equal(1, res0);
     
-    var m1 = new Matrix([
+    var m1 = new SquareMatrix([
       [2, 3],
       [6, 7]
     ]);
@@ -321,7 +321,7 @@ suite('numbers', function() {
     var res1 = m1.determinant();
     assert.equal(-4, res1);
 
-    var m2 = new Matrix([
+    var m2 = new SquareMatrix([
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8]
@@ -333,19 +333,19 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error for calculating the determinant of a non-square matrix', function(done) {    
-    var m3 = new Matrix([
-      [3, -7, 8, 9, -6],
-      [0, 2, -5, 7, 3],
-      [0, 0, 1, 5, 0],
-      [0, 0, 0, -2, 0]
-    ]);
+  test('should throw an error for trying to create a square matrix with non-square data', function(done) {    
+    
 
     assert.throws(
       function() {
-        m3.determinant();
+        var m3 = new SquareMatrix([
+          [3, -7, 8, 9, -6],
+          [0, 2, -5, 7, 3],
+          [0, 0, 1, 5, 0],
+          [0, 0, 0, -2, 0]
+        ]);
       },
-      /Not a square matrix/
+      /Invalid \(non-square\) data/
     );
 
     done();
