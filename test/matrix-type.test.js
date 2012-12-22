@@ -536,9 +536,13 @@ suite('numbers', function() {
       [0, 2, 1]
     ]);
 
+    var expected = [
+      [1, 2, 0],
+      [0, 2, 1]
+    ];
+
     m.removeRow(1);
-    assert.equal(2, m.getRowCount());
-    assert.equal(3, m.getColumnCount());
+    assert.deepEqual(expected, m.getData());
 
     done();
   });
@@ -550,9 +554,14 @@ suite('numbers', function() {
       [0, 2, 1, 15]
     ]);
 
-    m.removeColumn(3);
-    assert.equal(3, m.getRowCount());
-    assert.equal(3, m.getColumnCount());
+    var expected = [
+      [1, 2, 2],
+      [1, 1, 2],
+      [0, 2, 15]
+    ];
+    
+    m.removeColumn(2);
+    assert.deepEqual(expected, m.getData());
 
     done();
   });
