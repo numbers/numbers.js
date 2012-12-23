@@ -2,6 +2,7 @@ var assert = require('assert');
 var numbers = require('../index.js');
 var matrix = numbers.matrix;
 var Matrix = numbers.linear.Matrix;
+var SquareMatrix = numbers.linear.SquareMatrix;
 
 suite('numbers', function() {
 
@@ -66,6 +67,72 @@ suite('numbers', function() {
     assert.equal(3, m.getElement(0,0));
     assert.equal(0, m.getElement(0,3));
 
+    done();
+  });
+
+  test('should return a new matrix that has a scaled row', function(done) {
+    var m = new Matrix([
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ]);
+
+    var expected1 = [
+      [0, 0, 0],
+      [3, -1, 5],
+      [1, 2, 5]
+    ];
+    
+    var res1 = m.scaleRowBy(0,0).getData();
+    assert.deepEqual(res1, expected1);
+    
+    var expected2 = [
+      [0, 0, 0],
+      [-6, 2, -10],
+      [1, 2, 5]
+      ];
+
+    var res2 = m.scaleRowBy(1 , -2).getData();
+    assert.deepEqual( res2 , expected2 );
+
+    done();
+  });
+
+  test('should return a new matrix that has rows changed with the swapRows function', function(done) {
+    var m = new Matrix([
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ]);
+
+    var expected1 = [
+      [3, -1, 5],
+      [0, 1, 2],
+      [1, 2, 5]
+      ];
+
+    var res1 = m.swapRows(0,1).getData();
+    assert.deepEqual(res1,expected1);
+
+    done();
+  });
+
+  test('should return a new matrix that has a multiple of one row added to another using the rowAddMultiple function', function(done) {
+    var m = new Matrix([
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ]);
+
+    var expected1 = [
+      [0, 1, 2],
+      [3, 1, 9],
+      [1, 2, 5]
+    ];
+    
+    var res1 = m.rowAddMultiple(0,1,2).getData();
+    assert.deepEqual(res1,expected1);
+    
     done();
   });
 
@@ -241,12 +308,12 @@ suite('numbers', function() {
 
   test('should return determinant of matrix', function(done) {
 
-    var m0 = new Matrix([[1]]);
+    var m0 = new SquareMatrix([[1]]);
     
     var res0 = m0.determinant();
     assert.equal(1, res0);
     
-    var m1 = new Matrix([
+    var m1 = new SquareMatrix([
       [2, 3],
       [6, 7]
     ]);
@@ -254,7 +321,7 @@ suite('numbers', function() {
     var res1 = m1.determinant();
     assert.equal(-4, res1);
 
-    var m2 = new Matrix([
+    var m2 = new SquareMatrix([
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8]
@@ -266,19 +333,19 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error for calculating the determinant of a non-square matrix', function(done) {    
-    var m3 = new Matrix([
-      [3, -7, 8, 9, -6],
-      [0, 2, -5, 7, 3],
-      [0, 0, 1, 5, 0],
-      [0, 0, 0, -2, 0]
-    ]);
+  test('should throw an error for trying to create a square matrix with non-square data', function(done) {    
+    
 
     assert.throws(
       function() {
-        m3.determinant();
+        var m3 = new SquareMatrix([
+          [3, -7, 8, 9, -6],
+          [0, 2, -5, 7, 3],
+          [0, 0, 1, 5, 0],
+          [0, 0, 0, -2, 0]
+        ]);
       },
-      /Not a square matrix/
+      /Invalid \(non-square\) data/
     );
 
     done();
@@ -445,6 +512,57 @@ suite('numbers', function() {
     var res = Matrix.identity(3).getData();
 
     assert.deepEqual(identity, res);
+    done();
+  });
+
+
+  test('should test the determinant of a square matrix', function(done) {
+    var squareMatrix = new SquareMatrix(
+      [[3, -1, 0.2, 2],
+      [3, 1, 5, 1],
+      [6, 3, -5, 0],
+      [7, 7, 7, 1]]
+    );
+
+    var res = squareMatrix.determinant();
+    assert.equal(-247.2, res);
+    done();
+  });
+
+  test('should remove a row correctly', function(done) {
+    var m = new Matrix([
+      [1, 2, 0],
+      [1, 1, 0],
+      [0, 2, 1]
+    ]);
+
+    var expected = [
+      [1, 2, 0],
+      [0, 2, 1]
+    ];
+
+    m.removeRow(1);
+    assert.deepEqual(expected, m.getData());
+
+    done();
+  });
+
+  test('should remove a column correctly', function(done) {
+    var m = new Matrix([
+      [1, 2, 0, 2],
+      [1, 1, 0, 2],
+      [0, 2, 1, 15]
+    ]);
+
+    var expected = [
+      [1, 2, 2],
+      [1, 1, 2],
+      [0, 2, 15]
+    ];
+    
+    m.removeColumn(2);
+    assert.deepEqual(expected, m.getData());
+
     done();
   });
 
