@@ -566,5 +566,23 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return if a matrix is n x n', function(done) {
+    var res1 = new Matrix([
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 1, 1]
+    ]);
+
+    var res2 = new Matrix([
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 1, 1],
+      [0, 1, 1]
+    ]);
+
+    assert.deepEqual(true, res1.isSquare());
+    assert.deepEqual(false, res2.isSquare());
+    done();
+  });
 
 });
