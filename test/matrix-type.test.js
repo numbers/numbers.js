@@ -585,4 +585,30 @@ suite('numbers', function() {
     done();
   });
 
+test('should cofactors of the matrix', function(done) {
+    var res1 = new SquareMatrix([
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1]
+    ]);
+
+    var res2 = new SquareMatrix([
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9]
+    ]);
+
+    var res3 = new SquareMatrix([
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ]);
+
+    assert.deepEqual([[1, 0],[0, 1]], res1.cofactor(0,0).getData());
+    assert.deepEqual([[-2, -3],[-8,-9]], res2.cofactor(1,0).getData());
+    assert.deepEqual([[1, 0],[0, 1]], res3.cofactor(0,0).cofactor(0,0).getData());
+    done();
+  });
+
 });
