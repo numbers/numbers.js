@@ -145,4 +145,53 @@ suite('numbers', function() {
     assert.equal(66.05555555555556, res);
     done();
   });
+
+  // statistic.randomBoxMullerTransform
+  test('should return an array of polar coordinates that are random within a normal distribution', function(done) {
+
+  });
+
+  // statistic.distribution.normal
+  test('should return a normal distribution of length n', function(done) {
+    var test = statistic.distribution.normal(100);
+    assert.equal(true, 
+                (statistic.mean(test) < numbers.EPSILON) || 
+                statistic.mean(test) > numbers.EPSILON);
+    assert.equal(true, 
+                (statistic.standardDev(test) < numbers.EPSILON) || 
+                statistic.standardDev(test) > numbers.EPSILON);
+
+    var test = statistic.distribution.normal(100, 20);
+    assert.equal(true, 
+                (statistic.mean(test) - 20 < numbers.EPSILON) || 
+                statistic.mean(test) - 20 > numbers.EPSILON);
+    assert.equal(true, 
+                (statistic.standardDev(test) < numbers.EPSILON) || 
+                statistic.standardDev(test) > numbers.EPSILON);
+
+    for (var i = 0; i < 5; i++) {
+      for (var j = 0; j < 1; i+=.1) {
+        var n = Math.random()*100+10;
+        var test = statistic.distribution.normal(n, i, j);
+        assert.equal(n, test.length);
+        assert.equal(true, 
+                    (statistic.mean(test) - i < numbers.EPSILON) || 
+                    statistic.mean(test) - i > numbers.EPSILON);
+        assert.equal(true, 
+                    (statistic.standardDev(test) - j < numbers.EPSILON) || 
+                    statistic.standardDev(test) - j > numbers.EPSILON);
+      }
+    }
+    done();
+  });
+
+  // statistic.distribution.logNormal
+  // test('should return a log normal distribution of length n', function(done) {
+
+  // });
+
+  // statistic.distribution.irwinHall
+
+  // statistic.distribution.boxMuller
+
 });
