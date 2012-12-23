@@ -566,5 +566,49 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return if a matrix is n x n', function(done) {
+    var res1 = new Matrix([
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 1, 1]
+    ]);
+
+    var res2 = new Matrix([
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 1, 1],
+      [0, 1, 1]
+    ]);
+
+    assert.deepEqual(true, res1.isSquare());
+    assert.deepEqual(false, res2.isSquare());
+    done();
+  });
+
+test('should cofactors of the matrix', function(done) {
+    var res1 = new SquareMatrix([
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1]
+    ]);
+
+    var res2 = new SquareMatrix([
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9]
+    ]);
+
+    var res3 = new SquareMatrix([
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ]);
+
+    assert.deepEqual([[1, 0],[0, 1]], res1.cofactor(0,0).getData());
+    assert.deepEqual([[-2, -3],[-8,-9]], res2.cofactor(1,0).getData());
+    assert.deepEqual([[1, 0],[0, 1]], res3.cofactor(0,0).cofactor(0,0).getData());
+    done();
+  });
 
 });
