@@ -110,7 +110,25 @@ make build
 
 This will compile the entire library into a single file accessible at public/numbers.js. It will also minify the file into public/numbers.min.js.
 
-## Contributors
+## Core Team
 * Steve Kaliski - [@sjkaliski](http://twitter.com/sjkaliski)
 * David Byrd - [@davidbyrd11](http://twitter.com/davidbyrd11)
 * Ethan Resnick - [@studip101](http://twitter.com/studip101)
+
+## Contributors
+In no particular order:
+* [Ethan aka `altercation`](https://github.com/altercation)
+* [Hrishikesh Paranjape aka `hrishikeshparanjape`](https://github.com/hrishikeshparanjape)
+* [Greg Leppert aka `leppert`](https://github.com/leppert)
+* [Lars-Magnus Skog aka `ralphtheninja`](https://github.com/ralphtheninja)
+* [Tim Wood aka `codearachnid`](https://github.com/codearachnid)
+* [Miles McCrocklin aka `milroc`](https://github.com/milroc)
+* [Nate Kohari aka `nkohari`](https://github.com/nkohari)
+* [Eric LaForce aka `elaforc`](https://github.com/elaforc)
+* [Kartik Talwar aka `KartikTalwar`](https://github.com/KartikTalwar)
+* [btmills aka `btmills`](https://github.com/btmills)
+* [swair shah aka `swairshah`](https://github.com/swairshah)
+* [Jason Hutchinson aka `Zikes`](https://github.com/Zikes)
+* [Philip I. Thomas aka `philipithomas`](https://github.com/philipithomas)
+* [Brandon Benvie aka `Benvie`](https://github.com/Benvie)
+* [Larry Battle aka `LarryBattle`](https://github.com/LarryBattle)

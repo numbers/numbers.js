@@ -22,7 +22,7 @@ suite('numbers', function() {
       return 2 * Math.pow(x, 2);
     };
 
-    var res = calculus.riemann(func, 0, 100, 10);
+    var res = calculus.Riemann(func, 0, 100, 10);
 
     assert.equal(570000, res);
     done();

@@ -3,5 +3,5 @@ test:
 .PHONY: test
 
 build:
-	browserify ./lib/numbers.js -o ./public/numbers.js
-	uglifyjs -o ./public/numbers.min.js ./public/numbers.js
+	browserify ./lib/numbers.js -o ./src/numbers.js
+	uglifyjs -o ./src/numbers.min.js ./src/numbers.js

@@ -394,19 +394,20 @@ process.binding = function (name) {
 require.define("/numbers/basic.js",function(require,module,exports,__dirname,__filename,process,global){var basic = exports;
 
 /**
- * Determine the summation of numbers in a given array
+ * Determine the summation of numbers in a given array.
  *
- * @param {Array} collection of numbers
- * @return {Number} sum of numbers in array
+ * @param {Array} collection of numbers.
+ * @return {Number} sum of numbers in array.
  */
-basic.addition = function (arr) {
+basic.sum = function (arr) {
   if (Object.prototype.toString.call(arr) === '[object Array]') {
     var total = 0;
     for (var i = 0 ; i < arr.length ; i++) {
-      if (typeof(arr[i]) === 'number')
+      if (typeof(arr[i]) === 'number') {
         total = total + arr[i];
-      else
+      } else {
         throw new Error('All elements in array must be numbers');
+      }
     }
     return total;
   } else {
@@ -419,17 +420,18 @@ basic.addition = function (arr) {
  *
  * e.g [5,3,1,-1] -> 5 - 3 - 1 - (-1) = 2
  *
- * @param {Array} collection of numbers
- * @return {Number} difference
+ * @param {Array} collection of numbers.
+ * @return {Number} difference.
  */
 basic.subtraction = function (arr) {
   if (Object.prototype.toString.call(arr) === '[object Array]') {
     var total = arr[arr.length - 1];
     for (var i = arr.length - 2; i >= 0; i--) {
-      if (typeof(arr[i]) === 'number')
+      if (typeof(arr[i]) === 'number') {
         total -= arr[i];
-      else
+      } else {
         throw new Error('All elements in array must be numbers');
+      }
     }
     return total;
   } else {
@@ -438,24 +440,35 @@ basic.subtraction = function (arr) {
 };
 
 /**
- * Product of all elements in an array
+ * Product of all elements in an array.
  *
- * @param {Array} collection of numbers
- * @return {Number} product
+ * @param {Array} collection of numbers.
+ * @return {Number} product.
  */
 basic.product = function (arr) {
   if (Object.prototype.toString.call(arr) === '[object Array]') {
     var total = arr[0];
-    for (var i = 1; i < arr.length; i++) {
-      if (typeof(arr[i]) === 'number')
+    for (var i = 1, length = arr.length; i < length; i++) {
+      if (typeof(arr[i]) === 'number') {
         total = total * arr[i];
-      else
+      } else {
         throw new Error('All elements in array must be numbers');
+      }
     }
     return total;
   } else {
     throw new Error('Input must be of type Array');
   }
+};
+
+/**
+ * Return the square of any value.
+ *
+ * @param {Number} number
+ * @return {Number} square of number
+ */
+basic.square = function (num) {
+  return num * num;
 };
 
 /**
@@ -465,19 +478,15 @@ basic.product = function (arr) {
  * @param {Number} number chosen
  * @return {Number} number of possible choices
  */
-basic.binomial = function(n, k) {
+basic.binomial = function (n, k) {
 
   var arr = [];
 
-  function _binomial(n, k) {
-    if(n >= 0 && k === 0) return 1;
-
-    if(n === 0 && k > 0) return 0;
-
-    if(arr[n] && arr[n][k] > 0) return arr[n][k];
-
-    if(!arr[n])
-      arr[n] = [];
+  function _binomial (n, k) {
+    if (n >= 0 && k === 0) return 1;
+    if (n === 0 && k > 0) return 0;
+    if (arr[n] && arr[n][k] > 0) return arr[n][k];
+    if (!arr[n]) arr[n] = [];
 
     return arr[n][k] = _binomial(n - 1, k - 1) + _binomial(n - 1, k);
   }
@@ -486,92 +495,85 @@ basic.binomial = function(n, k) {
 };
 
 /**
- * Factorial for some integer
+ * Factorial for some integer.
  *
- * @param {Number} integer
- * @return {Number} result
+ * @param {Number} integer.
+ * @return {Number} result.
  */
-basic.factorial = function (num) {
-
-  var arr = [];
-
-  function _factorial(n) {
-    if (n === 0 || n === 1) return 1;
-
-    if (arr[n] > 0) return arr[n];
-
-    else return arr[n] = _factorial(n - 1) * n;
+basic.factorial = function (num){
+  var i = 2, o = 1;
+  
+  while (i <= num) {
+    o *= i++;
   }
 
-  return _factorial(num);
+  return o;
 };
 
 /**
  * Calculate the greastest common divisor amongst two integers.
- *
- * @param {Number} number A
- * @param {Number} number B
- * @return {Number} greatest common divisor for integers A, B
+ * Taken from Ratio.js https://github.com/LarryBattle/Ratio.js
+ * 
+ * @param {Number} number A.
+ * @param {Number} number B.
+ * @return {Number} greatest common divisor for integers A, B.
  */
-basic.gcd = function (num1, num2) {
-  var result;
-  if (num1 > num2) {
-    for (var i = 0 ; i <= num2 ; i++) {
-      if (num2 % i === 0) {
-        if (num1 % i === 0) {
-          result = i;
-        }
-      }
-    }
-    return result;
-  } else if (num2 > num1) {
-    for (var j = 0 ; j <= num2 ; j++) {
-      if (num1 % j === 0) {
-        if (num2 % j === 0) {
-          result = j;
-        }
-      }
-    }
-    return result;
-  } else {
-    result = num1 * num2 / num1;
-    return result;
+basic.gcd = function (a, b) {
+  var c;
+  b = (+b && +a) ? +b : 0;
+  a = b ? a : 1;
+
+  while (b) {
+    c = a % b;
+    a = b;
+    b = c;
   }
+
+  return Math.abs(a);
 };
 
 /**
  * Calculate the least common multiple amongst two integers.
  *
- * @param {Number} number A
- * @param {Number} number B
- * @return {Number} least common multiple for integers A, B
+ * @param {Number} number A.
+ * @param {Number} number B.
+ * @return {Number} least common multiple for integers A, B.
  */
 basic.lcm = function (num1, num2) {
-  return Math.abs(num1 * num2) / basic.gcd(num1,num2);
+  return Math.abs(num1 * num2) / basic.gcd(num1, num2);
 };
 
 /**
  * Retrieve a specified quantity of elements from an array, at random.
  *
- * @param {Array} set of values to select from
- * @param {Number} quantity of elements to retrieve
- * @return {Array} random elements
+ * @param {Array} set of values to select from.
+ * @param {Number} quantity of elements to retrieve.
+ * @param {Boolean} allow the same number to be returned twice.
+ * @return {Array} random elements.
  */
-basic.random = function (arr, quant) {
-  if (arr.length <= quant){
-    throw new Error('Quantity requested exceeds size of array');
-  } else if (arr.length === 0){
+basic.random = function (arr, quant, allowDuplicates) {
+  if (arr.length === 0){
     throw new Error('Empty array');
+  } else if (quant > arr.length  && !allowDuplicates){
+    throw new Error('Quantity requested exceeds size of array');
+  }
+  
+  if (allowDuplicates === true) {
+    var result = [], i;
+    for (i = 0; i < quant; i++) {
+      result[i] = arr[Math.floor(Math.random() * arr.length)];
+    }
+    return result;    
   } else {
     return basic.shuffle(arr).slice(0, quant);
   }
 };
 
 /**
- * Shuffle an array, in place
+ * Shuffle an array, in place.
  *
- * @param {Array} array to be shuffled
- * @return {Array} shuffled array
+ * @param {Array} array to be shuffled.
+ * @return {Array} shuffled array.
  */
 basic.shuffle = function (array) {
   var m = array.length, t, i;
@@ -587,36 +589,34 @@ basic.shuffle = function (array) {
   return array;
 };
 
-
 /**
- * Find maximum value in an array
+ * Find maximum value in an array.
  *
- * @param {Array} array to be traversed
- * @return {Number} maximum value in the array
+ * @param {Array} array to be traversed.
+ * @return {Number} maximum value in the array.
  */
 basic.max = function (array) {
-    return Math.max.apply(Math, array);
+  return Math.max.apply(Math, array);
 };
 
-
 /**
- * Find minimum value in an array
+ * Find minimum value in an array.
  *
- * @param {Array} array to be traversed
- * @return {Number} minimum value in the array
+ * @param {Array} array to be traversed.
+ * @return {Number} minimum value in the array.
  */
 basic.min = function (array) {
-    return Math.min.apply(Math, array);
+  return Math.min.apply(Math, array);
 };
 
 /**
- * Create a range of numbers
+ * Create a range of numbers.
  *
- * @param {Number} The start of the range
- * @param {Number} The end of the range
- * @return {Array} An array containing numbers within the range
+ * @param {Number} The start of the range.
+ * @param {Number} The end of the range.
+ * @return {Array} An array containing numbers within the range.
  */
-basic.range = function (start,stop,step) {
+basic.range = function (start, stop, step) {
   var array, i = 0, len;
 
   if (arguments.length <= 1) {
@@ -627,7 +627,7 @@ basic.range = function (start,stop,step) {
   step = step || 1;
 
   if (stop < start) {
-    step = 0-Math.abs(step);
+    step = 0 - Math.abs(step);
   }
 
   len = Math.max(Math.ceil((stop - start) / step) + 1, 0);
@@ -640,44 +640,145 @@ basic.range = function (start,stop,step) {
   }
 
   return array;
-}
+};
+
+/**
+  * Determine if the number is an integer.
+  *
+  * @param {Number} the number
+  * @return {Boolean} true for int, false for not int.
+  */
+basic.isInt = function (n) {
+  return n % 1 === 0;
+};
+
+/**
+  * Calculate the divisor and modulus of two integers.
+  *
+  * @param {Number} int a.
+  * @param {Number} int b.
+  * @return {Array} [div, mod].
+  */
+basic.divMod = function (a, b) {
+  if (!basic.isInt(a) || !basic.isInt(b)) return false;
+  return [Math.floor(a / b), a % b];
+};
+
+/**
+  * Calculate:
+  * if b >= 1: a^b mod m.
+  * if b = -1: modInverse(a, m).
+  * if b < 1: finds a modular rth root of a such that b = 1/r.
+  *
+  * @param {Number} Number a.
+  * @param {Number} Number b.
+  * @param {Number} Modulo m.
+  * @return {Number} see the above documentation for return values.
+  */
+basic.powerMod = function (a, b, m) {
+  // If b < -1 should be a small number, this method should work for now.
+  if (b < -1) return Math.pow(a, b) % m; 
+  if (b === 0) return 1 % m;
+  if (b >= 1) {
+    var result = 1;
+    while (b > 0) {
+      if ((b % 2) === 1) {
+        result = (result * a) % m;
+      }
+      
+      a = (a * a) % m;
+      b = b >> 1;
+    }
+    return result;
+  }
+
+  if (b === -1) return basic.modInverse(a, m);
+  if (b < 1) {
+    return basic.powerMod(a, Math.pow(b, -1), m); 
+  }
+};
+
+/**
+ * Calculate the extended Euclid Algorithm or extended GCD.
+ *
+ * @param {Number} int a.
+ * @param {Number} int b.
+ * @return {Array} [a, x, y] a is the GCD. x and y are the values such that ax + by = gcd(a, b) .
+ */
+basic.egcd = function (a, b) {
+  var x = (+b && +a) ? 1 : 0,
+      y = b ? 0 : 1,
+      u = (+b && +a) ? 0 : 1,
+      v = b ? 1 : 0;
+
+  b = (+b && +a) ? +b : 0;
+  a = b ? a : 1;
+
+  while (b) {
+    var dm = basic.divMod(a, b),
+        q = dm[0], 
+        r = dm[1];
+
+    var m = x - u * q, 
+        n = y - v * q;
+
+    a = b;
+    b = r;
+    x = u;
+    y = v;
+    u = m;
+    v = n;
+  }
+
+  return [a, x, y];
+};
+
+/**
+  * Calculate the modular inverse of a number.
+  * @param {Number} Number a.
+  * @param {Number} Modulo m.
+  * @return {Number} if true, return number, else throw error.
+  */
+basic.modInverse = function (a, m) {
+  var r = basic.egcd(a, m);
+  if (r[0] != 1) throw new Error('No modular inverse exists');
+  return r[1] % m;
+};
 
 });
 
 require.define("/numbers/calculus.js",function(require,module,exports,__dirname,__filename,process,global){var numbers = require('../numbers');
 var calculus = exports;
 
-
 /**
  * Calculate point differential for a specified function at a
  * specified point.  For functions of one variable.
  *
- * @param {Function} math function to be evaluated
- * @param {Number} point to be evaluated
- * @return {Number} result
+ * @param {Function} math function to be evaluated.
+ * @param {Number} point to be evaluated.
+ * @return {Number} result.
  */
 calculus.pointDiff = function (func, point) {
-  var a = func(point - .001);
-  var b = func(point + .001);
+  var a = func(point - 0.001);
+  var b = func(point + 0.001);
 
-  return (b - a) / (.002);
+  return (b - a) / (0.002);
 };
-
 
 /**
  * Calculate riemann sum for a specified, one variable, function
  * from a starting point, to a finishing point, with n divisions.
  *
- * @param {Function} math function to be evaluated
- * @param {Number} point to initiate evaluation
- * @param {Number} point to complete evaluation
- * @param {Number} quantity of divisions
+ * @param {Function} math function to be evaluated.
+ * @param {Number} point to initiate evaluation.
+ * @param {Number} point to complete evaluation.
+ * @param {Number} quantity of divisions.
  * @param {Function} (Optional) Function that returns which value 
- * to sample on each interval; if none is provided, left endpoints
- * will be used.
- * @return {Number} result
+ *   to sample on each interval; if none is provided, left endpoints
+ *   will be used.
+ * @return {Number} result.
  */
-calculus.riemann = function (func, start, finish, n, sampler) {
+calculus.Riemann = function (func, start, finish, n, sampler) {
   var inc = (finish - start) / n;
   var totalHeight = 0;
   var i;
@@ -695,73 +796,69 @@ calculus.riemann = function (func, start, finish, n, sampler) {
   return totalHeight * inc;
 };
 
-
 /**
  * Helper function in calculating integral of a function
  * from a to b using simpson quadrature.
  *
- * @param {Function} math function to be evaluated
- * @param {Number} point to initiate evaluation
- * @param {Number} point to complete evaluation
- * @return {Number} evaluation
+ * @param {Function} math function to be evaluated.
+ * @param {Number} point to initiate evaluation.
+ * @param {Number} point to complete evaluation.
+ * @return {Number} evaluation.
  */
-function simpsonDef (func, a, b) {
+function SimpsonDef (func, a, b) {
   var c = (a + b) / 2;
   var d = Math.abs(b - a) / 6;
   return d * (func(a) + 4 * func(c) + func(b));
 }
-
 
 /**
  * Helper function in calculating integral of a function
  * from a to b using simpson quadrature.  Manages recursive
  * investigation, handling evaluations within an error bound.
  *
- * @param {Function} math function to be evaluated
- * @param {Number} point to initiate evaluation
- * @param {Number} point to complete evaluation
- * @param {Number} total value
- * @param {Number} Error bound (epsilon)
- * @return {Number} recursive evaluation of left and right side
+ * @param {Function} math function to be evaluated.
+ * @param {Number} point to initiate evaluation.
+ * @param {Number} point to complete evaluation.
+ * @param {Number} total value.
+ * @param {Number} Error bound (epsilon).
+ * @return {Number} recursive evaluation of left and right side.
  */
-function simpsonRecursive (func, a, b, whole, eps) {
-  var c = a + b,
-      left = simpsonDef(func, a, c),
-      right = simpsonDef(func, c, b);
+function SimpsonRecursive (func, a, b, whole, eps) {
+  var c = a + b;
+  var left = SimpsonDef(func, a, c);
+  var right = SimpsonDef(func, c, b);
   
   if (Math.abs(left + right - whole) <= 15 * eps) {
     return left + right + (left + right - whole) / 15;
   } else {
-    return simpsonRecursive(func, a, c, eps/2, left) + simpsonRecursive(func, c, b, eps / 2, right);
+    return SimpsonRecursive(func, a, c, eps / 2, left) + SimpsonRecursive(func, c, b, eps / 2, right);
   }
 }
-
 
 /**
  * Evaluate area under a curve using adaptive simpson quadrature.
  *
- * @param {Function} math function to be evaluated
- * @param {Number} point to initiate evaluation
- * @param {Number} point to complete evaluation
+ * @param {Function} math function to be evaluated.
+ * @param {Number} point to initiate evaluation.
+ * @param {Number} point to complete evaluation.
  * @param {Number} Optional error bound (epsilon); 
- * global error bound will be used as a fallback.
- * @return {Number} area underneath curve
+ *   global error bound will be used as a fallback.
+ * @return {Number} area underneath curve.
  */
 calculus.adaptiveSimpson = function (func, a, b, eps) {
-  eps = (typeof eps === "undefined") ? numbers.EPSILON : eps;
+  eps = (typeof eps === 'undefined') ? numbers.EPSILON : eps;
 
-  return simpsonRecursive(func, a, b, simpsonDef(func, a, b), eps);
+  return SimpsonRecursive(func, a, b, SimpsonDef(func, a, b), eps);
 };
 
-
 /**
- * Calculate limit of a function at a given point.  Can approach from
+ * Calculate limit of a function at a given point. Can approach from
  * left, middle, or right.
  *
- * @param {Function} math function to be evaluated
- * @param {Number} point to evaluate
- * @param {String} approach to limit
- * @return {Number} limit
+ * @param {Function} math function to be evaluated.
+ * @param {Number} point to evaluate.
+ * @param {String} approach to limit.
+ * @return {Number} limit.
  */
 calculus.limit = function (func, point, approach) {
   if (approach === 'left') {
@@ -775,16 +872,52 @@ calculus.limit = function (func, point, approach) {
   }
 };
 
+/**
+ * Calculate Stirling approximation gamma.
+ *
+ * @param {Number} number to calculate.
+ * @return {Number} gamma.
+ */
+calculus.StirlingGamma = function (num) {
+  return Math.sqrt(2 * Math.PI / num) * Math.pow((num / Math.E), num);
+};
+
+/**
+ * Calculate Lanczos approximation gamma.
+ *
+ * @param {Number} number to calculate.
+ * @return {Number} gamma.
+ */
+calculus.LanczosGamma = function (num) {
+  var p = [
+    0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+    771.32342877765313, -176.61502916214059, 12.507343278686905,
+    -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7
+  ];
+
+  var i;
+  var g = 7;
+
+  if(num < 0.5) return Math.PI / (Math.sin(Math.PI * num) * calculus.LanczosGamma(1 - num));
+
+  num -= 1;
+  
+  var a = p[0];
+  var t = num + g + 0.5;
+
+  for (i = 1; i < p.length; i++) {
+    a += p[i] / (num + i);
+  }
+
+  return Math.sqrt(2 * Math.PI) * Math.pow(t, num + 0.5) * Math.exp(-t) * a;
+};
+
 });
 
 require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
  * numbers.js
  *
  * top level management of numbers extensions
- *
- * (C) 2012 Steve Kaliski
- * MIT License
- *
  */
 var numbers = exports;
 
@@ -817,8 +950,8 @@ require.define("/numbers/matrix.js",function(require,module,exports,__dirname,__
 /**
  * Add two matrices together.  Matrices must be of same dimension.
  *
- * @param {Array} matrix A
- * @param {Array} matrix B
+ * @param {Array} matrix A.
+ * @param {Array} matrix B.
  * @return {Array} summed matrix.
  */
 matrix.addition = function (arrA, arrB) {
@@ -839,13 +972,12 @@ matrix.addition = function (arrA, arrB) {
   }
 };
 
-
 /**
  * Scalar multiplication on an matrix.
  *
- * @param {Array} matrix
- * @param {Number} scalar
- * @return {Array} updated matrix
+ * @param {Array} matrix.
+ * @param {Number} scalar.
+ * @return {Array} updated matrix.
  */
 matrix.scalar = function (arr, val) {
   for (var i = 0; i < arr.length; i++) {
@@ -853,14 +985,14 @@ matrix.scalar = function (arr, val) {
       arr[i][j] = val * arr[i][j];
     }
   }
+
   return arr;
 };
 
-
 /**
- * Transpose a matrix
+ * Transpose a matrix.
  *
- * @param {Array} matrix
+ * @param {Array} matrix.
  * @return {Array} transposed matrix.
  */
 matrix.transpose = function (arr) {
@@ -869,28 +1001,29 @@ matrix.transpose = function (arr) {
   for (var i = 0; i < arr[0].length; i++) {
     result[i] = new Array(arr.length);
     
-    for (var j = 0; j < arr.length; j++){
+    for (var j = 0; j < arr.length; j++) {
       result[i][j] = arr[j][i];
     }
   }
+
   return result;
 };
-
 
 /**
  * Create an identity matrix of dimension n x n.
  *
- * @param {Number} dimension of the identity array to be returned
+ * @param {Number} dimension of the identity array to be returned.
  * @return {Array} n x n identity matrix.
  */
 matrix.identity = function (n) {
   var result = new Array(n);
-  for (var i = 0 ; i < n ; i++) {
+  for (var i = 0; i < n ; i++) {
     result[i] = new Array(n);
-    for (var j = 0 ; j < n ; j++) {
+    for (var j = 0; j < n; j++) {
       result[i][j] = (i === j) ? 1 : 0;
     }
   }
+
   return result;
 };
 
@@ -898,14 +1031,14 @@ matrix.identity = function (n) {
 /**
  * Evaluate dot product of two vectors.  Vectors must be of same length.
  *
- * @param {Array} vector
- * @param {Array} vector
- * @return {Array} dot product
+ * @param {Array} vector.
+ * @param {Array} vector.
+ * @return {Array} dot product.
  */
 matrix.dotproduct = function (vectorA, vectorB) {
   if (vectorA.length === vectorB.length) {
     var result = 0;
-    for (var i = 0 ; i < vectorA.length ; i++) {
+    for (var i = 0; i < vectorA.length; i++) {
       result += vectorA[i] * vectorB[i];
     }
     return result;
@@ -914,29 +1047,28 @@ matrix.dotproduct = function (vectorA, vectorB) {
   }
 };
 
-
 /**
  * Multiply two matrices. They must abide by standard matching.
  *
  * e.g. A x B = (m x n) x (n x m), where n, m are integers who define
  * the dimensions of matrices A, B.
  *
- * @param {Array} matrix
- * @param {Array} matrix
- * @return {Array} result of multiplied matrices
+ * @param {Array} matrix.
+ * @param {Array} matrix.
+ * @return {Array} result of multiplied matrices.
  */
 matrix.multiply = function (arrA, arrB) {
   if (arrA[0].length === arrB.length) {
     var result = new Array(arrA.length);
     
-    for (var x = 0 ; x < arrA.length ; x++) {
+    for (var x = 0; x < arrA.length; x++) {
       result[x] = new Array(arrB[0].length);
     }
 
     var arrB_T = matrix.transpose(arrB);
     
-    for (var i = 0 ; i < result.length ; i++) {
-      for (var j = 0 ; j < result[i].length ; j++) {
+    for (var i = 0; i < result.length; i++) {
+      for (var j = 0; j < result[i].length; j++) {
         result[i][j] = matrix.dotproduct(arrA[i],arrB_T[j]);
       }
     }
@@ -946,52 +1078,229 @@ matrix.multiply = function (arrA, arrB) {
   }
 };
 
-
 /**
- * Evaluate determinate of matrix.  Matrix must be of dimension
- * 2 or 3.
+ * Evaluate determinate of matrix.  Expect speed
+ * degradation for matrices over 4x4. 
  *
- * @param {Array} matrix
- * @return {Number} determinant
+ * @param {Array} matrix.
+ * @return {Number} determinant.
  */
 matrix.determinant = function (m) {
-  if ((m.length === 2) && (m[0].length === 2)) {
-    return m[0][0] * m[1][1] - m[0][1] * m[1][0];
-  } else if ((m.length === 3) && (m[0].length === 3)) {
-    return  m[0][0] * m[1][1] * m[2][2] +
-            m[0][1] * m[1][2] * m[2][0] +
-            m[0][2] * m[1][0] * m[2][1] -
-            m[0][2] * m[1][1] * m[2][0] -
-            m[0][1] * m[1][0] * m[2][2] -
-            m[0][0] * m[1][2] * m[2][1];
-  } else {
-    throw new Error('Matrix must be dimension 2 x 2 or 3 x 3');
-  }
-};
+  var numRow = m.length;
+  var numCol = m[0].length;
+  var det = 0;
+  var row, col;
+  var diagLeft, diagRight;
 
+  if (numRow !== numCol) {
+    throw new Error("Not a square matrix.")
+  }
+
+  if (numRow === 1) {
+    return m[0][0];
+  } 
+  else if (numRow === 2) {
+    return m[0][0] * m[1][1] - m[0][1] * m[1][0];
+  }
+
+  for (col = 0; col < numCol; col++) {
+    diagLeft = m[0][col];
+    diagRight = m[0][col];
+
+    for( row=1; row < numRow; row++ ) {
+      diagRight *= m[row][(((col + row) % numCol) + numCol) % numCol];
+      diagLeft *= m[row][(((col - row) % numCol) + numCol) % numCol];
+    }
+
+    det += diagRight - diagLeft;
+  }
+
+  return det;
+};
 
 /**
  * Rotate a two dimensional vector by degree.
  *
- * @param {Array} point 
- * @param {Number} degree
- * @param {String} direction - clockwise or counterclockwise
- * @return {Array} vector
+ * @param {Array} point.
+ * @param {Number} degree.
+ * @param {String} direction - clockwise or counterclockwise.
+ * @return {Array} vector.
  */
 matrix.rotate = function (point, degree, direction) {
   if (point.length === 2) {
-    var negate = direction === "clockwise" ? -1 : 1;
+    var negate = direction === 'clockwise' ? -1 : 1;
     var radians = degree * (Math.PI / 180);
 
     var transformation = [
-      [Math.cos(radians), -1*negate*Math.sin(radians)],
-      [negate*Math.sin(radians), Math.cos(radians)]
+      [Math.cos(radians), -1 * negate * Math.sin(radians)],
+      [negate * Math.sin(radians), Math.cos(radians)]
     ];
 
     return matrix.multiply(transformation, point);
   } else {
-    throw new Error("Only two dimensional operations are supported at this time");
+    throw new Error('Only two dimensional operations are supported at this time');
   }
+};
+
+/**
+ * Scale a two dimensional vector by scale factor x and scale factor y.
+ *
+ * @param {Array} point.
+ * @param {Number} sx.
+ * @param {Number} sy.
+ * @return {Array} vector.
+ */
+matrix.scale = function (point, sx, sy) {
+  if (point.length === 2) {
+
+    var transformation = [
+      [sx, 0],
+      [0, sy]
+    ];
+
+    return matrix.multiply(transformation, point);
+  } else {
+    throw new Error('Only two dimensional operations are supported at this time');
+  }
+};
+
+/**
+ * Shear a two dimensional vector by shear factor k.
+ *
+ * @param {Array} point.
+ * @param {Number} k.
+ * @param {String} direction - xaxis or yaxis.
+ * @return {Array} vector.
+ */
+matrix.shear = function (point, k, direction) {
+  if (point.length === 2) {
+    var xplaceholder = direction === 'xaxis' ? k : 0;
+    var yplaceholder = direction === 'yaxis' ? k : 0;
+
+    var transformation = [
+      [1, xplaceholder],
+      [yplaceholder, 1]
+    ];
+
+    return matrix.multiply(transformation, point);
+  } else {
+    throw new Error('Only two dimensional operations are supported at this time');
+  }
+};
+
+/**
+ * Perform an affine transformation on the given vector.
+ *
+ * @param {Array} point.
+ * @param {Number} tx.
+ * @param {Number} ty.
+ * @return {Array} vector.
+ */
+matrix.affine = function (point, tx, ty) {
+  if (point.length === 2) {
+
+    var transformation = [
+      [1, 0, tx],
+      [0, 1, ty],
+      [0, 0, 1 ]
+    ];
+
+    var newpoint = [
+      [point[0][0]],
+      [point[1][0]],
+      [1]
+    ];
+
+    var transformed = matrix.multiply(transformation, newpoint);
+    
+    return [
+      [transformed[0][0]],
+      [transformed[1][0]]
+    ];
+
+  } else {
+    throw new Error('Only two dimensional operations are supported at this time');
+  }
+};
+
+/**
+ * Scales a row of a matrix by a factor and returns the updated matrix. 
+ * Used in row reduction functions.
+ * 
+ * @param {Array} matrix.
+ * @param {Number} row.
+ * @param {Number} scale.
+ */
+matrix.rowScale = function (m, row, scale) {
+  var result = new Array(m.length);
+    
+  for (var i = 0; i < m.length; i++) {
+    result[i] = new Array(m[i].length);
+  
+    for (var j = 0; j < m[i].length; j++) {
+      if (i === row) {
+        result[i][j] = scale * m[i][j]; 
+      } else {
+        result[i][j] = m[i][j];
+      }
+    }
+  }
+
+  return result;
+};
+
+/**
+ * Swaps two rows of a matrix  and returns the updated matrix. 
+ * Used in row reduction functions.
+ * 
+ * @param {Array} matrix.
+ * @param {Number} row1.
+ * @param {Number} row2.
+ */
+matrix.rowSwitch = function (m, row1, row2) {
+  var result = new Array(m.length);
+  
+  for (var i = 0; i < m.length; i++) {
+    result[i] = new Array(m[i].length);
+  
+    for (var j = 0; j < m[i].length; j++) {
+      if (i === row1) {
+        result[i][j] = m[row2][j]; 
+      } else if (i === row2) {
+        result[i][j] = m[row1][j];
+      } else {
+        result[i][j] = m[i][j];
+      }
+    }
+  }
+  return result;
+};
+
+/**
+ * Adds a multiple of one row to another row
+ * in a matrix and returns the updated matrix. 
+ * Used in row reduction functions.
+ * 
+ * @param {Array} matrix.
+ * @param {Number} row1.
+ * @param {Number} row2.
+ */
+matrix.rowAddMultiple = function (m, from, to, scale){
+  var result = new Array(m.length);
+  
+  for (var i = 0; i < m.length; i++) {
+    result[i] = new Array(m[i].length);
+  
+    for (var j = 0; j < m[i].length; j++) {
+      if (i === to) {
+        result[to][j] = m[to][j] + scale * m[from][j];
+      } else {
+        result[i][j] = m[i][j];
+      }
+    }
+  }
+
+  return result;
 };
 
 });
@@ -1002,7 +1311,7 @@ var prime = exports;
 /**
  * Determine if number is prime.  This is far from high performance.
  *
- * @param {Number} number to evaluate
+ * @param {Number} number to evaluate.
  * @return {Boolean} return true if value is prime. false otherwise.
  */
 prime.simple = function (val) {
@@ -1020,41 +1329,108 @@ prime.simple = function (val) {
   }
 };
 
-
-// TODO: The maximum call stack size exceeds on this call. Either resolve this
-// or abolish the call.
 /**
- * Using trial method, evaluate the prime factorization of a value.
+ * Returns the prime factors of a number.
+ * More info (http://bateru.com/news/2012/05/code-of-the-day-javascript-prime-factors-of-a-number/)
+ * Taken from Ratio.js
  *
- * @param {Number} number to evaluate
- * @return {Array} array of prime factors for value
+ * @param {Number} num
+ * @return {Array} an array of numbers
+ * @example prime.factorization(20).join(',') === "2,2,5"
+ **/
+prime.factorization = function (num) {
+  num = Math.floor(num);
+	var root;
+	var factors = [];
+	var x;
+	var sqrt = Math.sqrt;
+  var doLoop = 1 < num && isFinite(num);
+	
+  while (doLoop) {
+		root = sqrt(num);
+		x = 2;
+		if (num % x) {
+			x = 3;
+			while ((num % x) && ((x += 2) < root)) {}
+		}
+		
+    x = (root < x) ? num : x;
+		factors.push(x);
+		doLoop = (x !== num);
+		num /= x;
+	}
+
+	return factors;
+};
+
+/**
+ * Determine if a number is prime in Polynomial time, using a randomized algorithm. 
+ * http://en.wikipedia.org/wiki/Miller-Rabin_primality_test
+ *
+ * @param {Number} number to Evaluate.
+ * @param {Number} number to Determine accuracy rate (number of trials) default value = 20.
+ * @return {Boolean} return true if value is prime. false otherwise.
  */
-// prime.factorization = function (num) {
-//   if (num === 1) return [1];
-//   var primes = [],
-//       result = [];
-//   loadPrimes(num, function(p) {
-//     trial(num);
-//   });
+prime.millerRabin = function(n, k) {
+  if (arguments.length === 1) k = 20;
+  if (n === 2) return true;
+  if (!basic.isInt(n) || n <= 1 || n % 2 === 0) return false;
 
-//   function loadPrimes (n, callback) {
-//     for (var i = 0 ; i < n ; i++) {
-//       if (prime.simple(i)) primes.push(i);
-//     }
+  var s = 0;
+  var d = n - 1;
 
-//     callback(primes);
-//   }
+  while (true) {
+    var dm = basic.divMod(d, 2);
+    var quotient = dm[0];
+    var remainder = dm[1];
 
-//   function trial (n) {
-//     var quant = Math.floor(Math.random() * primes.length),
-//         temp = basic.random(primes, quant);
-//     if (basic.product(temp) === num) {
-//       return temp;
-//     } else {
-//       trial(n);
-//     }
-//   }
-// };
+    if (remainder === 1) break;
+
+    s += 1;
+    d = quotient;
+  }
+
+  var tryComposite = function (a) {
+    if (basic.powerMod(a, d, n) === 1) return false;
+    
+    for (var i = 0; i < s; i ++) {
+      if (basic.powerMod(a, Math.pow(2, i) * d, n) === n - 1) return false;
+    }
+    
+    return true;
+  }
+
+  for (var i = 0; i < k; i++) {
+    var a = 2 + Math.floor(Math.random() * (n - 2 - 2));
+    if (tryComposite(a)) return false;
+  }
+
+  return true;
+};
+
+/**
+ * Return a list of prime numbers from 1...n, inclusive.
+ *
+ * @param {Number} upper limit of test n.
+ * @return {Array} list of values that are prime up to n.
+ */ 
+prime.sieve = function (n) {
+  if (n < 2) return [];
+  var result = [2];
+  for (var i = 3; i <= n; i++) {
+    var notMultiple = false;
+    
+    for (var j in result) { 
+      notMultiple = notMultiple || (0 === i % result[j]); 
+    }
+
+    if (!notMultiple) {
+      result.push(i);
+    }
+  }
+
+  return result;
+};
 
 });
 
@@ -1064,51 +1440,53 @@ var statistic = exports;
 /**
  * Calculate the mean value of a set of numbers in array.
  *
- * @param {Array} set of values
- * @return {Number} mean value
+ * @param {Array} set of values.
+ * @return {Number} mean value.
  */
 statistic.mean = function (arr) {
   var count = arr.length;
-  var sum = basic.addition(arr);
+  var sum = basic.sum(arr);
   return sum / count;
 };
-
 
 /**
  * Calculate the median value of a set of numbers in array.
  *
- * @param {Array} set of values
- * @return {Number} median value
+ * @param {Array} set of values.
+ * @return {Number} median value.
  */
 statistic.median = function (arr) {
   return statistic.quantile(arr, 1, 2);
 };
 
-
 /**
  * Calculate the mode value of a set of numbers in array.
  *
- * @param {Array} set of values
- * @return {Number} mode value
+ * @param {Array} set of values.
+ * @return {Number} mode value.
  */
 statistic.mode = function (arr) {
   var counts = {};
-  for (var i = 0, n = arr.length ; i < n ; i++) {
-    if (counts[arr[i]] === undefined)
+  for (var i = 0, n = arr.length; i < n; i++) {
+    if (counts[arr[i]] === undefined) {
       counts[arr[i]] = 0;
-    else
+    } else {
       counts[arr[i]]++;
-  }
-  var highest;
-  for (var number in counts) {
-    if (counts.hasOwnProperty(number)) {
-      if (highest === undefined || counts[number] > counts[highest])
-        highest = number;
     }
   }
+
+  var highest;
+  
+  for (var number in counts) {
+    if (counts.hasOwnProperty(number)) {
+      if (highest === undefined || counts[number] > counts[highest]) {
+        highest = number;
+      }
+    }
+  }
+  
   return Number(highest);
 };
-
 
 /**
  * Calculate the kth q-quantile of a set of numbers in an array.
@@ -1116,15 +1494,15 @@ statistic.mode = function (arr) {
  * Ex: Median is 1st 2-quantile
  * Ex: Upper quartile is 3rd 4-quantile
  *
- * @param {Array} set of values
- * @param {Number} index of quantile
- * @param {Number} number of quantiles
- * @return {Number} kth q-quantile of values
+ * @param {Array} set of values.
+ * @param {Number} index of quantile.
+ * @param {Number} number of quantiles.
+ * @return {Number} kth q-quantile of values.
  */
 statistic.quantile = function (arr, k, q) {
   var sorted, count, index;
 
-  if(k === 0) return Math.min.apply(null, arr);
+  if (k === 0) return Math.min.apply(null, arr);
 
   if (k === q) return Math.max.apply(null, arr);
 
@@ -1140,33 +1518,47 @@ statistic.quantile = function (arr, k, q) {
 
 
 /**
+ * Return a set of summary statistics provided an array.
+ *
+ * @return {Object} summary statistics.
+ */
+statistic.report = function(array) {
+  return {
+    mean: statistic.mean(array),
+    firstQuartile: statistic.quantile(array, 1, 4),
+    median: statistic.median(array),
+    thirdQuartile: statistic.quantile(array, 3, 4),
+    standardDev: statistic.standardDev(array)
+  }
+};
+
+/**
  * Return a random sample of values over a set of bounds with
  * a specified quantity.
  *
- * @param {Number} lower bound
- * @param {Number} upper bound
- * @param {Number} quantity of elements in random sample
- * @return {Array} random sample
+ * @param {Number} lower bound.
+ * @param {Number} upper bound.
+ * @param {Number} quantity of elements in random sample.
+ * @return {Array} random sample.
  */
 statistic.randomSample = function (lower, upper, n) {
   var sample = [];
-  var temp = 0;
 
-  for (var i = 0 ; i < n ; i++) {
-    temp = Math.random() * upper;
-    if (temp > lower)
-      sample[i] = temp;
+  while (sample.length < n) {
+    var temp = Math.random() * upper;
+    if (lower <= temp <= upper) {
+      sample.push(temp)
+    }
   }
 
   return sample;
 };
 
-
 /**
  * Evaluate the standard deviation for a set of values.
  *
- * @param {Array} set of values
- * @return {Number} standard deviation
+ * @param {Array} set of values.
+ * @return {Number} standard deviation.
  */
 statistic.standardDev = function (arr) {
   var count = arr.length;
@@ -1177,28 +1569,22 @@ statistic.standardDev = function (arr) {
     squaredArr[i] = Math.pow((arr[i] - mean),2);
   }
 
-  return Math.sqrt((1 / count) * basic.addition(squaredArr));
+  return Math.sqrt((1 / count) * basic.sum(squaredArr));
 };
-
 
 /**
  * Evaluate the correlation amongst a set of values.
  *
- * @param {Array} set of values
- * @return {Number} correlation
+ * @param {Array} set of values.
+ * @return {Number} correlation.
  */
 statistic.correlation = function (arrX, arrY) {
   if (arrX.length == arrY.length) {
-    var numerator = 0;
-    var denominator = (arrX.length) * (statistic.standardDev(arrX)) * (statistic.standardDev(arrY));
-    var xMean = statistic.mean(arrX);
-    var yMean = statistic.mean(arrY);
+    var covarXY = statistic.covariance(arrX, arrY);
+    var stdDevX = statistic.standardDev(arrX);
+    var stdDevY = statistic.standardDev(arrY);
 
-    for (var i = 0 ; i < arrX.length ; i++) {
-      numerator += (arrX[i] - xMean) * (arrY[i] - yMean);
-    }
-
-    return numerator / denominator;
+    return covarXY / (stdDevX * stdDevY);
   } else {
     throw new Error('Array mismatch');
   }
@@ -1207,48 +1593,49 @@ statistic.correlation = function (arrX, arrY) {
 /**
  * Calculate the Coefficient of Determination of a dataset and regression line.
  *
- * @param {Array} Source data
- * @param {Array} Regression data
+ * @param {Array} Source data.
+ * @param {Array} Regression data.
  * @return {Number} A number between 0 and 1.0 that represents how well the regression line fits the data.
  */
-statistic.rSquared = function (source,regression) {
-  function square (x) { return x*x; }
-  var residualSumOfSquares = basic.addition(source.map(function(d,i){ return square(d-regression[i]); }));
-  var totalSumOfSquares = basic.addition(source.map(function(d){ return square(d - statistic.mean(source)) }));
+statistic.rSquared = function (source, regression) {
+  var residualSumOfSquares = basic.sum(source.map(function (d,i) {
+    return basic.square(d - regression[i]);
+  }));
+
+  var totalSumOfSquares = basic.sum(source.map(function (d) {
+    return basic.square(d - statistic.mean(source));
+  }));
+  
   return 1 - (residualSumOfSquares / totalSumOfSquares);
-}
+};
 
 /**
  * Create a function to calculate the exponential regression of a dataset.
  *
- * @param {Array} set of values
- * @return {Function} function to accept X values and return corresponding regression Y values
+ * @param {Array} set of values.
+ * @return {Function} function to accept X values and return corresponding regression Y values.
  */
 statistic.exponentialRegression = function (arrY) {
   var n = arrY.length;
   var arrX = basic.range(1,n);
 
-  var xSum = basic.addition(arrX);
-  var ySum = basic.addition(arrY);
+  var xSum = basic.sum(arrX);
+  var ySum = basic.sum(arrY);
   var yMean = statistic.mean(arrY);
-  var yLog = arrY.map(function(d){ return Math.log(d); });
-  var xSquared = arrX.map(function(d){ return d*d; });
-  var xSquaredSum = basic.addition(xSquared);
-  var yLogSum = basic.addition(yLog);
-  var xyLog = arrX.map(function(d, i){ return d*yLog[i]; });
-  var xyLogSum = basic.addition(xyLog);
+  var yLog = arrY.map(function (d) { return Math.log(d); });
+  var xSquared = arrX.map(function (d) { return d * d; });
+  var xSquaredSum = basic.sum(xSquared);
+  var yLogSum = basic.sum(yLog);
+  var xyLog = arrX.map(function (d, i) { return d * yLog[i]; });
+  var xyLogSum = basic.sum(xyLog);
 
-  var a = (yLogSum * xSquaredSum - xSum * xyLogSum) /
-          (n * xSquaredSum - (xSum * xSum));
-
-  var b = (n * xyLogSum - xSum * yLogSum) /
-          (n * xSquaredSum - (xSum * xSum));
+  var a = (yLogSum * xSquaredSum - xSum * xyLogSum) / (n * xSquaredSum - (xSum * xSum));
+  var b = (n * xyLogSum - xSum * yLogSum) / (n * xSquaredSum - (xSum * xSum));
 
   var fn = function(x) {
-    if (typeof x == 'number') {
+    if (typeof x === 'number') {
       return Math.exp(a) * Math.exp(b * x);
     } else {
-      // If not number, assume array
       return x.map(function (d) {
         return Math.exp(a) * Math.exp(b * d);
       });
@@ -1258,56 +1645,78 @@ statistic.exponentialRegression = function (arrY) {
   fn.rSquared = statistic.rSquared(arrY, arrX.map(fn));
 
   return fn;
-}
+};
 
 /**
  * Create a function to calculate the linear regression of a dataset.
  *
- * @param {Array} X array
- * @param {Array} Y array
- * @return {Function} A function which given X or array of X values will return Y
+ * @param {Array} X array.
+ * @param {Array} Y array.
+ * @return {Function} A function which given X or array of X values will return Y.
  */
 statistic.linearRegression = function (arrX, arrY) {
   var n = arrX.length;
-  var xSum = basic.addition(arrX);
-  var ySum = basic.addition(arrY);
-  var xySum = basic.addition(arrX.map(function(d, i){ return d * arrY[i]; }));
-  var xSquaredSum = basic.addition(arrX.map(function(d){ return d*d; }));
+  var xSum = basic.sum(arrX);
+  var ySum = basic.sum(arrY);
+  var xySum = basic.sum(arrX.map(function (d, i) { return d * arrY[i]; }));
+  var xSquaredSum = basic.sum(arrX.map(function (d) { return d * d; }));
   var xMean = statistic.mean(arrX);
   var yMean = statistic.mean(arrY);
-  var b = (xySum - 1/n * xSum * ySum) /
-          (xSquaredSum - 1/n * (xSum * xSum));
-  var a = yMean - b*xMean;
+  var b = (xySum - 1 / n * xSum * ySum) / (xSquaredSum - 1 / n * (xSum * xSum));
+  var a = yMean - b * xMean;
 
   return function(x) {
-    if(typeof x == 'number'){
-      return a + b*x;
-    }else{
-      // If not a number, assume array
-      return x.map(function(d){
-        return a + b*d;
+    if (typeof x === 'number') {
+      return a + b * x;
+    } else {
+      return x.map(function (d) {
+        return a + b * d;
       });
     }
   }
-}
+};
+
+/**
+ * Evaluate the covariance amongst 2 sets.
+ *
+ * @param {Array} set 1 of values.
+ * @param {Array} set 2 of values.
+ * @return {Number} covariance.
+ */
+ statistic.covariance = function (set1, set2) {
+  if (set1.length == set2.length) {
+    var n = set1.length;
+    var total = 0;
+    var sum1 = basic.sum(set1);
+    var sum2 = basic.sum(set2);
+
+    for (var i = 0; i < n; i++) {
+      total += set1[i] * set2[i];
+    }
+
+    return (total - sum1 * sum2 / n) / n;
+  } else {
+    throw new Error('Array mismatch');
+  }
+};
 
 });
 
 require.define("/numbers/useless.js",function(require,module,exports,__dirname,__filename,process,global){var useless = exports;
 
 /**
- * Populate the given array with a Collatz Sequence
+ * Populate the given array with a Collatz Sequence.
  *
- * @param {Number} first number
- * @param {Array} arrary to be populated
+ * @param {Number} first number.
+ * @param {Array} arrary to be populated.
  */
 useless.collatz = function (n, result) {
   result.push(n);
   
-  if (n == 1) {
+  if (n === 1) {
     return;
   } else if (n % 2 === 0) {
-    useless.collatz(n/2, result);
+    useless.collatz(n / 2, result);
   } else {
     useless.collatz(3 * n + 1, result);
   }
@@ -1319,10 +1728,6 @@ require.define("/numbers.js",function(require,module,exports,__dirname,__filenam
  * numbers.js
  *
  * top level management of numbers extensions
- *
- * (C) 2012 Steve Kaliski
- * MIT License
- *
  */
 var numbers = exports;
 
