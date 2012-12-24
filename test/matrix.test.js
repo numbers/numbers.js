@@ -197,13 +197,13 @@ suite('numbers', function() {
       var firstLup = matrix.lupDecomposition(inputMatrix);
 
       assert.deepEqual(matrix.multiply(firstLup[0], firstLup[1]),
-                       matrix.multiply(firstLup[2],inputMatrix));
+                       matrix.multiply(firstLup[2], inputMatrix));
 
       var secondInputMatrix = [[1,0,0,2],[1,-2,0,5],[1,-2,0,3],[1,-3,-5,0]];
       var secondLup = matrix.lupDecomposition(secondInputMatrix);
 
       assert.deepEqual(matrix.multiply(secondLup[0], secondLup[1]),
-                       matrix.multiply(secondLup[2],secondInputMatrix));
+                       matrix.multiply(secondLup[2], secondInputMatrix));
       done();
   });
 
