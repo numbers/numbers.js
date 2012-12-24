@@ -85,7 +85,6 @@ suite('numbers', function() {
     assert.equal(true, A.pow(5).equals(new Complex(-237, -3116), epsilon));
     assert.equal(true, justImaginary.pow(2).equals(new Complex(-16, 0), epsilon));
     assert.equal(true, justNegativeImaginary.pow(-2).equals(new Complex(-1/16, 0), epsilon));
-
     done();
   });
 
@@ -114,6 +113,28 @@ suite('numbers', function() {
        assert.equal(true, roots[i].pow(root).equals(A, numbers.EPSILON))
     }
 
+    done();
+  });
+
+  test('should be able to get the sine of a complex number', function(done) {
+    var A = new Complex(3, -4);
+
+    assert.equal(true, A.sin().equals(new Complex(3.8537, 27.0168), numbers.EPSILON));
+    done();
+  });
+
+  test('should be able to get the cosine of a complex number', function(done) {
+    var A = new Complex(3, -4);
+
+    assert.equal(true, A.cos().equals(new Complex(-27.0349, 3.8511), numbers.EPSILON));
+    done();
+  });
+
+  test('should be able to get the tangent of a complex number', function(done) {
+    var A = new Complex(3, -4);
+    var expected = A.sin().divide(A.cos());
+
+    assert.equal(true, A.tan().equals(expected, numbers.EPSILON));
     done();
   });
 
