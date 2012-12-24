@@ -7,25 +7,27 @@ suite('numbers', function() {
   console.log('\n\n\033[34mTesting Matrix Mathematics\033[0m');
 
   test('should create a deep copy of a matrix', function(done) {
-      var input = [[1,2],[2,1]];
+    var input = [[1,2],[2,1]];
 
-      var copy = matrix.deepCopy(input);
+    var copy = matrix.deepCopy(input);
 
-      assert.notEqual(input, copy);
+    assert.notEqual(input, copy);
 
-      assert.throws(
-          function() {
-              matrix.deepCopy([1,2])
-          },
-          /Input cannot be a vector./
-      );
-      done();
+    assert.throws(
+      function() {
+        matrix.deepCopy([1,2])
+      },
+      /Input cannot be a vector./
+    );
+    
+    done();
   });
 
   test('should be able to tell if a matrix is square', function(done) {
-      assert.equal(matrix.isSquare([[1,2],[3,4]]), true);
-      assert.equal(matrix.isSquare([[1,2,3],[4,5,6]]), false);
-      done();
+    assert.equal(matrix.isSquare([[1,2],[3,4]]), true);
+    assert.equal(matrix.isSquare([[1,2,3],[4,5,6]]), false);
+    
+    done();
   });
 
   test('should return sum of two matrices', function(done) {
@@ -356,8 +358,6 @@ suite('numbers', function() {
     done();
   });
 
-   
-
   test('should return a new matrix that has rows changed with the rowSwitch function', function(done) {
     var m = [
       [0, 1, 2],
@@ -373,7 +373,6 @@ suite('numbers', function() {
     var res1 = matrix.rowSwitch(m,0,1);
 
     assert.deepEqual(res1,expected1);
-
 
     var res2 = matrix.rowScale(m,1,1);
 
@@ -397,7 +396,6 @@ suite('numbers', function() {
     var res1 = matrix.rowAddMultiple(m,0,1,2);
 
     assert.deepEqual(res1,expected1);
-
 
     var res2 = matrix.rowScale(m,1,1,0);
 
