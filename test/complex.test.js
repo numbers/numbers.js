@@ -1,6 +1,7 @@
 var assert = require('assert');
 var numbers = require('../index.js');
 var Complex = numbers.complex;
+var basic = numbers.basic;
 
 suite('numbers', function() {
 
@@ -59,7 +60,7 @@ suite('numbers', function() {
     var A = new Complex(3, 4);
     var res = A.phase();
 
-    assert.equal(true, (res - numbers.EPSILON < 0.9272952180016122) && (0.9272952180016122 < res + numbers.EPSILON));
+    assert.equal(true, basic.numbersEqual(res, 0.9272952180016122, numbers.EPSILON));
     done();
   });
 
