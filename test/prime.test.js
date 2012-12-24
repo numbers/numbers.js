@@ -68,4 +68,22 @@ suite('numbers', function() {
 		done();
 	});
 
+  //prime.getPrimePower
+  test('should find what the prime power of n is if it exists', function(done) {
+    assert.deepEqual([2, 2], prime.getPrimePower(4));
+    assert.equal(false, prime.getPrimePower(1));
+    assert.deepEqual([3, 1], prime.getPrimePower(3));
+    assert.deepEqual([3, 2], prime.getPrimePower(9));
+    done();
+  });
+
+  //prime.getPerfectPower
+  test('should find a perfect power of n is if it exists', function(done) {
+    assert.deepEqual([2, 2], prime.getPerfectPower(4));
+    assert.equal(false, prime.getPerfectPower(1));
+    assert.equal(false, prime.getPerfectPower(3));
+    assert.deepEqual([3, 2], prime.getPerfectPower(9));
+    done();
+  });
+
 });
