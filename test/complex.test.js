@@ -21,7 +21,7 @@ suite('numbers', function() {
     var B = new Complex(3, 4);
     var res = A.subtract(B);
 
-    assert.equal(1, res.re);
+    assert.equal(2, res.re);
     assert.equal(4, res.im);
     done();
   });
