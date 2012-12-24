@@ -89,6 +89,20 @@ suite('numbers', function() {
     done();
   });
 
+  test('should be able to get all the roots of a complex number', function(done) {
+    var A = new Complex(3, -4);
+    var root = 5;
+    var roots = A.roots(root);
+
+    assert.equal(root, roots.length);
+
+    for(var i = 0; i < root; i++) {
+       assert.equal(true, roots[i].pow(root).equals(A, numbers.EPSILON))
+    }
+
+    done();
+  });
+
   test('should be able to check for equality of two complex numbers', function(done) {
     var A = new Complex(3,4);
 
