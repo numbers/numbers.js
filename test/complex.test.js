@@ -98,7 +98,6 @@ suite('numbers', function() {
     var D = new Complex(1, 2);
 
     assert.equal(true, C.complexPow(D).equals(new Complex(-.4198, -.66), numbers.EPSILON));
-
     done();
   });
 
@@ -112,7 +111,6 @@ suite('numbers', function() {
     for(var i = 0; i < root; i++) {
        assert.equal(true, roots[i].pow(root).equals(A, numbers.EPSILON))
     }
-
     done();
   });
 
