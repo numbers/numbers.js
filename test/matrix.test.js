@@ -6,6 +6,28 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Matrix Mathematics\033[0m');
 
+  test('should create a deep copy of a matrix', function(done) {
+      var input = [[1,2],[2,1]];
+
+      var copy = matrix.deepCopy(input);
+
+      assert.notEqual(input, copy);
+
+      assert.throws(
+          function() {
+              matrix.deepCopy([1,2])
+          },
+          /Input cannot be a vector./
+      );
+      done();
+  });
+
+  test('should be able to tell if a matrix is square', function(done) {
+      assert.equal(matrix.isSquare([[1,2],[3,4]]), true);
+      assert.equal(matrix.isSquare([[1,2,3],[4,5,6]]), false);
+      done();
+  });
+
   test('should return sum of two matrices', function(done) {
     var arrA = [
       [0, 1, 2],
@@ -158,6 +180,31 @@ suite('numbers', function() {
       /Not a square matrix/
     );
     done();
+  });
+
+  test('should throw an error if trying to get LU decomposition of non-square matrix', function(done) {
+      assert.throws(
+          function() {
+              matrix.lupDecomposition([[1,2,3],[4,5,6]]);
+          },
+          /Matrix must be square./
+      );
+      done();
+  });
+
+  test('should return the LU decomposition of a matrix', function(done) {
+      var inputMatrix = [[1,0,0,2],[2,-2,0,5],[1,-2,-2,3],[5,-3,-5,2]];
+      var firstLup = matrix.lupDecomposition(inputMatrix);
+
+      assert.deepEqual(matrix.multiply(firstLup[0], firstLup[1]),
+                       matrix.multiply(firstLup[2], inputMatrix));
+
+      var secondInputMatrix = [[1,0,0,2],[1,-2,0,5],[1,-2,0,3],[1,-3,-5,0]];
+      var secondLup = matrix.lupDecomposition(secondInputMatrix);
+
+      assert.deepEqual(matrix.multiply(secondLup[0], secondLup[1]),
+                       matrix.multiply(secondLup[2], secondInputMatrix));
+      done();
   });
 
   test('should return a new vector that has been rotated by the transformation matrix', function(done) {
