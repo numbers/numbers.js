@@ -13,6 +13,8 @@ suite('numbers', function() {
 
     assert.equal(8, res.re);
     assert.equal(10, res.im);
+    assert.equal(5, A.r);
+    assert.equal(true, (A.t - numbers.EPSILON < 0.9272952180016122) && (0.9272952180016122 < A.t + numbers.EPSILON));
     done();
   });
 
@@ -58,6 +60,14 @@ suite('numbers', function() {
     var res = A.phase();
 
     assert.equal(true, (res - numbers.EPSILON < 0.9272952180016122) && (0.9272952180016122 < res + numbers.EPSILON));
+    done();
+  });
+
+  test('magnitude should return complex conjugate', function(done) {
+    var A = new Complex(3, 4);
+
+    assert.equal(3, A.conjugate().re);
+    assert.equal(-4, A.conjugate().im);
     done();
   });
 });
