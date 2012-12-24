@@ -78,7 +78,7 @@ suite('numbers', function() {
     var justNegativeImaginary = new Complex(0, -4);
 
     assert.equal(true, A.pow(1/2).equals(new Complex(2, 1), numbers.EPSILON));
-    assert.equal(true, A.pow(1/4).equals(new Complex(1.455,   .343), numbers.EPSILON));
+    assert.equal(true, A.pow(1/4).equals(new Complex(1.455, .343), numbers.EPSILON));
     assert.equal(true, A.pow(0).equals(new Complex(1, 0), numbers.EPSILON));
     assert.equal(true, A.pow(2).equals(new Complex(-7, 24), numbers.EPSILON));
     assert.equal(true, A.pow(5).equals(new Complex(-237, -3116), numbers.EPSILON));
