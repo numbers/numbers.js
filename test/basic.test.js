@@ -191,5 +191,14 @@ suite('numbers', function() {
     done();
   });
 
+  test('should be able to check equality of two floating point numbers', function(done) {
+    assert.equal(true, basic.numbersEqual(5, 5, .001));
+    assert.equal(true, basic.numbersEqual(5.0001, 5.0000001,.001));
+    assert.equal(false, basic.numbersEqual(-5, 5, .001));
+    assert.equal(false, basic.numbersEqual(5, 5.1, .001));
+    assert.equal(false, basic.numbersEqual(5, 5.001, .001));
+    done();
+  });
+
 });
 
