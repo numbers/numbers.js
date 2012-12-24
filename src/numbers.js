@@ -391,7 +391,27 @@ process.binding = function (name) {
 
 });
 
-require.define("/numbers/basic.js",function(require,module,exports,__dirname,__filename,process,global){var basic = exports;
+require.define("/numbers/basic.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * basic.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var basic = exports;
 
 /**
  * Determine the summation of numbers in a given array.
@@ -747,7 +767,27 @@ basic.modInverse = function (a, m) {
 
 });
 
-require.define("/numbers/calculus.js",function(require,module,exports,__dirname,__filename,process,global){var numbers = require('../numbers');
+require.define("/numbers/calculus.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * calculus.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var numbers = require('../numbers');
 var calculus = exports;
 
 /**
@@ -916,19 +956,36 @@ calculus.LanczosGamma = function (num) {
 
 require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
  * numbers.js
+ * http://github.com/sjkaliski/numbers.js
  *
- * top level management of numbers extensions
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
+ 
 var numbers = exports;
 
 
 // Expose methods
 numbers.basic = require('./numbers/basic');
 numbers.calculus = require('./numbers/calculus');
+numbers.complex = require('./numbers/complex');
+numbers.dsp = require('./numbers/dsp');
 numbers.matrix = require('./numbers/matrix');
 numbers.prime = require('./numbers/prime');
 numbers.statistic = require('./numbers/statistic');
-numbers.useless = require('./numbers/useless');
+numbers.generate = require('./numbers/generators');
 
 /** 
  * @property {Number} EPSILON Epsilon (error bound) to be used 
@@ -945,7 +1002,234 @@ numbers.EPSILON = 0.001;
 
 });
 
-require.define("/numbers/matrix.js",function(require,module,exports,__dirname,__filename,process,global){var matrix = exports;
+require.define("/numbers/complex.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * matrix.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var Complex = function (re, im) {
+  this.re = re;
+  this.im = im;
+};
+
+/**
+ * Add a complex number to this one.
+ * 
+ * @param {Complex} Number to add.
+ * @return {Complex} New complex number (sum).
+ */
+Complex.prototype.add = function(addend) {
+  return new Complex(this.re + addend.re, this.im + addend.im);
+};
+
+/**
+ * Subtract a complex number from this one.
+ * 
+ * @param {Complex} Number to subtract.
+ * @return {Complex} New complex number (difference).
+ */
+Complex.prototype.subtract = function (subtrahend) {
+  return new Complex(this.re - subtrahend.im, this.im - subtrahend.im);
+};
+
+/**
+ * Multiply a complex number with this one.
+ * 
+ * @param {Complex} Number to multiply by.
+ * @return {Complex} New complex number (product).
+ */
+Complex.prototype.multiply = function (multiplier) {
+  var re = this.re * multiplier.re - this.im * multiplier.im;
+  var im = this.im * multiplier.re + this.re * multiplier.im;
+  
+  return new Complex(re, im);
+};
+
+/**
+ * Divide this number with another complex number.
+ * 
+ * @param {Complex} Divisor.
+ * @return {Complex} New complex number (quotient).
+ */
+Complex.prototype.divide = function (divisor) {
+  var denominator = divisor.re * divisor.re + divisor.im * divisor.im;
+  var re = (this.re * divisor.re + this.im * divisor.im) / denominator;
+  var im = (this.im * divisor.re - this.re * divisor.im) / denominator;
+  
+  return new Complex(re,im);
+};
+
+/**
+ * Get the magnitude of this number.
+ * 
+ * @return {Number} Magnitude.
+ */
+Complex.prototype.magnitude = function () {
+  return Math.sqrt(this.re * this.re + this.im * this.im);
+};
+
+/**
+ * Get the phase of this number.
+ * 
+ * @return {Number} Phase.
+ */
+Complex.prototype.phase = function () {
+  return Math.atan2(this.im, this.re)
+};
+
+module.exports = Complex;
+
+});
+
+require.define("/numbers/dsp.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * matrix.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var numbers = require('../numbers');
+var Complex = numbers.complex
+var dsp = exports;
+
+/**
+ * Returns an array composed of elements from arr, starting at index start
+ * and counting by step.
+ * 
+ * @param {Array} Input array.
+ * @param {Number} Starting array index.
+ * @param {Number} Step size.
+ * @return {Array} Resulting sub-array.
+ */
+dsp.segment = function (arr, start, step) {
+  var result = [];
+  
+  for (var i = start; i < arr.length; i += step) {
+    result.push(arr[i]);
+  }
+
+  return result;
+};
+
+/**
+ * Returns an array of complex numbers representing the frequency spectrum
+ * of real valued time domain sequence x. (x.length must be integer power of 2)
+ * Inspired by http://rosettacode.org/wiki/Fast_Fourier_transform#Python
+ * 
+ * @param {Array} Real-valued series input, eg. time-series.
+ * @return {Array} Array of complex numbers representing input signal in Fourier domain.
+ */
+dsp.fft = function (x) {
+  var N = x.length;
+  
+  if (N <= 1) {
+    return [new Complex(x[0], 0)];
+  }  
+  
+  if (Math.log(N) / Math.LN2 % 1 !== 0) {
+    throw new Error ('Array length must be integer power of 2');
+  }
+  
+  var even = dsp.fft(dsp.segment(x, 0, 2));
+  var odd = dsp.fft(dsp.segment(x, 1, 2));
+  var res = [], Nby2 = N / 2;
+  
+  for (var k = 0; k < N; k++) {
+    var tmpPhase = -2 * Math.PI * k / N;
+    var phasor = new Complex(Math.cos(tmpPhase), Math.sin(tmpPhase));
+    if (k < Nby2) {
+      res[k] = even[k].add(phasor.multiply(odd[k]));
+    } else {
+      res[k] = even[k - Nby2].subtract(phasor.multiply(odd[k - Nby2]));
+    }
+  }
+  
+  return res;
+};
+
+});
+
+require.define("/numbers/matrix.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * matrix.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var matrix = exports;
+
+/**
+ * Return a deep copy of the input matrix.
+ *
+ * @param {Array} matrix to copy.
+ * @return {Array} copied matrix.
+ */
+matrix.deepCopy = function(arr) {
+  if (arr[0][0] === undefined) {
+    throw new Error('Input cannot be a vector.');
+  }
+  
+  var result = new Array(arr.length);
+
+  for (var i = 0; i < arr.length; i++) {
+    result[i] = arr[i].slice();
+  }
+  
+  return result;
+};
+
+/**
+ * Return true if matrix is square, false otherwise.
+ *
+ * @param {Array} arr
+ */
+matrix.isSquare = function(arr) {
+  var rows = arr.length;
+  var cols = arr[0].length;
+  
+  return rows === cols;
+};
 
 /**
  * Add two matrices together.  Matrices must be of same dimension.
@@ -1017,6 +1301,7 @@ matrix.transpose = function (arr) {
  */
 matrix.identity = function (n) {
   var result = new Array(n);
+  
   for (var i = 0; i < n ; i++) {
     result[i] = new Array(n);
     for (var j = 0; j < n; j++) {
@@ -1026,7 +1311,6 @@ matrix.identity = function (n) {
 
   return result;
 };
-
 
 /**
  * Evaluate dot product of two vectors.  Vectors must be of same length.
@@ -1116,6 +1400,107 @@ matrix.determinant = function (m) {
   }
 
   return det;
+};
+
+/**
+ * Returns a LUP decomposition of the given matrix such that:
+ *
+ * A*P = L*U
+ *
+ * Where
+ * A is the input matrix
+ * P is a pivot matrix
+ * L is a lower triangular matrix
+ * U is a upper triangular matrix
+ *
+ * This method returns an array of three matrices such that:
+ *
+ * matrix.luDecomposition(array) = [L, U, P]
+ *
+ * @param {Array} arr
+ * @return {Array} array of matrices [L, U, P]
+ */
+matrix.lupDecomposition = function(arr) {
+  if (!matrix.isSquare(arr)) {
+    throw new Error("Matrix must be square.");
+  }
+
+  var size = arr.length;
+
+  var LU = matrix.deepCopy(arr);
+  var P = matrix.transpose(matrix.identity(size));
+  var currentRow;
+  var currentColumn = new Array(size);
+
+  this.getL = function(a) {
+    var m = a[0].length;
+    var L = matrix.identity(m);
+    
+    for (var i = 0; i < m; i++) {
+      for (var j = 0; j < m; j++) {
+        if (i > j) {
+          L[i][j] = a[i][j];
+        }
+      }
+    }
+    
+    return L;
+  };
+
+  this.getU = function(a) {
+    var m = a[0].length;
+    var U = matrix.identity(m);
+    
+    for (var i = 0; i < m; i++) {
+      for (var j = 0; j < m; j++) {
+        if (i <= j) {
+          U[i][j] = a[i][j];
+        }
+      }
+    }
+    
+    return U;
+  };
+
+  for (var j = 0; j < size; j++) {
+    for (var i = 0; i < size; i++) {
+      currentColumn[i] = LU[i][j];
+    }
+
+    for (var i = 0; i < size; i++) {
+      currentRow = LU[i];
+
+      var minIndex = Math.min(i,j);
+      var s = 0;
+    
+      for (var k = 0; k < minIndex; k++) {
+        s += currentRow[k]*currentColumn[k];
+      }
+
+      currentRow[j] = currentColumn[i] -= s;
+    }
+
+    //Find pivot
+    var pivot = j;
+    for (var i = j+1; i < size; i++) {
+      if (Math.abs(currentColumn[i]) > Math.abs(currentColumn[pivot])) {
+        pivot = i;
+      }
+    }
+    
+    if (pivot != j) {
+      LU = matrix.rowSwitch(LU, pivot, j);
+      P = matrix.rowSwitch(P, pivot, j);
+    }
+
+    if (j < size && LU[j][j] != 0) {
+      for (var i = j+1; i < size; i++) {
+        LU[i][j] /= LU[j][j];
+      }
+    }
+  }
+  
+  return [this.getL(LU), this.getU(LU), P];
 };
 
 /**
@@ -1305,7 +1690,27 @@ matrix.rowAddMultiple = function (m, from, to, scale){
 
 });
 
-require.define("/numbers/prime.js",function(require,module,exports,__dirname,__filename,process,global){var basic = require('./basic');
+require.define("/numbers/prime.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * prime.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var basic = require('./basic');
 var prime = exports;
 
 /**
@@ -1434,7 +1839,27 @@ prime.sieve = function (n) {
 
 });
 
-require.define("/numbers/statistic.js",function(require,module,exports,__dirname,__filename,process,global){var basic = require('./basic');
+require.define("/numbers/statistic.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * statistic.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var basic = require('./basic');
 var statistic = exports;
 
 /**
@@ -1702,23 +2127,89 @@ statistic.linearRegression = function (arrX, arrY) {
 
 });
 
-require.define("/numbers/useless.js",function(require,module,exports,__dirname,__filename,process,global){var useless = exports;
+require.define("/numbers/generators.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * generators.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski, Kartik Talwar
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+var generate = exports;
+
+/**
+ * Fast Fibonacci Implementation
+ *
+ * @param {Number} number to calculate
+ * @return {Number} nth fibonacci number
+ */
+generate.fibonacci = function (n) {
+  // Adapted from
+  // http://bosker.wordpress.com/2011/04/29/the-worst-algorithm-in-the-world/
+
+  var bitSystem = function(n) {
+    var bit, bits, n;
+    bits = [];
+    while (n > 0) {
+      bit = (n < 2) ? n : n % 2;
+      n = Math.floor(n / 2);
+      bits.push(bit);
+    }
+    return bits.reverse();
+  };
+
+  var a = 1;
+  var b = 0;
+  var c = 1;
+
+  var system = bitSystem(n);
+
+  for (var i = 0; i < system.length; i++) {
+    var bit = system[i];
+    if (bit) {
+      var temp = [(a + c) * b, (b * b) + (c * c)];
+      a = temp[0];
+      b = temp[1];
+    } else {
+      var temp = [(a * a) + (b * b), (a + c) * b];
+      a = temp[0]
+      b = temp[1];
+    }
+
+    c = a + b;
+  }
+
+  return b;
+};
 
 /**
  * Populate the given array with a Collatz Sequence.
  *
  * @param {Number} first number.
  * @param {Array} arrary to be populated.
+ * @return {Array} array populated with Collatz sequence
  */
-useless.collatz = function (n, result) {
+generate.collatz = function (n, result) {
   result.push(n);
   
   if (n === 1) {
     return;
   } else if (n % 2 === 0) {
-    useless.collatz(n / 2, result);
+    generate.collatz(n / 2, result);
   } else {
-    useless.collatz(3 * n + 1, result);
+    generate.collatz(3 * n + 1, result);
   }
 };
 
@@ -1726,19 +2217,36 @@ useless.collatz = function (n, result) {
 
 require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
  * numbers.js
+ * http://github.com/sjkaliski/numbers.js
  *
- * top level management of numbers extensions
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
+ 
 var numbers = exports;
 
 
 // Expose methods
 numbers.basic = require('./numbers/basic');
 numbers.calculus = require('./numbers/calculus');
+numbers.complex = require('./numbers/complex');
+numbers.dsp = require('./numbers/dsp');
 numbers.matrix = require('./numbers/matrix');
 numbers.prime = require('./numbers/prime');
 numbers.statistic = require('./numbers/statistic');
-numbers.useless = require('./numbers/useless');
+numbers.generate = require('./numbers/generators');
 
 /** 
  * @property {Number} EPSILON Epsilon (error bound) to be used 
