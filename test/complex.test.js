@@ -71,4 +71,17 @@ suite('numbers', function() {
     assert.equal(-4, A.conjugate().im);
     done();
   });
+
+  test('should be able to check for equality of two complex numbers', function(done) {
+    var A = new Complex(3,4);
+    assert.equal(true, A.equals(new Complex(3,4), .001));
+    assert.equal(true, A.equals(new Complex(3,4.0001), .001));
+    assert.equal(true, A.equals(new Complex(3.0001,4), .001));
+
+    assert.equal(false, A.equals(new Complex(3.1,4), .001));
+    assert.equal(false, A.equals(new Complex(3,4.1), .001));
+    assert.equal(false, A.equals(new Complex(5,4), .001));
+    done();
+  });
+
 });
