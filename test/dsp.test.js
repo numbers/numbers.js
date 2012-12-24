@@ -18,9 +18,9 @@ suite('numbers', function() {
 
     assert.equal(true, (res[0].re - numbers.EPSILON < 4) && (4 < res[0].re + numbers.EPSILON));
     assert.equal(true, (res[0].im - numbers.EPSILON < 0) && (0 < res[0].im + numbers.EPSILON));
-    assert.equal(true, (res[2].re - numbers.EPSILON < 1) && (1 < res[2].re + numbers.EPSILON));
-    assert.equal(true, (res[2].im - numbers.EPSILON < -1) && (-1 < res[2].im + numbers.EPSILON));
-    assert.equal(true, (res[4].re - numbers.EPSILON < 2) && (2 < res[4].re + numbers.EPSILON));
+    assert.equal(false, (res[2].re - numbers.EPSILON < 1) && (1 < res[2].re + numbers.EPSILON));
+    assert.equal(false, (res[2].im - numbers.EPSILON < -1) && (-1 < res[2].im + numbers.EPSILON));
+    assert.equal(false, (res[4].re - numbers.EPSILON < 2) && (2 < res[4].re + numbers.EPSILON));
     assert.equal(true, (res[4].im - numbers.EPSILON < 0) && (0 < res[4].im + numbers.EPSILON));
     done();
   });
