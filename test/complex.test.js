@@ -89,6 +89,20 @@ suite('numbers', function() {
     done();
   });
 
+  test('should be able to raise a complex number to a given complex power', function(done) {
+    var A = new Complex(0, 1);
+    var B = new Complex(0, -1);
+
+    assert.equal(true, A.complexPow(B).equals(new Complex(4.81047, 0), numbers.EPSILON));
+
+    var C = new Complex(3, 4);
+    var D = new Complex(1, 2);
+
+    assert.equal(true, C.complexPow(D).equals(new Complex(-.4198, -.66), numbers.EPSILON));
+
+    done();
+  });
+
   test('should be able to get all the roots of a complex number', function(done) {
     var A = new Complex(3, -4);
     var root = 5;
