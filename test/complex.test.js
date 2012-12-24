@@ -72,8 +72,26 @@ suite('numbers', function() {
     done();
   });
 
+  test('should be able to get the power of a complex number', function(done) {
+    var A = new Complex(3, 4);
+    var justImaginary = new Complex(0, 4);
+    var justNegativeImaginary = new Complex(0, -4);
+    var epsilon = .001;
+
+    assert.equal(true, A.pow(1/2).equals(new Complex(2, 1), epsilon));
+    assert.equal(true, A.pow(1/4).equals(new Complex(1.455,   .343), epsilon));
+    assert.equal(true, A.pow(0).equals(new Complex(1, 0), epsilon));
+    assert.equal(true, A.pow(2).equals(new Complex(-7, 24), epsilon));
+    assert.equal(true, A.pow(5).equals(new Complex(-237, -3116), epsilon));
+    assert.equal(true, justImaginary.pow(2).equals(new Complex(-16, 0), epsilon));
+    assert.equal(true, justNegativeImaginary.pow(-2).equals(new Complex(-1/16, 0), epsilon));
+
+    done();
+  });
+
   test('should be able to check for equality of two complex numbers', function(done) {
     var A = new Complex(3,4);
+
     assert.equal(true, A.equals(new Complex(3,4), .001));
     assert.equal(true, A.equals(new Complex(3,4.0001), .001));
     assert.equal(true, A.equals(new Complex(3.0001,4), .001));
