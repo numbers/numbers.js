@@ -17,4 +17,23 @@ suite('numbers', function() {
     done();
   });
 
+  test('should calculate distance between two vectors', function(done) {
+    var vectorA = new Vector([1,2,3]);
+    var vectorB = new Vector([1,3,2]);
+    var res = vectorA.distanceFrom(vectorB);
+    assert.equal(Math.sqrt(2), res);
+    
+    var vectorAA = new Vector([1]);
+    var vectorBB = new Vector([1]);
+    var res = vectorAA.distanceFrom(vectorBB);
+    assert.equal(0, res);
+    
+    var vectorAAA = new Vector([1,2,3,41]);
+    var vectorBBB = new Vector([11,2,3,2]);
+    var res = vectorAAA.distanceFrom(vectorBBB);
+    assert.equal(Math.sqrt(1621), res);
+
+    done();
+  });
+
 });
