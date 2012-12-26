@@ -7,6 +7,21 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Vector Type Mathematics\033[0m');
 
+  test('map should also work on vectors', function(done) {
+    var v = new Vector([6,8,10]);
+    
+    function cb(value, i) {
+      return value*i;
+    }
+    
+    v.map(cb);
+    
+    var res1 = [0,8,20];
+    
+    assert.deepEqual(v.getData(), res1);
+    done();
+  });
+
   test('should return dot product of two vectors', function(done) {
     var vectorA = new Vector([0, 1, 2, 3]);
     var vectorB = new Vector([-1, 2, 4, 6]);

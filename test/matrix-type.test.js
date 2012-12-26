@@ -467,6 +467,27 @@ suite('numbers', function() {
 
     done();
   });
+  
+  test('should transform every cell in the matrix appropriately', function(done) {
+    var m = new Matrix([
+      [0,3,5],
+      [6,8,10]
+    ]);
+    
+    function cb(value, i, j) {
+      return value*i*j;
+    }
+    
+    m.map(cb);
+    
+    var res1 = [
+      [0,0,0],
+      [0,8,20]
+    ];
+    
+    assert.deepEqual(m.getData(), res1);
+    done();
+  });
 
   test('should return the original matrix whose scale transform has been undone', function(done) {
     var matrixA = new Matrix([[2], [5]]);
