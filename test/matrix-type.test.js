@@ -580,8 +580,8 @@ suite('numbers', function() {
       [0, 1, 1]
     ]);
 
-    assert.deepEqual(true, res1.isSquare());
-    assert.deepEqual(false, res2.isSquare());
+    assert.equal(true, res1.isSquare());
+    assert.equal(false, res2.isSquare());
     done();
   });
 
