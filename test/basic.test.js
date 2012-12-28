@@ -35,7 +35,7 @@ suite('numbers', function() {
 
   // basic.substraction
   test('subtraction should return the difference of items in an array', function (done) {
-    assert.equal(0, basic.subtraction([0, 1, 2, 3]));
+    assert.equal(2, basic.subtraction([5, 3, 1, -1]));
     done();
   });
 
@@ -53,6 +53,16 @@ suite('numbers', function() {
     assert.throws(
       function() {
         basic.subtraction(["test", 1, 1, 2]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
+  test('subtraction should throw an exception last element is not a number', function (done) {
+    assert.throws(
+      function() {
+        basic.subtraction([1, 1, 2, "test"]);
       },
       /All elements in array must be numbers/
     );
@@ -80,6 +90,16 @@ suite('numbers', function() {
     assert.throws(
       function() {
         basic.product([1, 2, "error"]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
+  test('product should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.product(["error", 1, 2]);
       },
       /All elements in array must be numbers/
     );
