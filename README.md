@@ -73,11 +73,11 @@ numbers.matrix.transpose(array);
 Numbers also includes some basic prime number analysis.  We can check if a number is prime:
 
 ```javascript
-//basic check
+// basic check
 numbers.prime.simple(number);
 
-//elliptic analysis (good for huge numbers)
-numbers.prime.elliptic(number);
+// Miller-Rabin primality test
+numbers.prime.millerRabin(number);
 ```
 
 The statistics tools include mean, median, mode, standard deviation, random sample generator, correlation, confidence intervals, t-test, chi-square, and more.
