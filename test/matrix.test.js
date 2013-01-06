@@ -405,4 +405,28 @@ suite('numbers', function() {
     done();
   });
 
+  test('should row reduce the given matrix for a given epsilon', function(done) {
+    var m1 = [[0, 1, 2],
+              [3, -1, 5],
+              [1, 2, 5]];
+
+    var m2 = [[2, -1, 0],
+              [-1, 2, -1],
+              [0, -1, 2]];
+
+    var expected1 = [[1, 0, 0],
+                     [0, 1, 0],
+                     [0, 0, 1]];
+
+    var res1 = matrix.GaussJordanEliminate(m1);
+    var res2 = matrix.GaussJordanEliminate(m2);
+    var res3 = matrix.rowReduce(m2, 0.01);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected1);
+    assert.deepEqual(res3,expected1);
+
+    done();
+  });
+
 });
