@@ -1,7 +1,7 @@
 var assert = require('assert');
 var numbers = require('../index.js');
 var statistic = numbers.statistic;
-var basic = numbers.basic;
+var basic = numbers.core;
 
 suite('numbers', function() {
 
