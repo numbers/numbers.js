@@ -210,6 +210,7 @@ suite('numbers', function() {
     assert.equal(445, basic.powerMod(4, 13, 497));
     done();
   });
+  
 
   test('should be able to check equality of two floating point numbers', function(done) {
     assert.equal(true, basic.numbersEqual(5, 5, numbers.EPSILON));
@@ -217,6 +218,27 @@ suite('numbers', function() {
     assert.equal(false, basic.numbersEqual(-5, 5, numbers.EPSILON));
     assert.equal(false, basic.numbersEqual(5, 5.1, numbers.EPSILON));
     assert.equal(false, basic.numbersEqual(5, 5.001, numbers.EPSILON));
+    done();
+  });
+  
+  // basic.fallingFactorial
+  test('fallingFactorial should return correct answers', function (done) {
+    var func = basic.fallingFactorial;
+
+    assert.equal(1, func(0,0)); //allows n=0
+    assert.equal(1, func(7,0)); //k = 0 returns 1.
+    assert.equal(0, func(2,4)); //nonsensical k returns 0
+    
+    assert.equal(5040, func(7,7)); //n=k returns n!
+    assert.equal(840,  func(7,4));
+    
+    assert.throws(
+      function() {
+        func(-2,5)
+      },
+      /negative/
+    );
+
     done();
   });
 
