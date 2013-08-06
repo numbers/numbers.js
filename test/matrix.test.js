@@ -26,6 +26,9 @@ suite('numbers', function() {
   test('should be able to tell if a matrix is square', function(done) {
     assert.equal(matrix.isSquare([[1,2],[3,4]]), true);
     assert.equal(matrix.isSquare([[1,2,3],[4,5,6]]), false);
+    assert.equal(matrix.isSquare([[1,2,3], [4,5,6], [7,8,9]]), true);
+    assert.equal(matrix.isSquare([[1,2], [3,4,5]]), false);
+    assert.equal(matrix.isSquare([[1,2,3], [4,5], [6,7,8]]), false);
     
     done();
   });
