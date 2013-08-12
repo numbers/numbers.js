@@ -111,8 +111,8 @@ make build
 This will compile the entire library into a single file accessible at public/numbers.js. It will also minify the file into public/numbers.min.js.
 
 ## Core Team
-* Steve Kaliski - [@sjkaliski](http://twitter.com/sjkaliski)
-* David Byrd - [@davidbyrd11](http://twitter.com/davidbyrd11)
+* Steve Kaliski - [@stevekaliski](http://twitter.com/stevekaliski)
+* David Byrd - [@thebyrd](http://twitter.com/thebyrd)
 * Ethan Resnick - [@studip101](http://twitter.com/studip101)
 
 ## Contributors
