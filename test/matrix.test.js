@@ -55,6 +55,18 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return sum of two vectors', function(done) {
+    var arrA = [0, 1, 2];
+    var arrB = [3, 4, 5];
+
+    var arrC = [3, 5, 7];
+
+    var res = matrix.addition(arrA, arrB);
+
+    assert.deepEqual(arrC, res);
+    done();
+  });
+
   test('should returned scaled matrix', function(done) {
     var array = [
       [0, 1, 2],
