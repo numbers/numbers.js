@@ -125,7 +125,21 @@ suite('numbers', function() {
   });
 
   // basic.gcd
+  test('gcd should throw an exception when given a decimal', function (done) {
+    assert.throws(
+      function() {
+        basic.gcd(0.2,1);
+      },
+      /Can only operate on integers/
+    );
+    done();
+  });
   test('gcd should return the greatest common denominator of two integers', function (done) {
+    assert.equal(1254, basic.gcd(1254, 0));
+    assert.equal(5298, basic.gcd(0, -5298));
+    assert.equal(Infinity, basic.gcd(0, -Infinity));
+    assert.equal(Infinity, basic.gcd(4430, -Infinity));
+    assert.equal(6, basic.gcd(-1254, -5298));
     assert.equal(6, basic.gcd(1254, 5298));
     assert.equal(1, basic.gcd(78699786, 78978965));
     done();
@@ -133,6 +147,14 @@ suite('numbers', function() {
 
   // basic.lcm
   test('lcm should return the least common multiple of two integers', function (done) {
+    assert.equal(0, basic.lcm(4, 0));
+    assert.equal(0, basic.lcm(0, 4));
+    assert.equal(true, isNaN(basic.lcm(4, Infinity)));
+    assert.equal(true, isNaN(basic.lcm(Infinity, 4)));
+    assert.equal(20, basic.lcm(4, 5));
+    assert.equal(12, basic.lcm(3, 4));
+    assert.equal(12, basic.lcm(4, 6));
+    assert.equal(42, basic.lcm(21, 6));
     assert.equal(240, basic.lcm(12, 80));
     done();
   });
