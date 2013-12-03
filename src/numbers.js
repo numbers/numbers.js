@@ -1,397 +1,52 @@
-(function(){var require = function (file, cwd) {
-    var resolved = require.resolve(file, cwd || '/');
-    var mod = require.modules[resolved];
-    if (!mod) throw new Error(
-        'Failed to resolve module ' + file + ', tried ' + resolved
-    );
-    var cached = require.cache[resolved];
-    var res = cached? cached.exports : mod();
-    return res;
-};
+;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * numbers.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-require.paths = [];
-require.modules = {};
-require.cache = {};
-require.extensions = [".js",".coffee",".json"];
-
-require._core = {
-    'assert': true,
-    'events': true,
-    'fs': true,
-    'path': true,
-    'vm': true
-};
-
-require.resolve = (function () {
-    return function (x, cwd) {
-        if (!cwd) cwd = '/';
-        
-        if (require._core[x]) return x;
-        var path = require.modules.path();
-        cwd = path.resolve('/', cwd);
-        var y = cwd || '/';
-        
-        if (x.match(/^(?:\.\.?\/|\/)/)) {
-            var m = loadAsFileSync(path.resolve(y, x))
-                || loadAsDirectorySync(path.resolve(y, x));
-            if (m) return m;
-        }
-        
-        var n = loadNodeModulesSync(x, y);
-        if (n) return n;
-        
-        throw new Error("Cannot find module '" + x + "'");
-        
-        function loadAsFileSync (x) {
-            x = path.normalize(x);
-            if (require.modules[x]) {
-                return x;
-            }
-            
-            for (var i = 0; i < require.extensions.length; i++) {
-                var ext = require.extensions[i];
-                if (require.modules[x + ext]) return x + ext;
-            }
-        }
-        
-        function loadAsDirectorySync (x) {
-            x = x.replace(/\/+$/, '');
-            var pkgfile = path.normalize(x + '/package.json');
-            if (require.modules[pkgfile]) {
-                var pkg = require.modules[pkgfile]();
-                var b = pkg.browserify;
-                if (typeof b === 'object' && b.main) {
-                    var m = loadAsFileSync(path.resolve(x, b.main));
-                    if (m) return m;
-                }
-                else if (typeof b === 'string') {
-                    var m = loadAsFileSync(path.resolve(x, b));
-                    if (m) return m;
-                }
-                else if (pkg.main) {
-                    var m = loadAsFileSync(path.resolve(x, pkg.main));
-                    if (m) return m;
-                }
-            }
-            
-            return loadAsFileSync(x + '/index');
-        }
-        
-        function loadNodeModulesSync (x, start) {
-            var dirs = nodeModulesPathsSync(start);
-            for (var i = 0; i < dirs.length; i++) {
-                var dir = dirs[i];
-                var m = loadAsFileSync(dir + '/' + x);
-                if (m) return m;
-                var n = loadAsDirectorySync(dir + '/' + x);
-                if (n) return n;
-            }
-            
-            var m = loadAsFileSync(x);
-            if (m) return m;
-        }
-        
-        function nodeModulesPathsSync (start) {
-            var parts;
-            if (start === '/') parts = [ '' ];
-            else parts = path.normalize(start).split('/');
-            
-            var dirs = [];
-            for (var i = parts.length - 1; i >= 0; i--) {
-                if (parts[i] === 'node_modules') continue;
-                var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
-                dirs.push(dir);
-            }
-            
-            return dirs;
-        }
-    };
-})();
-
-require.alias = function (from, to) {
-    var path = require.modules.path();
-    var res = null;
-    try {
-        res = require.resolve(from + '/package.json', '/');
-    }
-    catch (err) {
-        res = require.resolve(from, '/');
-    }
-    var basedir = path.dirname(res);
-    
-    var keys = (Object.keys || function (obj) {
-        var res = [];
-        for (var key in obj) res.push(key);
-        return res;
-    })(require.modules);
-    
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        if (key.slice(0, basedir.length + 1) === basedir + '/') {
-            var f = key.slice(basedir.length);
-            require.modules[to + f] = require.modules[basedir + f];
-        }
-        else if (key === basedir) {
-            require.modules[to] = require.modules[basedir];
-        }
-    }
-};
-
-(function () {
-    var process = {};
-    var global = typeof window !== 'undefined' ? window : {};
-    var definedProcess = false;
-    
-    require.define = function (filename, fn) {
-        if (!definedProcess && require.modules.__browserify_process) {
-            process = require.modules.__browserify_process();
-            definedProcess = true;
-        }
-        
-        var dirname = require._core[filename]
-            ? ''
-            : require.modules.path().dirname(filename)
-        ;
-        
-        var require_ = function (file) {
-            var requiredModule = require(file, dirname);
-            var cached = require.cache[require.resolve(file, dirname)];
-
-            if (cached && cached.parent === null) {
-                cached.parent = module_;
-            }
-
-            return requiredModule;
-        };
-        require_.resolve = function (name) {
-            return require.resolve(name, dirname);
-        };
-        require_.modules = require.modules;
-        require_.define = require.define;
-        require_.cache = require.cache;
-        var module_ = {
-            id : filename,
-            filename: filename,
-            exports : {},
-            loaded : false,
-            parent: null
-        };
-        
-        require.modules[filename] = function () {
-            require.cache[filename] = module_;
-            fn.call(
-                module_.exports,
-                require_,
-                module_,
-                module_.exports,
-                dirname,
-                filename,
-                process,
-                global
-            );
-            module_.loaded = true;
-            return module_.exports;
-        };
-    };
-})();
+ 
+var numbers = exports;
 
 
-require.define("path",function(require,module,exports,__dirname,__filename,process,global){function filter (xs, fn) {
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (fn(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
+// Expose methods
+numbers.basic = require('./numbers/basic');
+numbers.calculus = require('./numbers/calculus');
+numbers.complex = require('./numbers/complex');
+numbers.dsp = require('./numbers/dsp');
+numbers.matrix = require('./numbers/matrix');
+numbers.prime = require('./numbers/prime');
+numbers.statistic = require('./numbers/statistic');
+numbers.generate = require('./numbers/generators');
 
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length; i >= 0; i--) {
-    var last = parts[i];
-    if (last == '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
+/** 
+ * @property {Number} EPSILON Epsilon (error bound) to be used 
+ * in calculations. Can be set and retrieved freely. 
+ * 
+ * Given the float-point handling by JavaScript, as well as
+ * the numbersal proficiency of some methods, it is common 
+ * practice to include a bound by which discrepency between 
+ * the "true" answer and the returned value is acceptable.
+ *
+ * If no value is provided, 0.001 is default.
+ */
+numbers.EPSILON = 0.001;
 
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Regex to split a filename into [*, dir, basename, ext]
-// posix version
-var splitPathRe = /^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-var resolvedPath = '',
-    resolvedAbsolute = false;
-
-for (var i = arguments.length; i >= -1 && !resolvedAbsolute; i--) {
-  var path = (i >= 0)
-      ? arguments[i]
-      : process.cwd();
-
-  // Skip empty and invalid entries
-  if (typeof path !== 'string' || !path) {
-    continue;
-  }
-
-  resolvedPath = path + '/' + resolvedPath;
-  resolvedAbsolute = path.charAt(0) === '/';
-}
-
-// At this point the path should be resolved to a full absolute path, but
-// handle relative paths to be safe (might happen when process.cwd() fails)
-
-// Normalize the path
-resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-var isAbsolute = path.charAt(0) === '/',
-    trailingSlash = path.slice(-1) === '/';
-
-// Normalize the path
-path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-  
-  return (isAbsolute ? '/' : '') + path;
-};
-
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    return p && typeof p === 'string';
-  }).join('/'));
-};
-
-
-exports.dirname = function(path) {
-  var dir = splitPathRe.exec(path)[1] || '';
-  var isWindows = false;
-  if (!dir) {
-    // No dirname
-    return '.';
-  } else if (dir.length === 1 ||
-      (isWindows && dir.length <= 3 && dir.charAt(1) === ':')) {
-    // It is just a slash or a drive letter with a slash
-    return dir;
-  } else {
-    // It is a full dirname, strip trailing slash
-    return dir.substring(0, dir.length - 1);
-  }
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPathRe.exec(path)[2] || '';
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPathRe.exec(path)[3] || '';
-};
-
-});
-
-require.define("__browserify_process",function(require,module,exports,__dirname,__filename,process,global){var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-        && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-        && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            if (ev.source === window && ev.data === 'browserify-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('browserify-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-process.binding = function (name) {
-    if (name === 'evals') return (require)('vm')
-    else throw new Error('No such module. (Possibly not yet loaded)')
-};
-
-(function () {
-    var cwd = '/';
-    var path;
-    process.cwd = function () { return cwd };
-    process.chdir = function (dir) {
-        if (!path) path = require('path');
-        cwd = path.resolve(dir, cwd);
-    };
-})();
-
-});
-
-require.define("/numbers/basic.js",function(require,module,exports,__dirname,__filename,process,global){/**
+},{"./numbers/basic":2,"./numbers/calculus":3,"./numbers/complex":4,"./numbers/dsp":5,"./numbers/generators":6,"./numbers/matrix":7,"./numbers/prime":8,"./numbers/statistic":9}],2:[function(require,module,exports){
+/**
  * basic.js
  * http://github.com/sjkaliski/numbers.js
  *
@@ -445,8 +100,11 @@ basic.sum = function (arr) {
  */
 basic.subtraction = function (arr) {
   if (Object.prototype.toString.call(arr) === '[object Array]') {
-    var total = arr[arr.length - 1];
-    for (var i = arr.length - 2; i >= 0; i--) {
+    var total = arr[0];
+    if (typeof(total) !== 'number') {
+      throw new Error('All elements in array must be numbers');
+    }
+    for (var i = 1, length = arr.length; i < length; i++) {
       if (typeof(arr[i]) === 'number') {
         total -= arr[i];
       } else {
@@ -468,6 +126,9 @@ basic.subtraction = function (arr) {
 basic.product = function (arr) {
   if (Object.prototype.toString.call(arr) === '[object Array]') {
     var total = arr[0];
+    if (typeof(total) !== 'number') {
+      throw new Error('All elements in array must be numbers');
+    }
     for (var i = 1, length = arr.length; i < length; i++) {
       if (typeof(arr[i]) === 'number') {
         total = total * arr[i];
@@ -532,7 +193,6 @@ basic.factorial = function (num){
 
 /**
  * Calculate the greastest common divisor amongst two integers.
- * Taken from Ratio.js https://github.com/LarryBattle/Ratio.js
  * 
  * @param {Number} number A.
  * @param {Number} number B.
@@ -540,16 +200,26 @@ basic.factorial = function (num){
  */
 basic.gcd = function (a, b) {
   var c;
-  b = (+b && +a) ? +b : 0;
-  a = b ? a : 1;
-
+  a = +a;
+  b = +b;
+  // Same as isNaN() but faster
+  if (a !== a || b !== b) {
+    return NaN;
+  }
+  //Same as !isFinite() but faster
+  if (a === Infinity || a === -Infinity || b === Infinity || b === -Infinity) {
+    return Infinity;
+  }
+  // Checks if a or b are decimals
+  if ((a % 1 !== 0) || (b % 1 !== 0)) {
+    throw new Error("Can only operate on integers");
+  }
   while (b) {
     c = a % b;
     a = b;
     b = c;
   }
-
-  return Math.abs(a);
+  return (0 < a) ? a : -a;
 };
 
 /**
@@ -726,35 +396,48 @@ basic.powerMod = function (a, b, m) {
  * @return {Array} [a, x, y] a is the GCD. x and y are the values such that ax + by = gcd(a, b) .
  */
 basic.egcd = function (a, b) {
-  var x = (+b && +a) ? 1 : 0,
-      y = b ? 0 : 1,
-      u = (+b && +a) ? 0 : 1,
-      v = b ? 1 : 0;
-
-  b = (+b && +a) ? +b : 0;
-  a = b ? a : 1;
-
-  while (b) {
-    var dm = basic.divMod(a, b),
-        q = dm[0], 
-        r = dm[1];
-
-    var m = x - u * q, 
-        n = y - v * q;
-
-    a = b;
-    b = r;
-    x = u;
-    y = v;
-    u = m;
-    v = n;
+  a = +a;
+  b = +b;
+  // Same as isNaN() but faster
+  if (a !== a || b !== b) {
+    return [NaN, NaN, NaN];
   }
+  //Same as !isFinite() but faster
+  if (a === Infinity || a === -Infinity || b === Infinity || b === -Infinity) {
+    return [Infinity, Infinity, Infinity];
+  }
+  // Checks if a or b are decimals
+  if ((a % 1 !== 0) || (b % 1 !== 0)) {
+    throw new Error("Can only operate on integers");
+  }
+  var signX = (a < 0) ? -1 : 1,
+  signY = (b < 0) ? -1 : 1,
+  a = Math.abs(a),
+  b = Math.abs(b),
+  x = 0,
+  y = 1,
+  oldX = 1,
+  oldY = 0,
+  q, r, m, n;
 
-  return [a, x, y];
+  while(a !== 0){
+    q = Math.floor(b/a);
+    r = b % a;
+    m = x - oldX*q;
+    n = y - oldY*q;
+    b = a;
+    a = r;
+    x = oldX;
+    y = oldY;
+    oldX = m;
+    oldY = n;
+  }
+  return [b, signX*x, signY*y];
 };
 
 /**
   * Calculate the modular inverse of a number.
+  *
   * @param {Number} Number a.
   * @param {Number} Modulo m.
   * @return {Number} if true, return number, else throw error.
@@ -765,9 +448,42 @@ basic.modInverse = function (a, m) {
   return r[1] % m;
 };
 
-});
 
-require.define("/numbers/calculus.js",function(require,module,exports,__dirname,__filename,process,global){/**
+/**
+ * Determine is two numbers are equal within a given margin of precision.
+ *
+ * @param {Number} first number.
+ * @param {Number} second number.
+ * @param {Number} epsilon.
+ */
+basic.numbersEqual = function(first, second, epsilon) {
+  return (first - second) < epsilon && (first - second) > -epsilon;
+};
+
+/**
+ * Calculate the falling factorial of a number
+ *
+ * {@see http://mathworld.wolfram.com/FallingFactorial.html}
+ *
+ * @param {Number} Base
+ * @param {Number} Steps to fall
+ * @returns {Number} Result
+ */
+basic.fallingFactorial = function(n, k) {
+  var i = (n-k+1), r = 1;
+  
+  if(n<0) { throw new Error("n cannot be negative"); }
+  if(k>n) { return 0; }
+  
+  while(i <= n) {
+    r *= i++;
+  }
+
+  return r;
+}
+
+},{}],3:[function(require,module,exports){
+/**
  * calculus.js
  * http://github.com/sjkaliski/numbers.js
  *
@@ -952,10 +668,9 @@ calculus.LanczosGamma = function (num) {
   return Math.sqrt(2 * Math.PI) * Math.pow(t, num + 0.5) * Math.exp(-t) * a;
 };
 
-});
-
-require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
- * numbers.js
+},{"../numbers":1}],4:[function(require,module,exports){
+/**
+ * complex.js
  * http://github.com/sjkaliski/numbers.js
  *
  * Copyright 2012 Stephen Kaliski
@@ -973,58 +688,14 @@ require.define("/numbers.js",function(require,module,exports,__dirname,__filenam
  * limitations under the License.
  */
 
- 
-var numbers = exports;
-
-
-// Expose methods
-numbers.basic = require('./numbers/basic');
-numbers.calculus = require('./numbers/calculus');
-numbers.complex = require('./numbers/complex');
-numbers.dsp = require('./numbers/dsp');
-numbers.matrix = require('./numbers/matrix');
-numbers.prime = require('./numbers/prime');
-numbers.statistic = require('./numbers/statistic');
-numbers.generate = require('./numbers/generators');
-
-/** 
- * @property {Number} EPSILON Epsilon (error bound) to be used 
- * in calculations. Can be set and retrieved freely. 
- * 
- * Given the float-point handling by JavaScript, as well as
- * the numbersal proficiency of some methods, it is common 
- * practice to include a bound by which discrepency between 
- * the "true" answer and the returned value is acceptable.
- *
- * If no value is provided, 0.001 is default.
- */
-numbers.EPSILON = 0.001;
-
-});
-
-require.define("/numbers/complex.js",function(require,module,exports,__dirname,__filename,process,global){/**
- * matrix.js
- * http://github.com/sjkaliski/numbers.js
- *
- * Copyright 2012 Stephen Kaliski
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+var numbers = require('../numbers');
+var basic = numbers.basic;
 
 var Complex = function (re, im) {
   this.re = re;
   this.im = im;
+  this.r  = this.magnitude();
+  this.t  = this.phase(); // theta = t = arg(z)
 };
 
 /**
@@ -1044,7 +715,7 @@ Complex.prototype.add = function(addend) {
  * @return {Complex} New complex number (difference).
  */
 Complex.prototype.subtract = function (subtrahend) {
-  return new Complex(this.re - subtrahend.im, this.im - subtrahend.im);
+  return new Complex(this.re - subtrahend.re, this.im - subtrahend.im);
 };
 
 /**
@@ -1089,15 +760,119 @@ Complex.prototype.magnitude = function () {
  * @return {Number} Phase.
  */
 Complex.prototype.phase = function () {
-  return Math.atan2(this.im, this.re)
+  return Math.atan2(this.im, this.re);
+};
+
+/**
+ * Conjugate the imaginary part
+ *
+ * @return {Complex} Conjugated number
+ */
+Complex.prototype.conjugate = function () {
+  return new Complex(this.re, -1 * this.im);
+};
+
+/**
+ * Raises this complex number to the nth power.
+ *
+ * @param {number} power to raise this complex number to.
+ * @return {Complex} the nth power of this complex number.
+ */
+Complex.prototype.pow = function(n) {
+  var constant = Math.pow(this.magnitude(), n);
+
+  return new Complex(constant * Math.cos(n * this.phase()), constant * Math.sin(n * this.phase()));
+};
+
+/**
+ * Raises this complex number to given complex power.
+ *
+ * @param complexN the complex number to raise this complex number to.
+ * @return {Complex} this complex number raised to the given complex number.
+ */
+Complex.prototype.complexPow = function(complexN) {
+  var realSqPlusImSq =  Math.pow(this.re, 2) + Math.pow(this.im, 2);
+  var multiplier = Math.pow(realSqPlusImSq, complexN.re / 2) * Math.pow(Math.E, -complexN.im * this.phase());
+  var theta = complexN.re * this.phase() + .5 * complexN.im * Math.log(realSqPlusImSq);
+
+  return new Complex(multiplier * Math.cos(theta), multiplier * Math.sin(theta));
+};
+
+/**
+ * Find all the nth roots of this complex number.
+ *
+ * @param {Number} root of this complex number to take.
+ * @return {Array} an array of size n with the roots of this complex number.
+ */
+Complex.prototype.roots = function(n) {
+  var result = new Array(n);
+
+  for(var i = 0; i < n; i++) {
+    var theta = (this.phase() + 2*Math.PI*i) / n;
+    var radiusConstant = Math.pow(this.magnitude(), 1 / n);
+
+    result[i] = (new Complex(radiusConstant * Math.cos(theta), radiusConstant * Math.sin(theta)))
+  }
+
+  return result;
+};
+
+
+/**
+ * Returns the sine of this complex number.
+ *
+ * @return {Complex} the sine of this complex number.
+ */
+Complex.prototype.sin = function() {
+  var E = new Complex(Math.E, 0);
+  var i = new Complex(0, 1);
+  var negativeI = new Complex(0, -1);
+  var numerator = E.complexPow(i.multiply(this)).subtract(E.complexPow(negativeI.multiply(this)));
+
+  return numerator.divide(new Complex(0, 2));
+};
+
+/**
+ * Returns the cosine of this complex number.
+ *
+ * @return {Complex} the cosine of this complex number.
+ */
+Complex.prototype.cos = function() {
+  var E = new Complex(Math.E, 0);
+  var i = new Complex(0, 1);
+  var negativeI = new Complex(0, -1);
+  var numerator = E.complexPow(i.multiply(this)).add(E.complexPow(negativeI.multiply(this)));
+
+  return numerator.divide(new Complex(2, 0));
+};
+
+/**
+ * Returns the tangent of this complex number.
+ *
+ * @return {Complex} the tangent of this complex number.
+ */
+Complex.prototype.tan = function() {
+  return this.sin().divide(this.cos());
+};
+
+/**
+ * Checks for equality between this complex number and another
+ * within a given range defined by epsilon.
+ *
+ * @param {Complex} complex number to check this number against.
+ * @param {Number} epsilon
+ * @return {boolean} true if equal within epsilon, false otherwise
+ */
+Complex.prototype.equals = function(complex, epsilon) {
+  return basic.numbersEqual(this.re, complex.re, epsilon) &&
+         basic.numbersEqual(this.im, complex.im, epsilon);
 };
 
 module.exports = Complex;
 
-});
-
-require.define("/numbers/dsp.js",function(require,module,exports,__dirname,__filename,process,global){/**
- * matrix.js
+},{"../numbers":1}],5:[function(require,module,exports){
+/**
+ * dsp.js
  * http://github.com/sjkaliski/numbers.js
  *
  * Copyright 2012 Stephen Kaliski
@@ -1175,9 +950,96 @@ dsp.fft = function (x) {
   return res;
 };
 
-});
+},{"../numbers":1}],6:[function(require,module,exports){
+/**
+ * generators.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski, Kartik Talwar
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-require.define("/numbers/matrix.js",function(require,module,exports,__dirname,__filename,process,global){/**
+
+var generate = exports;
+
+/**
+ * Fast Fibonacci Implementation
+ *
+ * @param {Number} number to calculate
+ * @return {Number} nth fibonacci number
+ */
+generate.fibonacci = function (n) {
+  // Adapted from
+  // http://bosker.wordpress.com/2011/04/29/the-worst-algorithm-in-the-world/
+
+  var bitSystem = function(n) {
+    var bit, bits = [];
+
+    while (n > 0) {
+      bit = (n < 2) ? n : n % 2;
+      n = Math.floor(n / 2);
+      bits.push(bit);
+    }
+    
+    return bits.reverse();
+  };
+
+  var a = 1;
+  var b = 0;
+  var c = 1;
+  var system = bitSystem(n);
+  var temp;
+  
+  for (var i = 0; i < system.length; i++) {
+    var bit = system[i];
+    if (bit) {
+      temp = [(a + c) * b, (b * b) + (c * c)];
+      a = temp[0];
+      b = temp[1];
+    } else {
+      temp = [(a * a) + (b * b), (a + c) * b];
+      a = temp[0]
+      b = temp[1];
+    }
+
+    c = a + b;
+  }
+
+  return b;
+};
+
+/**
+ * Populate the given array with a Collatz Sequence.
+ *
+ * @param {Number} first number.
+ * @param {Array} arrary to be populated.
+ * @return {Array} array populated with Collatz sequence
+ */
+generate.collatz = function (n, result) {
+  result.push(n);
+  
+  if (n === 1) {
+    return;
+  } else if (n % 2 === 0) {
+    generate.collatz(n / 2, result);
+  } else {
+    generate.collatz(3 * n + 1, result);
+  }
+};
+
+},{}],7:[function(require,module,exports){
+/**
  * matrix.js
  * http://github.com/sjkaliski/numbers.js
  *
@@ -1226,9 +1088,12 @@ matrix.deepCopy = function(arr) {
  */
 matrix.isSquare = function(arr) {
   var rows = arr.length;
-  var cols = arr[0].length;
-  
-  return rows === cols;
+
+  for (var i = 0, row; row = arr[i]; i++) {
+    if (row.length != rows) return false;
+  }
+
+  return true;
 };
 
 /**
@@ -1242,11 +1107,18 @@ matrix.addition = function (arrA, arrB) {
   if ((arrA.length === arrB.length) && (arrA[0].length === arrB[0].length)) {
     var result = new Array(arrA.length);
     
-    for (var i = 0; i < arrA.length; i++) {
-      result[i] = new Array(arrA[i].length);
-    
-      for (var j = 0; j < arrA[i].length; j++) {
-        result[i][j] = arrA[i][j] + arrB[i][j];
+    if (!arrA[0].length) {
+      // The arrays are vectors.
+      for (var i = 0; i < arrA.length; i++) {
+        result[i] = arrA[i] + arrB[i];
+      }
+    } else {
+      for (var i = 0; i < arrA.length; i++) {
+          result[i] = new Array(arrA[i].length);
+        
+          for (var j = 0; j < arrA[i].length; j++) {
+            result[i][j] = arrA[i][j] + arrB[i][j];
+          }
       }
     }
 
@@ -1463,11 +1335,12 @@ matrix.lupDecomposition = function(arr) {
   };
 
   for (var j = 0; j < size; j++) {
-    for (var i = 0; i < size; i++) {
+    var i;
+    for (i = 0; i < size; i++) {
       currentColumn[i] = LU[i][j];
     }
 
-    for (var i = 0; i < size; i++) {
+    for (i = 0; i < size; i++) {
       currentRow = LU[i];
 
       var minIndex = Math.min(i,j);
@@ -1482,7 +1355,7 @@ matrix.lupDecomposition = function(arr) {
 
     //Find pivot
     var pivot = j;
-    for (var i = j+1; i < size; i++) {
+    for (i = j + 1; i < size; i++) {
       if (Math.abs(currentColumn[i]) > Math.abs(currentColumn[pivot])) {
         pivot = i;
       }
@@ -1493,8 +1366,8 @@ matrix.lupDecomposition = function(arr) {
       P = matrix.rowSwitch(P, pivot, j);
     }
 
-    if (j < size && LU[j][j] != 0) {
-      for (var i = j+1; i < size; i++) {
+    if (j < size && LU[j][j] !== 0) {
+      for (i = j + 1; i < size; i++) {
         LU[i][j] /= LU[j][j];
       }
     }
@@ -1688,9 +1561,118 @@ matrix.rowAddMultiple = function (m, from, to, scale){
   return result;
 };
 
-});
+/**
+ * Gauss-Jordan Elimination
+ *
+ * @param {Array} matrix.
+ * @param {Number} epsilon.
+ * @return {Array} RREF matrix.
+ */
+matrix.GaussJordanEliminate = function(m, epsilon) {
+  // Translated from:
+  // http://elonen.iki.fi/code/misc-notes/python-gaussj/index.html
+  var eps = (typeof epsilon == 'undefined') ? 1e-10 : epsilon;
 
-require.define("/numbers/prime.js",function(require,module,exports,__dirname,__filename,process,global){/**
+  var h = m.length;
+  var w = m[0].length;
+  var y = -1;
+  var y2, x;
+
+  while (++y < h) {
+    // Pivot.
+    var maxrow = y;
+    y2 = y;
+    while (++y2 < h) {
+      if(Math.abs(m[y2][y]) > Math.abs(m[maxrow][y]))
+        maxrow = y2;
+    }
+    var tmp = m[y];
+    m[y] = m[maxrow];
+    m[maxrow] = tmp;
+
+    // Singular
+    if(Math.abs(m[y][y]) <= eps) {
+      return m;
+    }
+
+    // Eliminate column
+    y2 = y;
+    while (++y2 < h) {
+      var c = m[y2][y] / m[y][y];
+      x = y - 1;
+      while (++x < w) {
+        m[y2][x] -= m[y][x] * c;
+      }
+    }
+  }
+
+  // Backsubstitute.
+  y = h;
+  while (--y >= 0) {
+    var c = m[y][y];
+    y2 = -1;
+    while (++y2 < y) {
+      x = w;
+      while (--x >= y) {
+        m[y2][x] -=  m[y][x] * m[y2][y] / c;
+      }
+    }
+    m[y][y] /= c;
+
+    // Normalize row
+    x = h - 1;
+    while (++x < w) {
+      m[y][x] /= c;
+    }
+  }
+
+  return m;
+};
+
+/**
+ * Alias to Gauss-Jordan Elimination
+ *
+ * @param {Array} matrix.
+ * @param {Number} epsilon.
+ * @return {Array} RREF matrix.
+ */
+matrix.rowReduce = function(m, epsilon) {
+  return matrix.GaussJordanEliminate(m, epsilon);
+}
+
+/**
+ * nxn matrix inversion
+ *
+ * @param {Array} matrix.
+ * @return {Array} inverted matrix.
+ */
+matrix.inverse = function(m) {
+  var n = m.length;
+
+  if (n === m[0].length) {
+    var identity = matrix.identity(n);
+
+    // AI
+    for(var i=0; i<n; i++) {
+      m[i] = m[i].concat(identity[i]);
+    }
+
+    // inv(IA)
+    m = matrix.GaussJordanEliminate(m);
+
+    // inv(A)
+    for(var i=0; i<n; i++) {
+      m[i] = m[i].slice(n);
+    }
+
+    return m;
+  } else {
+    throw new Error('The given matrix must be square');
+  }
+}
+
+},{}],8:[function(require,module,exports){
+/**
  * prime.js
  * http://github.com/sjkaliski/numbers.js
  *
@@ -1745,27 +1727,27 @@ prime.simple = function (val) {
  **/
 prime.factorization = function (num) {
   num = Math.floor(num);
-	var root;
-	var factors = [];
-	var x;
-	var sqrt = Math.sqrt;
+  var root;
+  var factors = [];
+  var x;
+  var sqrt = Math.sqrt;
   var doLoop = 1 < num && isFinite(num);
-	
+  
   while (doLoop) {
-		root = sqrt(num);
-		x = 2;
-		if (num % x) {
-			x = 3;
-			while ((num % x) && ((x += 2) < root)) {}
-		}
-		
+    root = sqrt(num);
+    x = 2;
+    if (num % x) {
+      x = 3;
+      while ((num % x) && ((x += 2) < root)) {}
+    }
+    
     x = (root < x) ? num : x;
-		factors.push(x);
-		doLoop = (x !== num);
-		num /= x;
-	}
+    factors.push(x);
+    doLoop = (x !== num);
+    num /= x;
+  }
 
-	return factors;
+  return factors;
 };
 
 /**
@@ -1837,9 +1819,65 @@ prime.sieve = function (n) {
   return result;
 };
 
-});
+/**
+ * Determine if two numbers are coprime.
+ *
+ * @param {Number} number.
+ * @param {Number} number.
+ * @return {Boolean} whether the values are coprime or not.
+ */
+prime.coprime = function (a, b) {
+  return basic.gcd(a, b) === 1;
+};
 
-require.define("/numbers/statistic.js",function(require,module,exports,__dirname,__filename,process,global){/**
+/**
+ * Determine if a number is a perfect power.
+ * Please note that this method does not find the minimal value of k where
+ * m^k = n
+ * http://en.wikipedia.org/wiki/Perfect_power
+ *
+ * @param {Number} value in question
+ * @return {Array|Boolean} [m, k] if it is a perfect power, false otherwise
+ */
+prime.getPerfectPower = function(n) {
+  var test = prime.getPrimePower(n);
+  if (test && test[1] > 1) return test;
+  return false;
+};
+
+/**
+ * Determine if a number is a prime power and return the prime and the power.
+ * http://en.wikipedia.org/wiki/Prime_power
+ *
+ * @param {Number} value in question
+ * @return {Array|Boolean}  if it is a prime power, return [prime, power].
+ */
+prime.getPrimePower = function(n) {
+  if (n < 2) return false;
+  if (prime.millerRabin(n)) return [n, 1]; 
+  if (n % 2 === 0) return [2, n.toString(2).length - 1];
+
+  var factors = prime.factorization(n);
+
+  if (!factors) return false;
+  
+  var len = factors.length;
+  
+  for (var i = 0; i < len; i++) {
+    var t = 0, p = 0;
+
+    while (t <= n) {
+      t = Math.pow(factors[i], p);
+      if (t / n === 1) return [factors[i], p];
+      p++; 
+    }
+  }
+
+  return false;
+};
+
+},{"./basic":2}],9:[function(require,module,exports){
+/**
  * statistic.js
  * http://github.com/sjkaliski/numbers.js
  *
@@ -2125,142 +2163,5 @@ statistic.linearRegression = function (arrX, arrY) {
   }
 };
 
-});
-
-require.define("/numbers/generators.js",function(require,module,exports,__dirname,__filename,process,global){/**
- * generators.js
- * http://github.com/sjkaliski/numbers.js
- *
- * Copyright 2012 Stephen Kaliski, Kartik Talwar
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
-var generate = exports;
-
-/**
- * Fast Fibonacci Implementation
- *
- * @param {Number} number to calculate
- * @return {Number} nth fibonacci number
- */
-generate.fibonacci = function (n) {
-  // Adapted from
-  // http://bosker.wordpress.com/2011/04/29/the-worst-algorithm-in-the-world/
-
-  var bitSystem = function(n) {
-    var bit, bits, n;
-    bits = [];
-    while (n > 0) {
-      bit = (n < 2) ? n : n % 2;
-      n = Math.floor(n / 2);
-      bits.push(bit);
-    }
-    return bits.reverse();
-  };
-
-  var a = 1;
-  var b = 0;
-  var c = 1;
-
-  var system = bitSystem(n);
-
-  for (var i = 0; i < system.length; i++) {
-    var bit = system[i];
-    if (bit) {
-      var temp = [(a + c) * b, (b * b) + (c * c)];
-      a = temp[0];
-      b = temp[1];
-    } else {
-      var temp = [(a * a) + (b * b), (a + c) * b];
-      a = temp[0]
-      b = temp[1];
-    }
-
-    c = a + b;
-  }
-
-  return b;
-};
-
-/**
- * Populate the given array with a Collatz Sequence.
- *
- * @param {Number} first number.
- * @param {Array} arrary to be populated.
- * @return {Array} array populated with Collatz sequence
- */
-generate.collatz = function (n, result) {
-  result.push(n);
-  
-  if (n === 1) {
-    return;
-  } else if (n % 2 === 0) {
-    generate.collatz(n / 2, result);
-  } else {
-    generate.collatz(3 * n + 1, result);
-  }
-};
-
-});
-
-require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
- * numbers.js
- * http://github.com/sjkaliski/numbers.js
- *
- * Copyright 2012 Stephen Kaliski
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
- 
-var numbers = exports;
-
-
-// Expose methods
-numbers.basic = require('./numbers/basic');
-numbers.calculus = require('./numbers/calculus');
-numbers.complex = require('./numbers/complex');
-numbers.dsp = require('./numbers/dsp');
-numbers.matrix = require('./numbers/matrix');
-numbers.prime = require('./numbers/prime');
-numbers.statistic = require('./numbers/statistic');
-numbers.generate = require('./numbers/generators');
-
-/** 
- * @property {Number} EPSILON Epsilon (error bound) to be used 
- * in calculations. Can be set and retrieved freely. 
- * 
- * Given the float-point handling by JavaScript, as well as
- * the numbersal proficiency of some methods, it is common 
- * practice to include a bound by which discrepency between 
- * the "true" answer and the returned value is acceptable.
- *
- * If no value is provided, 0.001 is default.
- */
-numbers.EPSILON = 0.001;
-
-});
-require("/numbers.js");
-})();
+},{"./basic":2}]},{},[1])
+;
