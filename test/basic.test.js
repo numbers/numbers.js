@@ -10,7 +10,7 @@ suite('numbers', function() {
   // to test for `Maximum call stack size exceeded` exception.
   var longList = [], len = 1e7, sign;
   while(0 < len--){ 
-    sign = (Math.random() * 0.5) ? -1 : 1;
+    sign = (Math.random() < 0.5) ? -1 : 1;
     longList.push( sign * Math.floor( Math.random() * 1e5) );
   }
   longList.push(1e6);
