@@ -132,3 +132,7 @@ In no particular order:
 * [Philip I. Thomas aka `philipithomas`](https://github.com/philipithomas)
 * [Brandon Benvie aka `Benvie`](https://github.com/Benvie)
 * [Larry Battle aka `LarryBattle`](https://github.com/LarryBattle)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sjkaliski/numbers.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
