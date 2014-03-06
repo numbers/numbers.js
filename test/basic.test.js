@@ -164,10 +164,30 @@ suite('numbers', function() {
     assert.equal(42, basic.max([1,2,3,42]));
     done();
   });
+  test('max will handle arrays up to 1M in length', function (done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i);
+    }
+    assert.equal(max, basic.max(arr));
+    done();
+  });
 
   // basic.min
   test('min should return the smallest number in an array', function (done) {
     assert.equal(1, basic.min([2,1,3,42]));
+    done();
+  });
+  test('min will handle arrays up to 1M in length', function (done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i);
+    }
+    assert.equal(min, basic.min(arr));
     done();
   });
 
