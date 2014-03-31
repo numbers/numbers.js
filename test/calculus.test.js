@@ -65,4 +65,14 @@ suite('numbers', function() {
     assert.equal(true, numbers.EPSILON > 0.8974706963062777 - calculus.LanczosGamma(1.3));
     done();
   });
+
+  //this test will be added if/when random.js and testing.js is merged
+  /*
+  test('Monte Carlo approximation method should return a reasonable answer', function(done) {
+    f = function(x,y,z) {return x*y*Math.sin(z);}
+    res = calculus.MonteCarlo(f, 10000, [5,10], [1,3], [0, Math.PI/4]);
+    assert.between(res, 43, 45);
+    done();
+  });
+  */
 });
