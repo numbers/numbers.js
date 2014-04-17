@@ -145,4 +145,102 @@ suite('numbers', function() {
     assert.equal(66.05555555555556, res);
     done();
   });
+
+  // variance
+  test('should return variance of small integer array', function(done) {
+    var arr = [1, 2, 3, 4, 5];
+    assert.equal(2, statistic.variance(arr));
+    done();
+  });
+  test('should return variance of large integer array', function(done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i);
+    }
+    assert.equal(83333333333.91629, statistic.variance(arr));
+    done();
+  });
+  test('should return variance of small mixed float/integer array', function(done) {
+    var arr = [1, 2, 3.5, 4, 5.2];
+    assert.equal(2.1984000000000004, statistic.variance(arr));
+    done();
+  });
+  test('should return variance of large float array', function(done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i / max);
+    }
+    assert.equal(0.08333333333324866, statistic.variance(arr));
+    done();
+  });
+
+  // kurtosis
+  test('should return kurtosis of small integer array', function(done) {
+    var arr = [1, 2, 3, 4, 5];
+    assert.equal(-1.3, statistic.kurtosis(arr));
+    done();
+  });
+  test('should return kurtosis of large integer array', function(done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i);
+    }
+    assert.equal(-1.2000000000311277, statistic.kurtosis(arr));
+    done();
+  });
+  test('should return kurtosis of small mixed float/integer array', function(done) {
+    var arr = [1, 2, 3.5, 4, 5.2];
+    assert.equal(-1.2936494504935712, statistic.kurtosis(arr));
+    done();
+  });
+  test('should return kurtosis of large float array', function(done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i / max);
+    }
+    assert.equal(-1.2000000000023185, statistic.kurtosis(arr));
+    done();
+  });
+
+  // skewness
+  test('should return skewness of small integer array', function(done) {
+    var arr = [1, 2, 3, 4, 5];
+    assert.equal(0, statistic.skewness(arr));
+    done();
+  });
+  test('should return skewness of large integer array', function(done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i);
+    }
+    assert.equal(6.034006455131707e-17, statistic.skewness(arr));
+    done();
+  });
+  test('should return skewness of small mixed float/integer array', function(done) {
+    var arr = [1, 2, 3.5, 4, 5.2];
+    assert.equal(-0.23742408534059914, statistic.skewness(arr));
+    done();
+  });
+  test('should return skewness of large float array', function(done) {
+    var arr = [],
+        max = 1000000,
+        min = 1;
+    for (var i = min; i <= max; i++){
+        arr.push(i / max);
+    }
+    assert.equal(-6.931287876937357e-16, statistic.skewness(arr));
+    done();
+  });
+  
+  
 });
