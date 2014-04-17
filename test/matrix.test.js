@@ -468,4 +468,108 @@ suite('numbers', function() {
     done();
   });
 
+  test('should reorder columns', function(done) {
+    var m1 = [[1,2,3],
+              [4,5,6],
+              [7,8,9]];
+
+    var expected1 = [[2,3,1],
+                     [5,6,4],
+                     [8,9,7]];
+
+    var m2 = [[20,3],
+              [17,5]];
+
+    var expected2 = [[3,20],
+                     [5,17]];
+
+    var res1 = matrix.reorderCols(m1, [1,2,0]);
+    var res2 = matrix.reorderCols(m2, [1,0]);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
+  test('should reorder rows', function(done) {
+    var m1 = [[1,2,3],
+              [4,5,6],
+              [7,8,9]];
+
+    var expected1 = [[7,8,9],
+                     [1,2,3],
+                     [4,5,6]]
+
+    var m2 = [[20,3],
+              [17,5]];
+
+    var expected2 = [[17,5],
+                     [20,3]];
+
+    var res1 = matrix.reorderRows(m1, [2,0,1]);
+    var res2 = matrix.reorderRows(m2, [1,0]);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
+  test('should reverse columns and rows', function(done) {
+    var m1 = [[2,5,7],
+              [10,4,6],
+              [0,1,0]];
+
+    var expected1 = [[0,1,0],
+                     [6,4,10],
+                     [7,5,2]];
+
+    var res1 = matrix.reverseRows(matrix.reverseCols(m1));
+
+    assert.deepEqual(res1, expected1);
+    done();
+  });
+
+  test('should produce a matrix of zeros', function(done) {
+    var n1 = 3;
+    var m1 = 2;
+
+    var expected1 = [[0,0],
+                     [0,0],
+                     [0,0]];
+
+    var res1 = matrix.zeros(n1,m1);
+
+    assert.deepEqual(res1, expected1);
+    done();
+  });
+
+  test('should get a column', function(done) {
+    var m1 = [[10,2,5],
+              [5,2,42],
+              [7,6,4]];
+
+    var expected1 = [5,42,4];
+
+    var res1 = matrix.getCol(m1, 2);
+
+    assert.deepEqual(res1, expected1);
+    done();
+  });
+
+  test('should create a zigzag matrix', function(done) {
+    var n1 = 4;
+    var corner1 = 'TL';
+    var dir1 = 'V';
+
+    var expected1 = [[1,3,4,10],
+                     [2,5,9,11],
+                     [6,8,12,15],
+                     [7,13,14,16]];
+
+    var res1 = matrix.zigzag(n1, corner1, dir1);
+
+    assert.deepEqual(res1, expected1);
+    done();
+  });
+
 });
