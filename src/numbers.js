@@ -986,6 +986,7 @@ numbers.matrix = require('./numbers/matrix');
 numbers.prime = require('./numbers/prime');
 numbers.statistic = require('./numbers/statistic');
 numbers.generate = require('./numbers/generators');
+numbers.generate = require('./numbers/odes');
 
 /** 
  * @property {Number} EPSILON Epsilon (error bound) to be used 
@@ -2057,10 +2058,8 @@ matrix.zigzag = function(n, point, dir) {
  * @return {Number} trace
  */
 matrix.trace = function(M) {
-  if ((M.length <= 0) || (M[0].length <= 0)) {
+  if (matrix.isSquare(M)) {
     throw new Error('The matrix must be at least 1x1.');
-  } else if (M.length !== M[0].length) {
-    throw new Error('The matrix must be square.');
   }
 
   var result = 0;
@@ -2081,8 +2080,8 @@ matrix.outer = function(vA, vB) {
   if (vA.length !== vB.length) {
     throw new Error('Vectors must be of the same length.');
   }
-  return vA.map(function(x,i) {
-    return vB.map(function(y,j) {
+  return vA.map(function(x, i) {
+    return vB.map(function(y, j) {
       return vA[i]*vB[j];
     });
   });
@@ -2634,7 +2633,7 @@ require.define("/numbers/odes.js",function(require,module,exports,__dirname,__fi
  * limitations under the License.
  */
 
-var Matrix = require('./matrix');
+var matrix = require('./matrix');
 var odes = exports;
 
 /**
@@ -2648,7 +2647,7 @@ var odes = exports;
  * @param {Function/Array} derivative function(s)
  * @return {Array} new state
  */
-odes.EulerStep = function(h,t0,v0,F) {
+odes.EulerStep = function(h, t0, v0, F) {
   return F.map(function(f) {
     //evaluates x'(t0,x0,...), y'(t0,x0,...)
     return f.apply(null, [t0].concat(v0));
@@ -2669,16 +2668,16 @@ odes.EulerStep = function(h,t0,v0,F) {
  * @param {Function/Array} derivative function(s)
  * @return {Array} new state
  */
-odes.midpointStep = function(h,t0,v0,F) {
+odes.midpointStep = function(h, t0, v0, F) {
   var halfstep = F.map(function(f) {
     return f.apply(null, [t0].concat(v0));
-  }).map(function(f,i) {
+  }).map(function(f, i) {
     return v0[i] + (h/2)*f;
   });
 
   return F.map(function(f) {
     return f.apply(null, [t0+(h/2)].concat(halfstep));
-  }).map(function(f,i) {
+  }).map(function(f, i) {
     return v0[i] + h*f;
   });
 }
@@ -2694,8 +2693,8 @@ odes.midpointStep = function(h,t0,v0,F) {
  * @param {Function/Array} derivative function(s)
  * @return {Array} new state
  */
- odes.HeunStep = function(h,t0,v0,F) {
-  var v_temp = odes.EulerStep(h,t0,v0,F);
+ odes.HeunStep = function(h, t0, v0, F) {
+  var v_temp = odes.EulerStep(h, t0, v0, F);
 
   var term1 = F.map(function(f) {
     return f.apply(null, [t0].concat(v0));
@@ -2704,7 +2703,7 @@ odes.midpointStep = function(h,t0,v0,F) {
     return f.apply(null, [t0+h].concat(v_temp));
   });
 
-  return v0.map(function(v,i) {
+  return v0.map(function(v, i) {
     return v + (h/2)*(term1[i] + term2[i]);
   });
  }
@@ -2720,12 +2719,12 @@ odes.midpointStep = function(h,t0,v0,F) {
  * @param {Function/Array} derivative function(s)
  * @return {Array} new state
  */
-odes.rk4Step = function(h,t0,v0,F) {
+odes.RK4Step = function(h, t0, v0, F) {
   var k1 = F.map(function(f) {
     return f.apply(null, [t0].concat(v0));
   });
 
-  var k2_v0 = v0.map(function(v,i) {
+  var k2_v0 = v0.map(function(v, i) {
     return v + (h/2)*k1[i];
   });
 
@@ -2741,7 +2740,7 @@ odes.rk4Step = function(h,t0,v0,F) {
     return f.apply(null, [t0+h/2].concat(k3_v0));
   });
 
-  var k4_v0 = v0.map(function(v,i) {
+  var k4_v0 = v0.map(function(v, i) {
     return v + h*k3[i];
   });
 
@@ -2749,7 +2748,7 @@ odes.rk4Step = function(h,t0,v0,F) {
     return f.apply(null, [t0+h].concat(k4_v0));
   });
 
-  return v0.map(function(v,i) {
+  return v0.map(function(v, i) {
     return v0[i] + (h/6)*(k1[i] + 2*k2[i] + 2*k3[i] + k4[i]);
   });
 }
@@ -2771,10 +2770,13 @@ odes.rk4Step = function(h,t0,v0,F) {
  * @param {Array} other initial condition(s)
  * @param {Function/Array} derivative function(s)
  * @param {String} method
- * @return {Array} new state
+ * @return {Array} states of system in [t0,tf]
  */
-odes.solverFOSS = function(t0,tf,N,v0,F,stepper) {
-  solvers = {euler: odes.EulerStep, rk4: odes.rk4Step, heun: odes.HeunStep, midpoint: odes.midpointStep};
+odes.solverFOSS = function(t0, tf, N, v0, F, stepper) {
+  solvers = { euler: odes.EulerStep,
+              rk4: odes.RK4Step, 
+              heun: odes.HeunStep, 
+              midpoint: odes.midpointStep };
 
   if ((typeof N !== 'number') || (N <= 0)) {
     throw new Error('The number of steps must be a positive integer.');
@@ -2799,7 +2801,7 @@ odes.solverFOSS = function(t0,tf,N,v0,F,stepper) {
     T[i] = T[i-1] + h;
     V[i] = solvers[stepper](h, T[i-1], V[i-1], F);
   }
-  return [T].concat(Matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
+  return [T].concat(matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
 }
 
 /**
@@ -2814,7 +2816,7 @@ odes.solverFOSS = function(t0,tf,N,v0,F,stepper) {
  * @param {Function/Array} derivative function(s)
  * @return {Array} new state
  */
-odes.ABStep = function(h,T0,V0,F) {
+odes.ABStep = function(h, T0, V0, F) {
   var term1 = F.map(function(f) {
     return f.apply(null, [T0[1]].concat(V0[1]));
   });
@@ -2846,10 +2848,19 @@ odes.ABStep = function(h,T0,V0,F) {
  * @param {Array} initial conditions (v0,v1) or (v1,null)
  * @param {Function/Array} derivative function(s)
  * @param {String} method
- * @return {Array} new state
+ * @return {Array} states of system in [t0,tf]
  */
-odes.solverFOMS = function(Ti,tf,N,Vi,F,stepper) {
+odes.solverFOMS = function(Ti, tf, N, Vi, F, stepper) {
   solvers = {ab: odes.ABStep}
+  if ((typeof N !== 'number') || (N <= 0)) {
+    throw new Error('The number of steps must be a positive integer.');
+  }
+  if (typeof F === 'function') {
+    F = [F];
+  } else if (!(Array.isArray(F))) {
+    throw new Error('The derivative(s) must be a function or an array of function(s).');
+  }
+
   N = Math.ceil(N);
   var t0 = Ti[0],
       t1 = Ti[1],
@@ -2860,20 +2871,12 @@ odes.solverFOMS = function(Ti,tf,N,Vi,F,stepper) {
   if (t1 === null) {
     t1 = t0+h;
   }
-  if ((typeof N !== 'number') || (N <= 0)) {
-    throw new Error('The number of steps must be a positive integer.');
-  }
   if (!(Array.isArray(v0))) {
     throw new Error('The first set of initial condition(s) must be an array of number(s).');
   }
-  if (typeof F === 'function') {
-    F = [F];
-  } else if (!(Array.isArray(v0))) {
-    throw new Error('The derivative(s) must be a function or an array of function(s).');
-  }
   if (v1 === null) {
     if (stepper === 'ab') {
-      v1 = odes.HeunStep(h,t0,v0,F);
+      v1 = odes.HeunStep(h, t0, v0, F);
     }
   } else if (!(Array.isArray(v1))) {
     throw new Error('The second set of initial condition(s) must be a number, an array of number(s), or null.');
@@ -2890,7 +2893,7 @@ odes.solverFOMS = function(Ti,tf,N,Vi,F,stepper) {
     T[i] = T[i-1] + h;
     V[i] = solvers[stepper](h, [T[i-2],T[i-1]], [V[i-2],V[i-1]], F);
   }
-  return [T].concat(Matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
+  return [T].concat(matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
 }
 
 });
