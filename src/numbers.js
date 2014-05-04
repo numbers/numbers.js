@@ -986,6 +986,7 @@ numbers.matrix = require('./numbers/matrix');
 numbers.prime = require('./numbers/prime');
 numbers.statistic = require('./numbers/statistic');
 numbers.generate = require('./numbers/generators');
+numbers.generate = require('./numbers/odes');
 
 /** 
  * @property {Number} EPSILON Epsilon (error bound) to be used 
@@ -1688,6 +1689,404 @@ matrix.rowAddMultiple = function (m, from, to, scale){
   return result;
 };
 
+/**
+ * Gauss-Jordan Elimination
+ *
+ * @param {Array} matrix.
+ * @param {Number} epsilon.
+ * @return {Array} RREF matrix.
+ */
+matrix.GaussJordanEliminate = function(m, epsilon) {
+  // Translated from:
+  // http://elonen.iki.fi/code/misc-notes/python-gaussj/index.html
+  var eps = (typeof epsilon == 'undefined') ? 1e-10 : epsilon;
+
+  var h = m.length;
+  var w = m[0].length;
+  var y = -1;
+  var y2, x;
+
+  while (++y < h) {
+    // Pivot.
+    var maxrow = y;
+    y2 = y;
+    while (++y2 < h) {
+      if(Math.abs(m[y2][y]) > Math.abs(m[maxrow][y]))
+        maxrow = y2;
+    }
+    var tmp = m[y];
+    m[y] = m[maxrow];
+    m[maxrow] = tmp;
+
+    // Singular
+    if(Math.abs(m[y][y]) <= eps) {
+      return m;
+    }
+
+    // Eliminate column
+    y2 = y;
+    while (++y2 < h) {
+      var c = m[y2][y] / m[y][y];
+      x = y - 1;
+      while (++x < w) {
+        m[y2][x] -= m[y][x] * c;
+      }
+    }
+  }
+
+  // Backsubstitute.
+  y = h;
+  while (--y >= 0) {
+    var c = m[y][y];
+    y2 = -1;
+    while (++y2 < y) {
+      x = w;
+      while (--x >= y) {
+        m[y2][x] -=  m[y][x] * m[y2][y] / c;
+      }
+    }
+    m[y][y] /= c;
+
+    // Normalize row
+    x = h - 1;
+    while (++x < w) {
+      m[y][x] /= c;
+    }
+  }
+
+  return m;
+};
+
+/**
+ * Alias to Gauss-Jordan Elimination
+ *
+ * @param {Array} matrix.
+ * @param {Number} epsilon.
+ * @return {Array} RREF matrix.
+ */
+matrix.rowReduce = function(m, epsilon) {
+  return matrix.GaussJordanEliminate(m, epsilon);
+}
+
+/**
+ * nxn matrix inversion
+ *
+ * @param {Array} matrix.
+ * @return {Array} inverted matrix.
+ */
+matrix.inverse = function(m) {
+  var n = m.length;
+
+  if (n === m[0].length) {
+    var identity = matrix.identity(n);
+
+    // AI
+    for(var i=0; i<n; i++) {
+      m[i] = m[i].concat(identity[i]);
+    }
+
+    // inv(IA)
+    m = matrix.GaussJordanEliminate(m);
+
+    // inv(A)
+    for(var i=0; i<n; i++) {
+      m[i] = m[i].slice(n);
+    }
+
+    return m;
+  } else {
+    throw new Error('The given matrix must be square');
+  }
+}
+
+/**
+ * Get a column of a matrix as a vector.
+ *
+ * @param {Array} matrix
+ * @param {Int} column number
+ * @return {Array} column
+ */
+matrix.getCol = function(M, n) {
+  var result = [];
+  if (n < 0) {
+    throw new Error('The specified column must be a positive integer.');
+  } else if (n >= M[0].length) {
+    throw new Error('The specified column must be between 0 and the number of columns - 1.');
+  }
+  for (var i=0; i<M[0].length; i++) {
+    result.push(M[i][n]);
+  }
+  return result;
+}
+
+/**
+ * Reorder the rows of a matrix based off an array of numbers.
+ *
+ * @param {Array} matrix
+ * @param {Array} desired re-ordering
+ * @return {Array} reordered matrix
+ */
+matrix.reorderRows = function(M, L) {
+  var result = [];
+  if (L === undefined) {
+    throw new Error('Please enter a desired reordering array.');
+  } else if (L.length !== M.length) {
+    throw new Error ('The reordered matrix must have the same number of rows as the original matrix.');
+  }
+  for (var i=0; i<L.length; i++) {
+    if (L[i] < 0) {
+      throw new Error('The desired order of the rows must be positive integers.');
+    } else if (L[i] >= L.length) {
+      throw new Error('The desired order of the rows must start at 0 and end at the number of rows - 1.');
+    } else {  
+      result.push(M[L[i]]);
+    }
+  }
+  return result;
+}
+
+/**
+ * Reorder the columns of a matrix based off an array of numbers.
+ *
+ * @param {Array} matrix
+ * @param {Array} desired re-ordering
+ * @return {Array} reordered matrix
+ */
+matrix.reorderCols = function(M, L) {
+  var result = [];
+  if (L === undefined) {
+    throw new Error('Please enter a desired reordering array.');
+  } else if (L.length !== M[0].length) {
+    throw new Error('The reordered matrix must have the same number of columns as the original matrix.');
+  }
+  for (var i=0; i<L.length; i++) {
+    if (L[i] < 0) {
+      throw new Error('The desired order of the rows must be positive integers.');
+    } else if (L[i] >= L.length) {
+      throw new Error('The desired order of the rows must start at 0 and end at the number of rows - 1.');
+    } else {
+      result.push(matrix.getCol(M, L[i]) );
+    }
+  }
+  return matrix.transpose(result);
+}
+
+/**
+ * Reverse the rows of a matrix.
+ *
+ * @param {Array} matrix
+ * @return {Array} reversed matrix
+ */
+matrix.reverseRows = function(M) {
+    var L = [];
+    for (var i=M.length-1; i>-1; i--) {
+        L.push(i);
+    }
+    return matrix.reorderRows(M,L);
+}
+
+/**
+ * Reverse the columns of a matrix.
+ *
+ * @param {Array} matrix
+ * @return {Array} reversed matrix
+ */
+matrix.reverseCols = function(M) {
+    var L = [];
+    for (var i=M.length-1; i>-1; i--) {
+        L.push(i);
+    }
+    return matrix.reorderCols(M,L);
+}
+
+/**
+ * Create a n x m matrix of zeros.
+ *
+ * @param {Int} number of rows
+ * @param {Int} number of columns
+ * @return {Array} matrix
+ */
+matrix.zeros = function(n,m) {
+  var M = [];
+  if ((n < 1) || (m < 1)) {
+    throw new Error('Please enter the matrix dimensions as positive integers.')
+  }
+  n = Math.ceil(n);
+  m = Math.ceil(m);
+  for (var i=0; i<n; i++) {
+    var empty = [];
+    for (var j=0; j<m; j++) {
+      empty.push(0);
+    }
+    M.push(empty);
+  }
+  return M;
+}
+
+/**
+ * Create a zigzag matrix. point represents the starting corner,
+ * dir represents which direction to begin moving in. There are
+ * 8 possible permutations for this. Rounds dimension upwards.
+ *
+ * @param {Int} size of (square) matrix
+ * @param {String} corner (TL,TR,BL,BR)
+ * @param {String} direction (V,H)
+ * @return {Array} zigzag matrix.
+ */
+matrix.zigzag = function(n, point, dir) {
+  if (n <= 1) {
+    throw new Error('Matrix size must be at least 2x2.');
+  }
+  n = Math.ceil(n);
+  var mat = matrix.zeros(n,n);
+
+  //create one kind of permutation - all other permutations can be 
+  //created from this particular permutation through transformations
+  var BRH = function(M) { //starting at bottom right, moving horizontally
+    var jump = false,
+        tl = n*n, 
+        br = 1, 
+        inc = 1;
+    M[0][0] = tl;
+    M[n-1][n-1] = br;
+
+    for (var i=1; i<n; i++) {
+      //generate top/bottom row
+      if (jump) {
+        tl -= 4*inc;
+        br += 4*inc;
+        inc++;
+      } else {
+        tl--;
+        br++;
+      }
+
+      M[0][i] = tl;
+      M[n-1][n-1-i] = br;
+      jump = !jump;
+    }
+
+    var dec = true;
+    for (var i=1; i<n; i++) {
+      //iterate diagonally from top row
+      var row = 0,
+          col = i, 
+          val = M[row][col];
+
+      for (var j=1; j<i+1;j++) {
+        if (dec) {
+          val -= 1;
+        } else {
+          val += 1;
+        }
+        row++;
+        col--;
+        M[row][col] = val;
+      }
+        dec = !dec;
+    }
+
+    if (n%2 ==0) {
+      dec = true;
+    } else {
+      dec = false;
+    }
+    for (var i=1; i<n-1; i++) {
+      //iterate diagonally from bottom row
+      row = n-1;
+      col = i;
+      val = M[row][col];
+
+      for (var j=1; j<n-i; j++) {
+        if (dec) {
+          val--;
+        } else {
+          val++;
+        }
+        row--;
+        col++;
+        M[row][col] = val;
+      }
+      dec = !dec;
+    }
+    return M;
+  }
+
+  var BRV = function(M) {//starting at bottom right, moving vertically
+    return matrix.transpose(BRH(M));
+  }
+
+  var BLH = function(M) {//starting at bottom left, moving horizontally
+    return matrix.reverseCols(BRH(M));
+  }
+
+  var BLV = function(M) {//starting at bottom left, moving vertically
+    return matrix.reverseRows(TLV(BLH(M)));
+  }
+
+  var TRH = function(M) {//starting at top right, moving horizontally
+    return matrix.reverseRows(BRH(M));
+  }
+
+  var TRV = function(M) {//starting at top right, moving vertically
+    return matrix.reverseRows(BRV(M));
+  }
+
+  var TLH = function(M) {//starting at top left, moving horizontally
+    return matrix.reverseCols(matrix.reverseRows(BRH(M)));
+  }
+
+  var TLV = function(M) {//starting at top left, moving vertically
+    return matrix.transpose(TLH(M));
+  }
+
+  if ((point === 'BR') && (dir === 'H')) {return (BRH(mat));}
+  else if ((point === 'BR') && (dir === 'V')) {return (BRV(mat));}
+  else if ((point === 'BL') && (dir === 'H')) {return (BLH(mat));}
+  else if ((point === 'BL') && (dir === 'V')) {return (BLV(mat));}
+  else if ((point === 'TR') && (dir === 'H')) {return (TRH(mat));}
+  else if ((point === 'TR') && (dir === 'V')) {return (TRV(mat));}
+  else if ((point === 'TL') && (dir === 'H')) {return (TLH(mat));}
+  else if ((point === 'TL') && (dir === 'V')) {return (TLV(mat));}
+  else {throw new Error('Please enter the direction (V,H) and corner (BR,BL,TR,TL) correctly.');}
+}
+
+/**
+ * Calculate the trace of a matrix.
+ *
+ * @param {Array} matrix
+ * @return {Number} trace
+ */
+matrix.trace = function(M) {
+  if (matrix.isSquare(M)) {
+    throw new Error('The matrix must be at least 1x1.');
+  }
+
+  var result = 0;
+  for (var i=0; i<M.length; i++) {
+    result += M[i][i];
+  }
+  return result;
+}
+
+/**
+ * Calculate the outer product of two vectors.
+ *
+ * @param {Array} first vector
+ * @param {Array} second vector
+ * @return {Array} outer product
+ */
+matrix.outer = function(vA, vB) {
+  if (vA.length !== vB.length) {
+    throw new Error('Vectors must be of the same length.');
+  }
+  return vA.map(function(x, i) {
+    return vB.map(function(y, j) {
+      return vA[i]*vB[j];
+    });
+  });
+}
+
 });
 
 require.define("/numbers/prime.js",function(require,module,exports,__dirname,__filename,process,global){/**
@@ -2215,6 +2614,290 @@ generate.collatz = function (n, result) {
 
 });
 
+require.define("/numbers/odes.js",function(require,module,exports,__dirname,__filename,process,global){/**
+ * odes.js
+ * http://github.com/sjkaliski/numbers.js
+ *
+ * Copyright 2012 Stephen Kaliski, Dakota St. Laurent
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var matrix = require('./matrix');
+var odes = exports;
+
+/**
+ * Euler's approximation to solving v'(t) = F(t,v(t)). Calculates the next spatial 
+ * part of the state, v, given the current state (t0,v0). This is a single-step 
+ * first-order method, and is first-order accurate.
+
+ * @param {Number} step size
+ * @param {Number} initial time
+ * @param {Number/Array} other initial condition(s)
+ * @param {Function/Array} derivative function(s)
+ * @return {Array} new state
+ */
+odes.EulerStep = function(h, t0, v0, F) {
+  return F.map(function(f) {
+    //evaluates x'(t0,x0,...), y'(t0,x0,...)
+    return f.apply(null, [t0].concat(v0));
+  }).map(function(f, i) { //
+    //evaluates v0 + h*v'(t0,x0,...)
+    return v0[i] + h*f;
+  });
+}
+
+/**
+ * A variation of Euler's method - takes a halfstep using Euler's method, and then a 
+ * fullstep with the original ICs but with the halfstep derivative evaluations. This 
+ * is a single-step first-order method, and is second-order accurate.
+ *
+ * @param {Number} step size
+ * @param {Number} initial time
+ * @param {Number/Array} other initial condition(s)
+ * @param {Function/Array} derivative function(s)
+ * @return {Array} new state
+ */
+odes.midpointStep = function(h, t0, v0, F) {
+  var halfstep = F.map(function(f) {
+    return f.apply(null, [t0].concat(v0));
+  }).map(function(f, i) {
+    return v0[i] + (h/2)*f;
+  });
+
+  return F.map(function(f) {
+    return f.apply(null, [t0+(h/2)].concat(halfstep));
+  }).map(function(f, i) {
+    return v0[i] + h*f;
+  });
+}
+
+/**
+ * Heun's approximation to solving v'(t) = F(t,v(t)). Calculates the next spatial 
+ * part of the state, v, given the current state (t0,v0). This is a single-step 
+ * first-order method, and is second-order accurate.
+ *
+ * @param {Number} step size
+ * @param {Number} initial time
+ * @param {Number/Array} other initial condition(s)
+ * @param {Function/Array} derivative function(s)
+ * @return {Array} new state
+ */
+ odes.HeunStep = function(h, t0, v0, F) {
+  var v_temp = odes.EulerStep(h, t0, v0, F);
+
+  var term1 = F.map(function(f) {
+    return f.apply(null, [t0].concat(v0));
+  });
+  var term2 = F.map(function(f) {
+    return f.apply(null, [t0+h].concat(v_temp));
+  });
+
+  return v0.map(function(v, i) {
+    return v + (h/2)*(term1[i] + term2[i]);
+  });
+ }
+
+/**
+ * The classical fourth-order Runge-Kutta method for solving v'(t) = F(t,v(t)).
+ * Calculates the next spatial part of the state, v, given the current state 
+ * (t0,v0).This is a single-step first-order method, and is fourth-order accurate.
+ *
+ * @param {Number} step size
+ * @param {Number} initial time
+ * @param {Number/Array} other initial condition(s)
+ * @param {Function/Array} derivative function(s)
+ * @return {Array} new state
+ */
+odes.RK4Step = function(h, t0, v0, F) {
+  var k1 = F.map(function(f) {
+    return f.apply(null, [t0].concat(v0));
+  });
+
+  var k2_v0 = v0.map(function(v, i) {
+    return v + (h/2)*k1[i];
+  });
+
+  var k2 = F.map(function(f) {
+    return f.apply(null, [t0+h/2].concat(k2_v0));
+  });
+
+  var k3_v0 = v0.map(function(v, i) {
+    return v + (h/2)*k2[i];
+  });
+
+  var k3 = F.map(function(f) {
+    return f.apply(null, [t0+h/2].concat(k3_v0));
+  });
+
+  var k4_v0 = v0.map(function(v, i) {
+    return v + h*k3[i];
+  });
+
+  var k4 = F.map(function(f) {
+    return f.apply(null, [t0+h].concat(k4_v0));
+  });
+
+  return v0.map(function(v, i) {
+    return v0[i] + (h/6)*(k1[i] + 2*k2[i] + 2*k3[i] + k4[i]);
+  });
+}
+
+/**
+ * Numerically solves v'(t) = F(t,v(t)) with a specified single-step method;
+ * a first-order single-step (FOSS). Simply runs the method's corresponding 
+ * step function N times. Returns (t,v(t)) for [t0,tf] with N+1  evenly 
+ * spaced points. Current available methods: euler, midpoint, heun, rk4
+ *
+ * It should be noted that every derivative function (F or elements of F) must 
+ * be a function of (t,x,...), i.e. both time AND all spatial coordinates, even 
+ * if the mathematical functions are not dependent on it. Furthermore, the time 
+ * coordinate must come before the spatial coordinates.
+ * 
+ * @param {Number} initial time
+ * @param {Number} final time
+ * @param {Int} number of steps
+ * @param {Array} other initial condition(s)
+ * @param {Function/Array} derivative function(s)
+ * @param {String} method
+ * @return {Array} states of system in [t0,tf]
+ */
+odes.solverFOSS = function(t0, tf, N, v0, F, stepper) {
+  solvers = { euler: odes.EulerStep,
+              rk4: odes.RK4Step, 
+              heun: odes.HeunStep, 
+              midpoint: odes.midpointStep };
+
+  if ((typeof N !== 'number') || (N <= 0)) {
+    throw new Error('The number of steps must be a positive integer.');
+  }
+  if (!(Array.isArray(v0))) {
+    throw new Error('The initial condition(s) must be an array of number(s).');
+  }
+  if (typeof F === 'function') {
+    F = [F];
+  } else if (!(Array.isArray(v0))) {
+    throw new Error('The derivative(s) must be a function or an array of function(s).');
+  }
+
+  N = Math.ceil(N);
+  var h = (tf - t0)/N;
+  var V = new Array(N+1);
+  var T = new Array(N+1);
+  V[0] = v0; //of form [[x0,y0,...],[x1,y1,...],...]
+  T[0] = t0;
+
+  for (var i=1; i<N+1; i++) {
+    T[i] = T[i-1] + h;
+    V[i] = solvers[stepper](h, T[i-1], V[i-1], F);
+  }
+  return [T].concat(matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
+}
+
+/**
+ * The Adams-Bashforth method for solving v'(t) = F(t,v(t)). Calculates the next 
+ * spatial part of the state, v, given TWO states, (t0,v0) and (t1,v1). This is 
+ * a two-step first-order method, and is second-order accurate. If only (t0,v0)
+ * are given in odes.solverFOMS, then (t1,v1) is approximated via Heun's method.
+ *
+ * @param {Number} step size
+ * @param {Array} initial times (t0,t1)
+ * @param {Array} other initial condition(s)
+ * @param {Function/Array} derivative function(s)
+ * @return {Array} new state
+ */
+odes.ABStep = function(h, T0, V0, F) {
+  var term1 = F.map(function(f) {
+    return f.apply(null, [T0[1]].concat(V0[1]));
+  });
+
+  var term2 = F.map(function(f) {
+    return f.apply(null, [T0[0]].concat(V0[0]));
+  });
+
+  return V0[1].map(function(v1, i) {
+    return v1 + h*(1.5*term1[i] - 0.5*term2[i]);
+  });
+}
+
+/**
+ * Numerically solves v'(t) = F(t,v(t)) with a specified multi-step method;
+ * a first-order multi-step (FOMS). Simply runs the method's corresponding 
+ * step function N times. Returns (t,v(t)) for [t0,tf] with N+1 evenly 
+ * spaced points. Current available methods: ab (adam-bashforth)
+ *
+ * The same conditions apply for the derivative functions; see odes.solverFOSS.
+ * This solver requires two states: (t0,v0) and (t1,v1). If t1 is not specified 
+ * (null) it is calculated by t0 + h. If v1 is not known (null), then it is 
+ * approximated via an appropriate method (one of the same accuracy as the 
+ * method of choice).
+ * 
+ * @param {Array} initial times (t0,t1)
+ * @param {Number} final time
+ * @param {Int} number of steps
+ * @param {Array} initial conditions (v0,v1) or (v1,null)
+ * @param {Function/Array} derivative function(s)
+ * @param {String} method
+ * @return {Array} states of system in [t0,tf]
+ */
+odes.solverFOMS = function(Ti, tf, N, Vi, F, stepper) {
+  solvers = {ab: odes.ABStep}
+  if ((typeof N !== 'number') || (N <= 0)) {
+    throw new Error('The number of steps must be a positive integer.');
+  }
+  if (typeof F === 'function') {
+    F = [F];
+  } else if (!(Array.isArray(F))) {
+    throw new Error('The derivative(s) must be a function or an array of function(s).');
+  }
+
+  N = Math.ceil(N);
+  var t0 = Ti[0],
+      t1 = Ti[1],
+      v0 = Vi[0],
+      v1 = Vi[1];
+      h = (tf - t0)/N;
+
+  if (t1 === null) {
+    t1 = t0+h;
+  }
+  if (!(Array.isArray(v0))) {
+    throw new Error('The first set of initial condition(s) must be an array of number(s).');
+  }
+  if (v1 === null) {
+    if (stepper === 'ab') {
+      v1 = odes.HeunStep(h, t0, v0, F);
+    }
+  } else if (!(Array.isArray(v1))) {
+    throw new Error('The second set of initial condition(s) must be a number, an array of number(s), or null.');
+  }
+
+  var V = new Array(N+1),
+      T = new Array(N+1);
+  V[0] = v0; //of form [[x0,y0,...],[x1,y1,...],...]
+  V[1] = v1;
+  T[0] = t0;
+  T[1] = t1;
+
+  for (var i=2; i<N+1; i++) {
+    T[i] = T[i-1] + h;
+    V[i] = solvers[stepper](h, [T[i-2],T[i-1]], [V[i-2],V[i-1]], F);
+  }
+  return [T].concat(matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
+}
+
+});
+
 require.define("/numbers.js",function(require,module,exports,__dirname,__filename,process,global){/**
  * numbers.js
  * http://github.com/sjkaliski/numbers.js
@@ -2247,6 +2930,7 @@ numbers.matrix = require('./numbers/matrix');
 numbers.prime = require('./numbers/prime');
 numbers.statistic = require('./numbers/statistic');
 numbers.generate = require('./numbers/generators');
+numbers.odes = require('./numbers/odes');
 
 /** 
  * @property {Number} EPSILON Epsilon (error bound) to be used 
