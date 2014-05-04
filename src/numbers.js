@@ -2768,7 +2768,7 @@ odes.rk4Step = function(h,t0,v0,F) {
  * @param {Number} initial time
  * @param {Number} final time
  * @param {Int} number of steps
- * @param {Number/Array} other initial condition(s)
+ * @param {Array} other initial condition(s)
  * @param {Function/Array} derivative function(s)
  * @param {String} method
  * @return {Array} new state
@@ -2779,10 +2779,8 @@ odes.solverFOSS = function(t0,tf,N,v0,F,stepper) {
   if ((typeof N !== 'number') || (N <= 0)) {
     throw new Error('The number of steps must be a positive integer.');
   }
-  if (typeof v0 === 'number') {
-    v0 = [v0];
-  } else if (!(Array.isArray(v0))) {
-    throw new Error('The initial condition(s) must be a number or an array of number(s).');
+  if (!(Array.isArray(v0))) {
+    throw new Error('The initial condition(s) must be an array of number(s).');
   }
   if (typeof F === 'function') {
     F = [F];
@@ -2800,6 +2798,97 @@ odes.solverFOSS = function(t0,tf,N,v0,F,stepper) {
   for (var i=1; i<N+1; i++) {
     T[i] = T[i-1] + h;
     V[i] = solvers[stepper](h, T[i-1], V[i-1], F);
+  }
+  return [T].concat(Matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
+}
+
+/**
+ * The Adams-Bashforth method for solving v'(t) = F(t,v(t)). Calculates the next 
+ * spatial part of the state, v, given TWO states, (t0,v0) and (t1,v1). This is 
+ * a two-step first-order method, and is second-order accurate. If only (t0,v0)
+ * are given in odes.solverFOMS, then (t1,v1) is approximated via Heun's method.
+ *
+ * @param {Number} step size
+ * @param {Array} initial times (t0,t1)
+ * @param {Array} other initial condition(s)
+ * @param {Function/Array} derivative function(s)
+ * @return {Array} new state
+ */
+odes.ABStep = function(h,T0,V0,F) {
+  var term1 = F.map(function(f) {
+    return f.apply(null, [T0[1]].concat(V0[1]));
+  });
+
+  var term2 = F.map(function(f) {
+    return f.apply(null, [T0[0]].concat(V0[0]));
+  });
+
+  return V0[1].map(function(v1, i) {
+    return v1 + h*(1.5*term1[i] - 0.5*term2[i]);
+  });
+}
+
+/**
+ * Numerically solves v'(t) = F(t,v(t)) with a specified multi-step method;
+ * a first-order multi-step (FOMS). Simply runs the method's corresponding 
+ * step function N times. Returns (t,v(t)) for [t0,tf] with N+1 evenly 
+ * spaced points. Current available methods: ab (adam-bashforth)
+ *
+ * The same conditions apply for the derivative functions; see odes.solverFOSS.
+ * This solver requires two states: (t0,v0) and (t1,v1). If t1 is not specified 
+ * (null) it is calculated by t0 + h. If v1 is not known (null), then it is 
+ * approximated via an appropriate method (one of the same accuracy as the 
+ * method of choice).
+ * 
+ * @param {Array} initial times (t0,t1)
+ * @param {Number} final time
+ * @param {Int} number of steps
+ * @param {Array} initial conditions (v0,v1) or (v1,null)
+ * @param {Function/Array} derivative function(s)
+ * @param {String} method
+ * @return {Array} new state
+ */
+odes.solverFOMS = function(Ti,tf,N,Vi,F,stepper) {
+  solvers = {ab: odes.ABStep}
+  N = Math.ceil(N);
+  var t0 = Ti[0],
+      t1 = Ti[1],
+      v0 = Vi[0],
+      v1 = Vi[1];
+      h = (tf - t0)/N;
+
+  if (t1 === null) {
+    t1 = t0+h;
+  }
+  if ((typeof N !== 'number') || (N <= 0)) {
+    throw new Error('The number of steps must be a positive integer.');
+  }
+  if (!(Array.isArray(v0))) {
+    throw new Error('The first set of initial condition(s) must be an array of number(s).');
+  }
+  if (typeof F === 'function') {
+    F = [F];
+  } else if (!(Array.isArray(v0))) {
+    throw new Error('The derivative(s) must be a function or an array of function(s).');
+  }
+  if (v1 === null) {
+    if (stepper === 'ab') {
+      v1 = odes.HeunStep(h,t0,v0,F);
+    }
+  } else if (!(Array.isArray(v1))) {
+    throw new Error('The second set of initial condition(s) must be a number, an array of number(s), or null.');
+  }
+
+  var V = new Array(N+1),
+      T = new Array(N+1);
+  V[0] = v0; //of form [[x0,y0,...],[x1,y1,...],...]
+  V[1] = v1;
+  T[0] = t0;
+  T[1] = t1;
+
+  for (var i=2; i<N+1; i++) {
+    T[i] = T[i-1] + h;
+    V[i] = solvers[stepper](h, [T[i-2],T[i-1]], [V[i-2],V[i-1]], F);
   }
   return [T].concat(Matrix.transpose(V)); //of form [[t0,t1,...],[x0,x1,...],...]
 }
