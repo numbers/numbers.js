@@ -7,7 +7,7 @@ suite('numbers', function() {
   console.log('\n\n\033[34mTesting Calculus Mathematics\033[0m');
 
   test('pointDiff should return the derivative at a point, provided function', function(done) {
-    var func = function(x) {
+    var func = function (x) {
       return 2 * x + 2;
     };
 
@@ -18,7 +18,7 @@ suite('numbers', function() {
   });
 
   test('riemann should return an estimated definite integral of a function', function(done) {
-    var func = function(x) {
+    var func = function (x) {
       return 2 * Math.pow(x, 2);
     };
 
@@ -29,7 +29,7 @@ suite('numbers', function() {
   });
 
   test('adaptive simpson should return an estimated definite integral of a function', function(done) {
-    var func = function(x) {
+    var func = function (x) {
       return 2 * Math.pow(x, 2);
     };
 
@@ -40,7 +40,7 @@ suite('numbers', function() {
   });
 
   test('limit should return the limit of a function at a given point from left, middle, or right', function(done) {
-    var func = function(x) {
+    var func = function (x) {
       return Math.pow(x, 2) * Math.sin(2 * x);
     };
 
@@ -65,4 +65,14 @@ suite('numbers', function() {
     assert.equal(true, numbers.EPSILON > 0.8974706963062777 - calculus.LanczosGamma(1.3));
     done();
   });
+
+  //this test will be added if/when random.js and testing.js is merged
+  /*
+  test('Monte Carlo approximation method should return a reasonable answer', function(done) {
+    f = function(x,y,z) {return x*y*Math.sin(z);}
+    res = calculus.MonteCarlo(f, 10000, [5,10], [1,3], [0, Math.PI/4]);
+    assert.between(res, 43, 45);
+    done();
+  });
+  */
 });

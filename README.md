@@ -73,11 +73,11 @@ numbers.matrix.transpose(array);
 Numbers also includes some basic prime number analysis.  We can check if a number is prime:
 
 ```javascript
-//basic check
+// basic check
 numbers.prime.simple(number);
 
-//elliptic analysis (good for huge numbers)
-numbers.prime.elliptic(number);
+// Miller-Rabin primality test
+numbers.prime.millerRabin(number);
 ```
 
 The statistics tools include mean, median, mode, standard deviation, random sample generator, correlation, confidence intervals, t-test, chi-square, and more.
@@ -111,8 +111,8 @@ make build
 This will compile the entire library into a single file accessible at public/numbers.js. It will also minify the file into public/numbers.min.js.
 
 ## Core Team
-* Steve Kaliski - [@sjkaliski](http://twitter.com/sjkaliski)
-* David Byrd - [@davidbyrd11](http://twitter.com/davidbyrd11)
+* Steve Kaliski - [@stevekaliski](http://twitter.com/stevekaliski)
+* David Byrd - [@thebyrd](http://twitter.com/thebyrd)
 * Ethan Resnick - [@studip101](http://twitter.com/studip101)
 
 ## Contributors
@@ -132,3 +132,7 @@ In no particular order:
 * [Philip I. Thomas aka `philipithomas`](https://github.com/philipithomas)
 * [Brandon Benvie aka `Benvie`](https://github.com/Benvie)
 * [Larry Battle aka `LarryBattle`](https://github.com/LarryBattle)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sjkaliski/numbers.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

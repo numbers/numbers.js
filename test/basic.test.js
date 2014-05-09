@@ -35,7 +35,7 @@ suite('numbers', function() {
 
   // basic.substraction
   test('subtraction should return the difference of items in an array', function (done) {
-    assert.equal(0, basic.subtraction([0, 1, 2, 3]));
+    assert.equal(2, basic.subtraction([5, 3, 1, -1]));
     done();
   });
 
@@ -53,6 +53,16 @@ suite('numbers', function() {
     assert.throws(
       function() {
         basic.subtraction(["test", 1, 1, 2]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
+  test('subtraction should throw an exception last element is not a number', function (done) {
+    assert.throws(
+      function() {
+        basic.subtraction([1, 1, 2, "test"]);
       },
       /All elements in array must be numbers/
     );
@@ -86,6 +96,16 @@ suite('numbers', function() {
     done();
   });
 
+  test('product should throw an exception when given anything objects other than numbers', function (done) {
+    assert.throws(
+      function() {
+        basic.product(["error", 1, 2]);
+      },
+      /All elements in array must be numbers/
+    );
+    done();
+  });
+
   test('square should return the square of a number', function(done) {
     assert.equal(16, basic.square(4));
     done();
@@ -105,7 +125,21 @@ suite('numbers', function() {
   });
 
   // basic.gcd
+  test('gcd should throw an exception when given a decimal', function (done) {
+    assert.throws(
+      function() {
+        basic.gcd(0.2,1);
+      },
+      /Can only operate on integers/
+    );
+    done();
+  });
   test('gcd should return the greatest common denominator of two integers', function (done) {
+    assert.equal(1254, basic.gcd(1254, 0));
+    assert.equal(5298, basic.gcd(0, -5298));
+    assert.equal(Infinity, basic.gcd(0, -Infinity));
+    assert.equal(Infinity, basic.gcd(4430, -Infinity));
+    assert.equal(6, basic.gcd(-1254, -5298));
     assert.equal(6, basic.gcd(1254, 5298));
     assert.equal(1, basic.gcd(78699786, 78978965));
     done();
@@ -113,6 +147,14 @@ suite('numbers', function() {
 
   // basic.lcm
   test('lcm should return the least common multiple of two integers', function (done) {
+    assert.equal(0, basic.lcm(4, 0));
+    assert.equal(0, basic.lcm(0, 4));
+    assert.equal(true, isNaN(basic.lcm(4, Infinity)));
+    assert.equal(true, isNaN(basic.lcm(Infinity, 4)));
+    assert.equal(20, basic.lcm(4, 5));
+    assert.equal(12, basic.lcm(3, 4));
+    assert.equal(12, basic.lcm(4, 6));
+    assert.equal(42, basic.lcm(21, 6));
     assert.equal(240, basic.lcm(12, 80));
     done();
   });
@@ -188,6 +230,37 @@ suite('numbers', function() {
     assert.equal(16, basic.powerMod(2, Math.pow(10, 9), 18));
     assert.equal(6, basic.powerMod(6, 0.5, 10));
     assert.equal(445, basic.powerMod(4, 13, 497));
+    done();
+  });
+  
+
+  test('should be able to check equality of two floating point numbers', function(done) {
+    assert.equal(true, basic.numbersEqual(5, 5, numbers.EPSILON));
+    assert.equal(true, basic.numbersEqual(5.0001, 5.0000001, numbers.EPSILON));
+    assert.equal(false, basic.numbersEqual(-5, 5, numbers.EPSILON));
+    assert.equal(false, basic.numbersEqual(5, 5.1, numbers.EPSILON));
+    assert.equal(false, basic.numbersEqual(5, 5.001, numbers.EPSILON));
+    done();
+  });
+  
+  // basic.fallingFactorial
+  test('fallingFactorial should return correct answers', function (done) {
+    var func = basic.fallingFactorial;
+
+    assert.equal(1, func(0,0)); //allows n=0
+    assert.equal(1, func(7,0)); //k = 0 returns 1.
+    assert.equal(0, func(2,4)); //nonsensical k returns 0
+    
+    assert.equal(5040, func(7,7)); //n=k returns n!
+    assert.equal(840,  func(7,4));
+    
+    assert.throws(
+      function() {
+        func(-2,5)
+      },
+      /negative/
+    );
+
     done();
   });
 
