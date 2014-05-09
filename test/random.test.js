@@ -7,7 +7,7 @@ var testing = require('./testing.js');
 
 suite('numbers', function() {
   console.log('\n\n\033[34mTesting Random Mathematics\033[0m');
-  
+
   // random.sample
   test('random.sample should return an array of random numbers in a certain bound', function(done) {
     var res = random.sample(5, 100, 5);
@@ -31,9 +31,9 @@ suite('numbers', function() {
     done();
   });
 
-  // random.irwinHall 
+  // random.irwinHall
   test('random.irwinHall should return a number from [0, a] with a normal distribution for probability', function(done) {
-    var test = random.irwinHall(10);    
+    var test = random.irwinHall(10);
     testing.between(test, 0, 10);
     var test = random.irwinHall(20, 10);
     testing.between(test, -10, 10);
@@ -42,7 +42,7 @@ suite('numbers', function() {
 
   // random.bates
   test('random.bates should return a number from [0,1] within a bates distribution', function(done) {
-    var test = random.bates(10);    
+    var test = random.bates(10);
     testing.between(test, 0, 1);
     var test = random.bates(20, 20, 10);
     testing.between(test, 10, 20);
@@ -52,7 +52,7 @@ suite('numbers', function() {
   // random.distribution.normal
   test('random.distribution.normal should return a normal distribution of length n', function(done) {
     var t = numbers.EPSILON;
-    numbers.EPSILON = .01; 
+    numbers.EPSILON = .01;
     //lower error considering the issue with Math.random()
     var test = random.distribution.normal(100000),
         mu = statistic.mean(test),
@@ -83,11 +83,11 @@ suite('numbers', function() {
   // random.distribution.logNormal
   test('random.distribution.logNormal should return a log normal distribution of length n', function(done) {
     var t = numbers.EPSILON;
-    numbers.EPSILON = .1;   
+    numbers.EPSILON = .1;
     var test = random.distribution.logNormal(100000),
         mu = statistic.mean(test),
         sigma = statistic.standardDev(test),
-        expectedMu = Math.exp((0 + Math.pow(1, 2))/2), 
+        expectedMu = Math.exp((0 + Math.pow(1, 2))/2),
         expectedSigma = Math.sqrt((Math.exp(Math.pow(1, 2)) - 1) * Math.exp(2 * 0 + Math.pow(1, 2)));
     testing.approxEquals(mu, expectedMu);
     testing.approxEquals(sigma, expectedSigma);
@@ -97,7 +97,7 @@ suite('numbers', function() {
     //     test = random.distribution.logNormal(100000, i),
     //     mu = statistic.mean(test),
     //     sigma = statistic.standardDev(test),
-    //     expectedMu = Math.exp((i + Math.pow(j, 2))/2), 
+    //     expectedMu = Math.exp((i + Math.pow(j, 2))/2),
     //     expectedSigma = Math.sqrt((Math.exp(Math.pow(j, 2)) - 1) * Math.exp(2 * i + Math.pow(j, 2)));
     // testing.approxEquals(mu, expectedMu);
     // testing.approxEquals(sigma, expectedSigma);
@@ -108,7 +108,7 @@ suite('numbers', function() {
     //     var test = random.distribution.logNormal(n, i, j),
     //         mu = statistic.mean(test),
     //         sigma = statistic.standardDev(test),
-    //         expectedMu = Math.exp((i + Math.pow(j, 2))/2), 
+    //         expectedMu = Math.exp((i + Math.pow(j, 2))/2),
     //         expectedSigma = Math.sqrt((Math.exp(Math.pow(j, 2)) - 1) * Math.exp(2 * i + Math.pow(j, 2)));
     //     assert.equal(n, test.length);
     //     testing.approxEquals(mu, expectedMu);
@@ -122,7 +122,7 @@ suite('numbers', function() {
   // random.distribution.boxMuller
   test('random.distribution.boxMuller should return a n-sample of a normal distribution', function(done) {
     var t = numbers.EPSILON;
-    numbers.EPSILON = .01; 
+    numbers.EPSILON = .01;
     //lower error considering the issue with Math.random()
     var test = random.distribution.boxMuller(100000),
         mu = statistic.mean(test),
@@ -177,10 +177,6 @@ suite('numbers', function() {
 
   // random.distribution.bates
   test('random.distribution.bates should return a n-sample of a bates distribution', function(done) {
-    var test = random.distribution.bates(10);
-    testing.approxEquals(statistic.mean(test), 5, .5);
-    testing.approxEquals(statistic.standardDev(test), Math.sqrt((Math.pow(10 - 0, 2) / (12 * 10))), .5);
-
     var test = random.distribution.bates(100, 2);
     testing.approxEquals(statistic.mean(test), 1, .5);
     testing.approxEquals(statistic.standardDev(test), Math.sqrt((Math.pow(2 - 0, 2) / (12 * 100))), .5);
@@ -188,7 +184,7 @@ suite('numbers', function() {
     var test = random.distribution.bates(100, 20, 10);
     testing.approxEquals(statistic.mean(test), 15, .5);
     testing.approxEquals(statistic.standardDev(test), Math.sqrt((Math.pow(20 - 10, 2) / (12 * 100))), .5);
-    
+
     done();
   });
 
