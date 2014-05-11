@@ -69,17 +69,6 @@ suite('numbers', function() {
     done();
   });
 
-  test('randomSample should return an array of random numbers in a certain bound', function(done) {
-    var res = statistic.randomSample(5, 100, 5);
-
-    res.forEach(function(val) {
-      assert.equal(true, 5 <= val <= 100);
-    });
-
-    assert.equal(5, res.length);
-    done();
-  });
-
   test('should return the standard deviation of an array of numbers', function(done) {
     var res = statistic.standardDev([-5, -4, -1, 0, 5, 100]);
     assert.equal(true, res - numbers.EPSILON < 37.777 < res + numbers.EPSILON);
@@ -145,4 +134,5 @@ suite('numbers', function() {
     assert.equal(66.05555555555556, res);
     done();
   });
+
 });
