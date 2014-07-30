@@ -108,12 +108,20 @@ To update the public JavaScript, run
 make build
 ```
 
-This will compile the entire library into a single file accessible at public/numbers.js. It will also minify the file into public/numbers.min.js.
+This will compile the entire library into a single file accessible at src/numbers.js. It will also minify the file into public/numbers.min.js.
+
+Numbers.js is also available on Bowery via
+
+```
+$ bowery install numbers.js
+```
 
 ## Core Team
 * Steve Kaliski - [@stevekaliski](http://twitter.com/stevekaliski)
 * David Byrd - [@thebyrd](http://twitter.com/thebyrd)
 * Ethan Resnick - [@studip101](http://twitter.com/studip101)
+* Dakota St. Laurent [@StDako](https://github.com/StDako)
+* Kartik Talwar [@KartikTalwar](https://github.com/KartikTalwar)
 
 ## Contributors
 In no particular order:
