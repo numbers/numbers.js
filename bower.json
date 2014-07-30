@@ -1,0 +1,24 @@
+{
+  "name": "numbers.js",
+  "main": "src/numbers.js",
+  "version": "0.5.0",
+  "homepage": "https://github.com/sjkaliski/numbers.js",
+  "authors": [
+    "Steve Kaliski <sjkaliski@gmail.com>"
+  ],
+  "description": "Advanced Mathematics Library for JavaScript",
+  "keywords": [
+    "math",
+    "mathematics",
+    "numbers",
+    "statistics"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
