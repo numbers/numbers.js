@@ -2,7 +2,7 @@
   "author": "Steve Kaliski <sjkaliski@gmail.com> (https://github.com/sjkaliski)",
   "name": "numbers",
   "description": "Advanced Mathematics Library for JavaScript",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "homepage": "https://github.com/sjkaliski/numbers.js",
   "repository": {
     "type": "git",
