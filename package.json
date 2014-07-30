@@ -10,7 +10,9 @@
   },
   "contributors": [
     "David Byrd (https://github.com/davidbyrd11)",
-    "Ethan Resnick (https://github.comc/ethanresnick)"
+    "Ethan Resnick (https://github.comc/ethanresnick)",
+    "Dakota St. Laurant (https://github.com/StDako)",
+    "Kartik Talwar (https://github.com/KartikTalwar)"
   ],
   "engines": {
     "node": ">= v0.6.0"
