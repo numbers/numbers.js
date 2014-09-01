@@ -546,9 +546,10 @@ suite('numbers', function() {
   test('should get a column', function(done) {
     var m1 = [[10,2,5],
               [5,2,42],
-              [7,6,4]];
+              [7,6,4],
+              [4,11,89]];
 
-    var expected1 = [5,42,4];
+    var expected1 = [5,42,4,89];
 
     var res1 = matrix.getCol(m1, 2);
 
