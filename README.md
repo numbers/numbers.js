@@ -30,10 +30,9 @@ var numbers = require('numbers');
 For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we could:
 
 Use riemann integrals (with 200 subdivisions)
-```javascript
-var numbers = require('numbers');
 
-numbers.calculus.riemann(Math.sin, -2, 4, 200);
+```javascript
+numbers.calculus.Riemann(Math.sin, -2, 4, 200);
 ```
 
 Or use adaptive simpson quadrature (with epsilon .0001)
@@ -110,10 +109,10 @@ make build
 
 This will compile the entire library into a single file accessible at src/numbers.js. It will also minify the file into public/numbers.min.js.
 
-Numbers.js is also available on Bowery via
+Numbers.js is also available on Bower via
 
 ```
-$ bowery install numbers.js
+$ bower install numbers.js
 ```
 
 ## Core Team
