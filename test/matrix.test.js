@@ -573,4 +573,107 @@ suite('numbers', function() {
     done();
   });
 
+  test('should calculate a vector norm', function(done) {
+    var v1 = [-100,5,-12,20,83];
+    var p1 = Infinity;
+    var p2 = -Infinity;
+    
+    var v2 = [1,1,1,1];
+    var p3 = 2;
+
+    var expected1 = 100;
+    var expected2 = 5;
+    var expected3 = 2;
+
+    var res1 = matrix.vectorNorm(v1,p1);
+    var res2 = matrix.vectorNorm(v1,p2);
+    var res3 = matrix.vectorNorm(v2,p3);
+
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res3,expected3);
+    done();
+  });
+
+  test('should calculate a matrix norm', function(done) {
+    var m1 = [[1,-3,2],
+              [-4,6,-5],
+              [7,-9,-8],
+              [-10,12,11]];
+    var p1 = Infinity;
+    var p2 = -Infinity;
+    var p3 = 1;
+    var p4 = -1;
+    
+    var m2 = [[1,0,0,0],
+              [0,1,0,0],
+              [0,0,1,0],
+              [0,0,0,1]];
+    var p5 = null;
+
+    var expected1 = 33;
+    var expected2 = 6;
+    var expected3 = 30;
+    var expected4 = 22;
+    var expected5 = 2;
+
+    var res1 = matrix.matrixNorm(m1,p1);
+    var res2 = matrix.matrixNorm(m1,p2);
+    var res3 = matrix.matrixNorm(m1,p3);
+    var res4 = matrix.matrixNorm(m1,p4);
+    var res5 = matrix.matrixNorm(m2,p5);
+
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
+    assert.deepEqual(res3, expected3);
+    assert.deepEqual(res4, expected4);
+    assert.deepEqual(res5, expected5);
+    done();
+  });
+
+  test('should test for upper bandwidth', function(done) {
+    var m1 = [[1,2,0,0],
+              [5,4,3,0],
+              [8,2,1,5],
+              [1,2,5,4]];
+    var m2 = [[1,0,0,0,0],
+              [1,3,3,0,0],
+              [1,3,3,3,0]];
+    var q1 = 1;
+    var q2 = 0;
+
+    var expected1 = true;
+    var expected2 = false;
+
+    var res1 = matrix.isUpperBand(m1,q1);
+    var res2 = matrix.isUpperBand(m2,q2);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
+  test('should test for lower bandwidth', function(done) {
+    var m1 = [[1,2,3,5],
+              [5,4,3,0],
+              [0,2,1,5],
+              [0,0,5,4]];
+    var m2 = [[1,3,4,5,9],
+              [0,3,3,0,0],
+              [0,0,3,3,0],
+              [0,0,1,3,3]];
+    var q1 = 1;
+    var q2 = 0;
+
+    var expected1 = true;
+    var expected2 = false;
+
+    var res1 = matrix.isLowerBand(m1,q1);
+    var res2 = matrix.isLowerBand(m2,q2);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
 });

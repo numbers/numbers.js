@@ -1957,6 +1957,220 @@ matrix.zigzag = function(n, point, dir) {
   else if ((point === 'TL') && (dir === 'V')) {return (TLV(mat));}
   else {throw new Error('Please enter the direction (V,H) and corner (BR,BL,TR,TL) correctly.');}
 }
+
+/**
+ * Calculate the p-norm of a vector. Specific cases include:
+ *   - Infinity (largest absolute entry)
+ *   - -Infinity (smallest absolute entry)
+ *
+ * @param {Array} vector
+ * @param {Number} the value of p (norm order)
+ * @return {Number} the p-norm of v
+ */
+matrix.vectorNorm = function(v,p) {
+  // calculate the p'th norm of a vector v
+  if (!(Array.isArray(v)) || (v.length === 0))
+    throw new Error('Vector must be an array of at least length 1.');
+  else if ((typeof p !== 'undefined') && (typeof p !== 'number'))
+    throw new Error('Norm order must be a number.');
+
+  p = (typeof p === 'undefined') ? 2 : p;
+  var n = v.length,
+    ans = 0;
+
+  switch (p) {
+
+    case Infinity:
+      for (var i=0; i<n; i++) {
+        var term = Math.abs(v[i]);
+        if (term > ans)
+          ans = term;
+      }
+      break;
+
+    case -Infinity:
+      ans = Infinity;
+      for (var i=0; i<n; i++) {
+        var term = Math.abs(v[i]);
+        if (term < ans)
+          ans = term;
+      }
+      break;
+
+    default:
+      for (var i=0; i<n; i++)
+        ans += Math.pow(Math.abs(v[i]), p);
+      ans = Math.pow(ans, 1/p);
+      break;
+  }
+
+  return ans;
+}
+
+/**
+ * Calculate the p-norm of a matrix. Specific cases include:
+ *   - Infinity (largest absolute row)
+ *   - -Infinity (smallest absolute row)
+ *   - 1 (largest absolute column)
+ *   - -1 (smallest absolute column)
+ *   - 2 (largest singular value)
+ *   - -2 (smallest singular value)
+ *   - null (Frobenius norm)
+ *
+ * @param {Array} vector
+ * @param {Number} the value of p (norm order)
+ * @return {Number} the p-norm of M
+ */
+matrix.matrixNorm = function(M,p) {
+  if (!(Array.isArray(M)) || (M.length === 0) || !Array.isArray(M[0]))
+    throw new Error('Matrix must be an array of at least length 1.');
+  else if ((typeof p !== 'undefined') && (typeof p !== 'number') && (p !== null))
+    throw new Error('Norm order must be a number or null.');
+
+  p = (typeof p === 'undefined') ? null : p;
+  var m = M.length, //number of rows
+    n = M[0].length, //number of cols
+    ans = 0;
+
+  switch (p) {
+
+    // the largest value when absolute-ing and summing each row
+    case Infinity:
+      for (var i=0; i<m; i++) {
+        var term = 0;
+
+        for (var j=0; j<n; j++)
+          term += Math.abs(M[i][j]);
+        
+        if (term > ans)
+          ans = term;
+      }
+      break;
+
+    // the smallest value when absolute-ing and summing each row
+    case -Infinity:
+      ans = Infinity;
+      for (var i=0; i<m; i++) {
+        var term = 0;
+
+        for (var j=0; j<n; j++)
+          term += Math.abs(M[i][j]);
+
+        if (term < ans)
+          ans = term;
+      }
+      break;
+
+    // the largest value when absolute-ing and summing each column
+    case 1:
+      for (var i=0; i<n; i++) {
+        var term = 0;
+
+        for (var j=0; j<m; j++)
+          term += Math.abs(M[j][i]);
+
+        if (term > ans)
+          ans = term;
+      }
+      break;
+
+    // the smallest value when absolute-ing and summing each column
+    case -1:
+      ans = Infinity;
+      for (var i=0; i<n; i++) {
+        var term = 0;
+
+        for (var j=0; j<m; j++)
+          term += Math.abs(M[j][i]);
+
+        if (term < ans)
+          ans = term;
+      }
+      break;
+
+    // the Frobenius norm
+    case null:
+      for (var i=0; i<m; i++) {
+        for (var j=0; j<n; j++)
+          ans += Math.pow(M[i][j], 2);
+      }
+      ans = Math.pow(ans, 0.5);
+      break;
+
+    // largest singular value
+    case 2:
+      throw new Error("Singular values are not yet supported in numbers.js.");
+      break;
+
+    // smallest singular value
+    case -2:
+      throw new Error("Singular values are not yet supported in numbers.js.");
+      break;
+
+    // entry-wise norm; analogous to that of the entry-wise vector norm.
+    default:
+      for (var i=0; i<m; i++) {
+        for (var j=0; j<n; j++)
+          ans += Math.pow(Math.abs(M[i][j]), p);
+      }
+      ans = Math.pow(ans, 1/p);
+
+  }
+
+  return ans;
+}
+
+/**
+ * Determines if a matrix has an upper bandwidth of q.
+ *
+ * @param {Array} matrix
+ * @param {Number} upper bandwidth
+ * @return {Boolean} true if upper bandwidth is q; false otherwise
+ */
+matrix.isUpperBand = function(M,q) {
+  if (!Array.isArray(M) || !Array.isArray(M[0]) || M.length < 2)
+    throw new Error('Matrix must be an array of at least dimension 2.');
+  else if (typeof q !== 'number' || q < 0 || (q%1) !== 0)
+    throw new Error('Upper bandwidth must be a nonzero integer.');
+  var result = true,
+    n = M[0].length,
+    cnt = 0;
+
+  for (var i=q+1; i<n; i++) {
+    if (M[cnt][i] !== 0) {
+      result = false;
+      break;
+    }
+    cnt++;
+  }
+  return result;
+}
+
+/**
+ * Determines if a matrix has an lower bandwidth of p.
+ *
+ * @param {Array} matrix
+ * @param {Number} lower bandwidth
+ * @return {Boolean} true if lower bandwidth is p; false otherwise
+ */
+matrix.isLowerBand = function(M,p) {
+  if (!Array.isArray(M) || !Array.isArray(M[0]) || M.length < 2)
+    throw new Error('Matrix must be an array of at least dimension 2.');
+  else if (typeof p !== 'number' || p < 0 || (p%1) !== 0)
+    throw new Error('Lower bandwidth must be a nonzero integer.');
+  var result = true,
+    m = M.length,
+    cnt = 0;
+
+  for (var i=p+1; i<m; i++) {
+    if (M[i][cnt] !== 0) {
+      result = false;
+      break;
+    }
+    cnt++;
+  }
+  return result;
+}
 },{}],8:[function(require,module,exports){
 /**
  * prime.js
