@@ -198,7 +198,22 @@ suite('numbers', function() {
   });
 
   // basic.egcd
+  test('egcd should throw an exception when given a decimal', function (done) {
+    assert.throws(
+      function() {
+        basic.egcd(0.2,1);
+      },
+      /Can only operate on integers/
+    );
+    done();
+  });
   test('egcd should return the array [a, x, y] which is the solved linear equation for GCD', function(done) {
+    assert.equal("NaN,NaN,NaN", basic.egcd("ten",1).toString());
+    assert.deepEqual([Infinity,Infinity,Infinity], basic.egcd(1,Infinity));
+    assert.deepEqual([3,1,0], basic.egcd(3,0));
+    assert.deepEqual([3,0,1], basic.egcd(0,3));
+    assert.deepEqual([2,-1,0], basic.egcd(-2,-6));
+    assert.deepEqual([1,2,1], basic.egcd(-2,5));
     assert.deepEqual([5, -3, 5], basic.egcd(65, 40));
     assert.deepEqual([5, 5, -3], basic.egcd(40, 65));
     assert.deepEqual([21, -16, 27], basic.egcd(1239, 735));
