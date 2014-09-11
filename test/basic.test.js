@@ -6,6 +6,16 @@ suite('numbers', function() {
 
   console.log('\n\n\033[34mTesting Standard Mathematics\033[0m');
 
+  // longList is used by basic.max() and basic.min()
+  // to test for `Maximum call stack size exceeded` exception.
+  var longList = [], len = 1e7, sign;
+  while(0 < len--){ 
+    sign = (Math.random() < 0.5) ? -1 : 1;
+    longList.push( sign * Math.floor( Math.random() * 1e5) );
+  }
+  longList.push(1e6);
+  longList.push(-1e6);
+
   // basic.sum
   test('sum should return the sum of items in an array', function (done) {
     assert.equal(6, basic.sum([0, 1, 2, 3]));
@@ -160,14 +170,40 @@ suite('numbers', function() {
   });
 
   // basic.max
+  test('basic.max will throw an exception if argument is not an array.', function(done) {
+    assert.throws(
+      function() {
+        basic.max(65, 40);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
   test('max should return the biggest number in an array', function (done) {
     assert.equal(42, basic.max([1,2,3,42]));
+    assert.equal(-1, basic.max([-1,-2,-3,-42]));
+    assert.equal(Infinity, basic.max([1, Infinity]));
+    assert.equal(1e6, basic.max( longList ));
     done();
   });
 
   // basic.min
+  test('basic.min will throw an exception if argument is not an array.', function(done) {
+    assert.throws(
+      function() {
+        basic.min(65, 40);
+      },
+      /Input must be of type Array/
+    );
+    done();
+  });
+
   test('min should return the smallest number in an array', function (done) {
-    assert.equal(1, basic.min([2,1,3,42]));
+    assert.equal(1, basic.min([1,2,3,42]));
+    assert.equal(-42, basic.min([-1,-2,-3,-42]));
+    assert.equal(-Infinity, basic.min([1, -Infinity]));
+    assert.equal(-1e6, basic.min( longList ));
     done();
   });
 
