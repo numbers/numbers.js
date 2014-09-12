@@ -29,7 +29,7 @@ var numbers = require('numbers');
 
 For example, if we wanted to estimate the integral of sin(x) from -2 to 4, we could:
 
-Use riemann integrals (with 200 subdivisions)
+Use Riemann integrals (with 200 subdivisions)
 
 ```javascript
 numbers.calculus.Riemann(Math.sin, -2, 4, 200);
@@ -48,7 +48,7 @@ var myFunc = function(x) {
   return 2*Math.pow(x,2) + 1;
 }
 
-numbers.calculus.riemann(myFunc, -2, 4, 200);
+numbers.calculus.Riemann(myFunc, -2, 4, 200);
 numbers.calculus.adaptiveSimpson(myFunc, -2, 4, .0001);
 ```
 
@@ -119,8 +119,8 @@ $ bower install numbers.js
 * Steve Kaliski - [@stevekaliski](http://twitter.com/stevekaliski)
 * David Byrd - [@thebyrd](http://twitter.com/thebyrd)
 * Ethan Resnick - [@studip101](http://twitter.com/studip101)
-* Dakota St. Laurent [@StDako](https://github.com/StDako)
-* Kartik Talwar [@KartikTalwar](https://github.com/KartikTalwar)
+* Dakota St. Laurent - [@StDako](https://github.com/StDako)
+* Kartik Talwar - [@KartikTalwar](https://github.com/KartikTalwar)
 
 ## Contributors
 In no particular order:
@@ -132,7 +132,6 @@ In no particular order:
 * [Miles McCrocklin aka `milroc`](https://github.com/milroc)
 * [Nate Kohari aka `nkohari`](https://github.com/nkohari)
 * [Eric LaForce aka `elaforc`](https://github.com/elaforc)
-* [Kartik Talwar aka `KartikTalwar`](https://github.com/KartikTalwar)
 * [btmills aka `btmills`](https://github.com/btmills)
 * [swair shah aka `swairshah`](https://github.com/swairshah)
 * [Jason Hutchinson aka `Zikes`](https://github.com/Zikes)
