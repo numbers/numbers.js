@@ -286,8 +286,22 @@ basic.shuffle = function (array) {
  * @param {Array} array to be traversed.
  * @return {Number} maximum value in the array.
  */
-basic.max = function (array) {
-  return Math.max.apply(Math, array);
+basic.max = function (arr) {
+  if (!Array.isArray(arr)) {
+    throw new Error("Input must be of type Array");
+  }
+  var max = -Infinity, val;
+  for (var i = 0, len = arr.length; i < len; i++) {
+    val = +arr[i];
+    if (max < val) {
+      max = val;
+    }
+    // Math.max() returns NaN if one of the elements is not a number.
+    if( val !== val ){
+      return NaN;
+    }
+  }
+  return max;
 };
 
 /**
@@ -296,9 +310,24 @@ basic.max = function (array) {
  * @param {Array} array to be traversed.
  * @return {Number} minimum value in the array.
  */
-basic.min = function (array) {
-  return Math.min.apply(Math, array);
+basic.min = function (arr) {
+  if (!Array.isArray(arr)) {
+    throw new Error("Input must be of type Array");
+  }
+  var min = +Infinity, val;
+  for (var i = 0, len = arr.length; i < len; i++) {
+    val = +arr[i];
+    if (val < min) {
+      min = val;
+    }
+    // Math.min() returns NaN if one of the elements is not a number.
+    if( val !== val ){
+      return NaN;
+    }
+  }
+  return min;
 };
+
 
 /**
  * Create a range of numbers.
@@ -397,33 +426,44 @@ basic.powerMod = function (a, b, m) {
  * @return {Array} [a, x, y] a is the GCD. x and y are the values such that ax + by = gcd(a, b) .
  */
 basic.egcd = function (a, b) {
-  var x = (+b && +a) ? 1 : 0,
-      y = b ? 0 : 1,
-      u = (+b && +a) ? 0 : 1,
-      v = b ? 1 : 0;
-
-  b = (+b && +a) ? +b : 0;
-  a = b ? a : 1;
-
-  while (b) {
-    var dm = basic.divMod(a, b),
-        q = dm[0], 
-        r = dm[1];
-
-    var m = x - u * q, 
-        n = y - v * q;
-
-    a = b;
-    b = r;
-    x = u;
-    y = v;
-    u = m;
-    v = n;
+  a = +a;
+  b = +b;
+  // Same as isNaN() but faster
+  if (a !== a || b !== b) {
+    return [NaN, NaN, NaN];
   }
+  //Same as !isFinite() but faster
+  if (a === Infinity || a === -Infinity || b === Infinity || b === -Infinity) {
+    return [Infinity, Infinity, Infinity];
+  }
+  // Checks if a or b are decimals
+  if ((a % 1 !== 0) || (b % 1 !== 0)) {
+    throw new Error("Can only operate on integers");
+  }
+  var signX = (a < 0) ? -1 : 1,
+  signY = (b < 0) ? -1 : 1,
+  a = Math.abs(a),
+  b = Math.abs(b),
+  x = 0,
+  y = 1,
+  oldX = 1,
+  oldY = 0,
+  q, r, m, n;
 
-  return [a, x, y];
+  while(a !== 0){
+    q = Math.floor(b/a);
+    r = b % a;
+    m = x - oldX*q;
+    n = y - oldY*q;
+    b = a;
+    a = r;
+    x = oldX;
+    y = oldY;
+    oldX = m;
+    oldY = n;
+  }
+  return [b, signX*x, signY*y];
 };
-
 /**
   * Calculate the modular inverse of a number.
   *
@@ -1153,6 +1193,38 @@ matrix.addition = function (arrA, arrB) {
         
           for (var j = 0; j < arrA[i].length; j++) {
             result[i][j] = arrA[i][j] + arrB[i][j];
+          }
+      }
+    }
+
+    return result;
+  } else {
+    throw new Error('Matrix mismatch');
+  }
+};
+
+/**
+ * Subtract one matrix from another (A - B).  Matrices must be of same dimension.
+ *
+ * @param {Array} matrix A.
+ * @param {Array} matrix B.
+ * @return {Array} subtracted matrix.
+ */
+matrix.subtraction = function (arrA, arrB) {
+  if ((arrA.length === arrB.length) && (arrA[0].length === arrB[0].length)) {
+    var result = new Array(arrA.length);
+    
+    if (!arrA[0].length) {
+      // The arrays are vectors.
+      for (var i = 0; i < arrA.length; i++) {
+        result[i] = arrA[i] - arrB[i];
+      }
+    } else {
+      for (var i = 0; i < arrA.length; i++) {
+          result[i] = new Array(arrA[i].length);
+        
+          for (var j = 0; j < arrA[i].length; j++) {
+            result[i][j] = arrA[i][j] - arrB[i][j];
           }
       }
     }
@@ -2172,7 +2244,7 @@ matrix.isUpperBand = function(M,q) {
 matrix.isLowerBand = function(M,p) {
   if (!Array.isArray(M) || !Array.isArray(M[0]) || M.length < 2) {
     throw new Error('Matrix must be an array of at least dimension 2.');
-  } else if (typeof q !== 'number' || q < 0 || (q%1) !== 0) {
+  } else if (typeof p !== 'number' || p < 0 || (p%1) !== 0) {
     throw new Error('Lower bandwidth must be a nonzero integer.');
   }
   var result = true,

@@ -67,6 +67,16 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return difference of two vectors', function(done) {
+    var arrA = [0, 1, 2];
+    var arrB = [3, 4, 5];
+    var expected1 = [-3,-3,-3];
+    var res = matrix.subtraction(arrA, arrB);
+
+    assert.deepEqual(expected1, res);
+    done();
+  });
+
   test('should returned scaled matrix', function(done) {
     var array = [
       [0, 1, 2],
