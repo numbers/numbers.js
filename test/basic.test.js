@@ -18,8 +18,18 @@ suite('numbers', function() {
 
   // basic.sum
   test('sum should return the sum of items in an array', function (done) {
-    assert.equal(6, basic.sum([0, 1, 2, 3]));
-    assert.equal(0, basic.sum([0, -3, 5, -2]));
+    assert.equal(basic.sum([
+    0,
+    1,
+    2,
+    3
+]), 6);
+    assert.equal(basic.sum([
+    0,
+    -3,
+    5,
+    -2
+]), 0);
     done();
   });
 
@@ -45,7 +55,12 @@ suite('numbers', function() {
 
   // basic.substraction
   test('subtraction should return the difference of items in an array', function (done) {
-    assert.equal(2, basic.subtraction([5, 3, 1, -1]));
+    assert.equal(basic.subtraction([
+    5,
+    3,
+    1,
+    -1
+]), 2);
     done();
   });
 
@@ -81,8 +96,16 @@ suite('numbers', function() {
 
   // basic.product
   test('product should return the product of items in an array', function (done) {
-    assert.equal(24, basic.product([1, 2, 3, 4]));
-    assert.equal(-6, basic.product([-3, 2]));
+    assert.equal(basic.product([
+    1,
+    2,
+    3,
+    4
+]), 24);
+    assert.equal(basic.product([
+    -3,
+    2
+]), -6);
     done();
   });
 
@@ -117,20 +140,20 @@ suite('numbers', function() {
   });
 
   test('square should return the square of a number', function(done) {
-    assert.equal(16, basic.square(4));
+    assert.equal(basic.square(4), 16);
     done();
   });
 
   // basic.binomial
   test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
-    assert.equal(10, basic.binomial(5, 3));
+    assert.equal(basic.binomial(5, 3), 10);
     done();
   });
 
   // basic.factorial
   test('factorial should return the product of n * (n - 1) * (n - 2) * ... * 1', function (done) {
-    assert.equal(24, basic.factorial(4));
-    assert.equal(120, basic.factorial(5));
+    assert.equal(basic.factorial(4), 24);
+    assert.equal(basic.factorial(5), 120);
     done();
   });
 
@@ -145,27 +168,27 @@ suite('numbers', function() {
     done();
   });
   test('gcd should return the greatest common denominator of two integers', function (done) {
-    assert.equal(1254, basic.gcd(1254, 0));
-    assert.equal(5298, basic.gcd(0, -5298));
-    assert.equal(Infinity, basic.gcd(0, -Infinity));
-    assert.equal(Infinity, basic.gcd(4430, -Infinity));
-    assert.equal(6, basic.gcd(-1254, -5298));
-    assert.equal(6, basic.gcd(1254, 5298));
-    assert.equal(1, basic.gcd(78699786, 78978965));
+    assert.equal(basic.gcd(1254, 0), 1254);
+    assert.equal(basic.gcd(0, -5298), 5298);
+    assert.equal(basic.gcd(0, -Infinity), Infinity);
+    assert.equal(basic.gcd(4430, -Infinity), Infinity);
+    assert.equal(basic.gcd(-1254, -5298), 6);
+    assert.equal(basic.gcd(1254, 5298), 6);
+    assert.equal(basic.gcd(78699786, 78978965), 1);
     done();
   });
 
   // basic.lcm
   test('lcm should return the least common multiple of two integers', function (done) {
-    assert.equal(0, basic.lcm(4, 0));
-    assert.equal(0, basic.lcm(0, 4));
-    assert.equal(true, isNaN(basic.lcm(4, Infinity)));
-    assert.equal(true, isNaN(basic.lcm(Infinity, 4)));
-    assert.equal(20, basic.lcm(4, 5));
-    assert.equal(12, basic.lcm(3, 4));
-    assert.equal(12, basic.lcm(4, 6));
-    assert.equal(42, basic.lcm(21, 6));
-    assert.equal(240, basic.lcm(12, 80));
+    assert.equal(basic.lcm(4, 0), 0);
+    assert.equal(basic.lcm(0, 4), 0);
+    assert.equal(isNaN(basic.lcm(4, Infinity)), true);
+    assert.equal(isNaN(basic.lcm(Infinity, 4)), true);
+    assert.equal(basic.lcm(4, 5), 20);
+    assert.equal(basic.lcm(3, 4), 12);
+    assert.equal(basic.lcm(4, 6), 12);
+    assert.equal(basic.lcm(21, 6), 42);
+    assert.equal(basic.lcm(12, 80), 240);
     done();
   });
 
@@ -181,10 +204,23 @@ suite('numbers', function() {
   });
 
   test('max should return the biggest number in an array', function (done) {
-    assert.equal(42, basic.max([1,2,3,42]));
-    assert.equal(-1, basic.max([-1,-2,-3,-42]));
-    assert.equal(Infinity, basic.max([1, Infinity]));
-    assert.equal(1e6, basic.max( longList ));
+    assert.equal(basic.max([
+    1,
+    2,
+    3,
+    42
+]), 42);
+    assert.equal(basic.max([
+    -1,
+    -2,
+    -3,
+    -42
+]), -1);
+    assert.equal(basic.max([
+    1,
+    Infinity
+]), Infinity);
+    assert.equal(basic.max(longList), 1000000);
     done();
   });
 
@@ -200,36 +236,97 @@ suite('numbers', function() {
   });
 
   test('min should return the smallest number in an array', function (done) {
-    assert.equal(1, basic.min([1,2,3,42]));
-    assert.equal(-42, basic.min([-1,-2,-3,-42]));
-    assert.equal(-Infinity, basic.min([1, -Infinity]));
-    assert.equal(-1e6, basic.min( longList ));
+    assert.equal(basic.min([
+    1,
+    2,
+    3,
+    42
+]), 1);
+    assert.equal(basic.min([
+    -1,
+    -2,
+    -3,
+    -42
+]), -42);
+    assert.equal(basic.min([
+    1,
+    -Infinity
+]), -Infinity);
+    assert.equal(basic.min(longList), -1000000);
     done();
   });
 
   // basic.range
   test('range should return an appropriate range for the given start, stop, and step parameters', function (done) {
-    assert.deepEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10],basic.range(1, 10));
-    assert.deepEqual([10, 9, 8, 7, 6, 5, 4, 3, 2, 1],basic.range(10, 1));
-    assert.deepEqual([1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],basic.range(1, 5, 0.5));
-    assert.deepEqual([5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],basic.range(5, 1, 0.5));
+    assert.deepEqual(basic.range(1, 10), [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+]);
+    assert.deepEqual(basic.range(10, 1), [
+    10,
+    9,
+    8,
+    7,
+    6,
+    5,
+    4,
+    3,
+    2,
+    1
+]);
+    assert.deepEqual(basic.range(1, 5, 0.5), [
+    1,
+    1.5,
+    2,
+    2.5,
+    3,
+    3.5,
+    4,
+    4.5,
+    5
+]);
+    assert.deepEqual(basic.range(5, 1, 0.5), [
+    5,
+    4.5,
+    4,
+    3.5,
+    3,
+    2.5,
+    2,
+    1.5,
+    1
+]);
     done();
  
   });
 
   // basic.isInt
   test('isInt checks for an integer', function (done) {
-    assert.equal(false, basic.isInt(2.32));
-    assert.equal(false, basic.isInt("true"));
-    assert.equal(true, basic.isInt("2")); //based off impelementation change
-    assert.equal(true, basic.isInt(2));
+    assert.equal(basic.isInt(2.32), false);
+    assert.equal(basic.isInt('true'), false);
+    assert.equal(basic.isInt('2'), true); //based off impelementation change
+    assert.equal(basic.isInt(2), true);
     done();
   });  
 
   // basic.divMod
   test('divMod should return an array of both the division and modulus values of two integers', function (done) {
-    assert.deepEqual([2, 0], basic.divMod(12, 6));
-    assert.deepEqual([3, 1], basic.divMod(10, 3)); 
+    assert.deepEqual(basic.divMod(12, 6), [
+    2,
+    0
+]);
+    assert.deepEqual(basic.divMod(10, 3), [
+    3,
+    1
+]); 
     done();
   });
 
@@ -244,23 +341,63 @@ suite('numbers', function() {
     done();
   });
   test('egcd should return the array [a, x, y] which is the solved linear equation for GCD', function(done) {
-    assert.equal("NaN,NaN,NaN", basic.egcd("ten",1).toString());
-    assert.deepEqual([Infinity,Infinity,Infinity], basic.egcd(1,Infinity));
-    assert.deepEqual([3,1,0], basic.egcd(3,0));
-    assert.deepEqual([3,0,1], basic.egcd(0,3));
-    assert.deepEqual([2,-1,0], basic.egcd(-2,-6));
-    assert.deepEqual([1,2,1], basic.egcd(-2,5));
-    assert.deepEqual([5, -3, 5], basic.egcd(65, 40));
-    assert.deepEqual([5, 5, -3], basic.egcd(40, 65));
-    assert.deepEqual([21, -16, 27], basic.egcd(1239, 735));
-    assert.deepEqual([21, 5, -2], basic.egcd(105, 252));
-    assert.deepEqual([21, -2, 5], basic.egcd(252, 105));
+    assert.equal(basic.egcd('ten', 1).toString(), 'NaN,NaN,NaN');
+    assert.deepEqual(basic.egcd(1, Infinity), [
+    Infinity,
+    Infinity,
+    Infinity
+]);
+    assert.deepEqual(basic.egcd(3, 0), [
+    3,
+    1,
+    0
+]);
+    assert.deepEqual(basic.egcd(0, 3), [
+    3,
+    0,
+    1
+]);
+    assert.deepEqual(basic.egcd(-2, -6), [
+    2,
+    -1,
+    0
+]);
+    assert.deepEqual(basic.egcd(-2, 5), [
+    1,
+    2,
+    1
+]);
+    assert.deepEqual(basic.egcd(65, 40), [
+    5,
+    -3,
+    5
+]);
+    assert.deepEqual(basic.egcd(40, 65), [
+    5,
+    5,
+    -3
+]);
+    assert.deepEqual(basic.egcd(1239, 735), [
+    21,
+    -16,
+    27
+]);
+    assert.deepEqual(basic.egcd(105, 252), [
+    21,
+    5,
+    -2
+]);
+    assert.deepEqual(basic.egcd(252, 105), [
+    21,
+    -2,
+    5
+]);
     done();
   });
 
   // basic.modInverse
   test('modInverse will return the modulo m inverse of a', function(done) {
-    assert.equal(1, basic.modInverse(1, 5));
+    assert.equal(basic.modInverse(1, 5), 1);
     done();
   });
 
@@ -276,21 +413,21 @@ suite('numbers', function() {
 
   // basic.powerMod
   test('powerMod should return the answer to a^b mod m', function (done) {
-    assert.equal(1, basic.powerMod(1, -1, 5));
-    assert.equal(1, basic.powerMod(2, 10, 3));
-    assert.equal(16, basic.powerMod(2, Math.pow(10, 9), 18));
-    assert.equal(6, basic.powerMod(6, 0.5, 10));
-    assert.equal(445, basic.powerMod(4, 13, 497));
+    assert.equal(basic.powerMod(1, -1, 5), 1);
+    assert.equal(basic.powerMod(2, 10, 3), 1);
+    assert.equal(basic.powerMod(2, Math.pow(10, 9), 18), 16);
+    assert.equal(basic.powerMod(6, 0.5, 10), 6);
+    assert.equal(basic.powerMod(4, 13, 497), 445);
     done();
   });
   
 
   test('should be able to check equality of two floating point numbers', function(done) {
-    assert.equal(true, basic.numbersEqual(5, 5, numbers.EPSILON));
-    assert.equal(true, basic.numbersEqual(5.0001, 5.0000001, numbers.EPSILON));
-    assert.equal(false, basic.numbersEqual(-5, 5, numbers.EPSILON));
-    assert.equal(false, basic.numbersEqual(5, 5.1, numbers.EPSILON));
-    assert.equal(false, basic.numbersEqual(5, 5.001, numbers.EPSILON));
+    assert.equal(basic.numbersEqual(5, 5, numbers.EPSILON), true);
+    assert.equal(basic.numbersEqual(5.0001, 5.0000001, numbers.EPSILON), true);
+    assert.equal(basic.numbersEqual(-5, 5, numbers.EPSILON), false);
+    assert.equal(basic.numbersEqual(5, 5.1, numbers.EPSILON), false);
+    assert.equal(basic.numbersEqual(5, 5.001, numbers.EPSILON), false);
     done();
   });
   
@@ -298,12 +435,12 @@ suite('numbers', function() {
   test('fallingFactorial should return correct answers', function (done) {
     var func = basic.fallingFactorial;
 
-    assert.equal(1, func(0,0)); //allows n=0
-    assert.equal(1, func(7,0)); //k = 0 returns 1.
-    assert.equal(0, func(2,4)); //nonsensical k returns 0
+    assert.equal(func(0, 0), 1); //allows n=0
+    assert.equal(func(7, 0), 1); //k = 0 returns 1.
+    assert.equal(func(2, 4), 0); //nonsensical k returns 0
     
-    assert.equal(5040, func(7,7)); //n=k returns n!
-    assert.equal(840,  func(7,4));
+    assert.equal(func(7, 7), 5040); //n=k returns n!
+    assert.equal(func(7, 4), 840);
     
     assert.throws(
       function() {

@@ -12,10 +12,10 @@ suite('numbers', function() {
     var B = new Complex(5, 6);
     var res = A.add(B);
 
-    assert.equal(8, res.re);
-    assert.equal(10, res.im);
-    assert.equal(5, A.r);
-    assert.equal(true, (A.t - numbers.EPSILON < 0.9272952180016122) && (0.9272952180016122 < A.t + numbers.EPSILON));
+    assert.equal(res.re, 8);
+    assert.equal(res.im, 10);
+    assert.equal(A.r, 5);
+    assert.equal(A.t - numbers.EPSILON < 0.9272952180016122 && 0.9272952180016122 < A.t + numbers.EPSILON, true);
     done();
   });
 
@@ -24,8 +24,8 @@ suite('numbers', function() {
     var B = new Complex(3, 4);
     var res = A.subtract(B);
 
-    assert.equal(2, res.re);
-    assert.equal(4, res.im);
+    assert.equal(res.re, 2);
+    assert.equal(res.im, 4);
     done();
   });
 
@@ -34,8 +34,8 @@ suite('numbers', function() {
     var B = new Complex(5, 6);
     var res = A.multiply(B);
     
-    assert.equal(-9, res.re);
-    assert.equal(38, res.im);
+    assert.equal(res.re, -9);
+    assert.equal(res.im, 38);
     done();
   });
 
@@ -44,15 +44,15 @@ suite('numbers', function() {
     var B = new Complex(0, 10);
     var res = A.divide(B);
     
-    assert.equal(0, res.re);
-    assert.equal(-1, res.im);
+    assert.equal(res.re, 0);
+    assert.equal(res.im, -1);
     done();
   });
 
   test('magnitude should return magnitude', function(done) {
     var A = new Complex(3, 4);
 
-    assert.equal(5, A.magnitude());
+    assert.equal(A.magnitude(), 5);
     done();
   });
 
@@ -60,15 +60,15 @@ suite('numbers', function() {
     var A = new Complex(3, 4);
     var res = A.phase();
 
-    assert.equal(true, basic.numbersEqual(res, 0.9272952180016122, numbers.EPSILON));
+    assert.equal(basic.numbersEqual(res, 0.9272952180016122, numbers.EPSILON), true);
     done();
   });
 
   test('magnitude should return complex conjugate', function(done) {
     var A = new Complex(3, 4);
 
-    assert.equal(3, A.conjugate().re);
-    assert.equal(-4, A.conjugate().im);
+    assert.equal(A.conjugate().re, 3);
+    assert.equal(A.conjugate().im, -4);
     done();
   });
 
@@ -77,13 +77,13 @@ suite('numbers', function() {
     var justImaginary = new Complex(0, 4);
     var justNegativeImaginary = new Complex(0, -4);
 
-    assert.equal(true, A.pow(1/2).equals(new Complex(2, 1), numbers.EPSILON));
-    assert.equal(true, A.pow(1/4).equals(new Complex(1.455, .343), numbers.EPSILON));
-    assert.equal(true, A.pow(0).equals(new Complex(1, 0), numbers.EPSILON));
-    assert.equal(true, A.pow(2).equals(new Complex(-7, 24), numbers.EPSILON));
-    assert.equal(true, A.pow(5).equals(new Complex(-237, -3116), numbers.EPSILON));
-    assert.equal(true, justImaginary.pow(2).equals(new Complex(-16, 0), numbers.EPSILON));
-    assert.equal(true, justNegativeImaginary.pow(-2).equals(new Complex(-1/16, 0), numbers.EPSILON));
+    assert.equal(A.pow(1 / 2).equals(new Complex(2, 1), numbers.EPSILON), true);
+    assert.equal(A.pow(1 / 4).equals(new Complex(1.455, 0.343), numbers.EPSILON), true);
+    assert.equal(A.pow(0).equals(new Complex(1, 0), numbers.EPSILON), true);
+    assert.equal(A.pow(2).equals(new Complex(-7, 24), numbers.EPSILON), true);
+    assert.equal(A.pow(5).equals(new Complex(-237, -3116), numbers.EPSILON), true);
+    assert.equal(justImaginary.pow(2).equals(new Complex(-16, 0), numbers.EPSILON), true);
+    assert.equal(justNegativeImaginary.pow(-2).equals(new Complex(-1 / 16, 0), numbers.EPSILON), true);
     done();
   });
 
@@ -91,12 +91,12 @@ suite('numbers', function() {
     var A = new Complex(0, 1);
     var B = new Complex(0, -1);
 
-    assert.equal(true, A.complexPow(B).equals(new Complex(4.81047, 0), numbers.EPSILON));
+    assert.equal(A.complexPow(B).equals(new Complex(4.81047, 0), numbers.EPSILON), true);
 
     var C = new Complex(3, 4);
     var D = new Complex(1, 2);
 
-    assert.equal(true, C.complexPow(D).equals(new Complex(-.4198, -.66), numbers.EPSILON));
+    assert.equal(C.complexPow(D).equals(new Complex(-0.4198, -0.66), numbers.EPSILON), true);
     done();
   });
 
@@ -105,10 +105,10 @@ suite('numbers', function() {
     var root = 5;
     var roots = A.roots(root);
 
-    assert.equal(root, roots.length);
+    assert.equal(roots.length, root);
 
     for(var i = 0; i < root; i++) {
-       assert.equal(true, roots[i].pow(root).equals(A, numbers.EPSILON))
+       assert.equal(roots[i].pow(root).equals(A, numbers.EPSILON), true)
     }
     done();
   });
@@ -116,14 +116,14 @@ suite('numbers', function() {
   test('should be able to get the sine of a complex number', function(done) {
     var A = new Complex(3, -4);
 
-    assert.equal(true, A.sin().equals(new Complex(3.8537, 27.0168), numbers.EPSILON));
+    assert.equal(A.sin().equals(new Complex(3.8537, 27.0168), numbers.EPSILON), true);
     done();
   });
 
   test('should be able to get the cosine of a complex number', function(done) {
     var A = new Complex(3, -4);
 
-    assert.equal(true, A.cos().equals(new Complex(-27.0349, 3.8511), numbers.EPSILON));
+    assert.equal(A.cos().equals(new Complex(-27.0349, 3.8511), numbers.EPSILON), true);
     done();
   });
 
@@ -131,20 +131,20 @@ suite('numbers', function() {
     var A = new Complex(3, -4);
     var expected = A.sin().divide(A.cos());
 
-    assert.equal(true, A.tan().equals(expected, numbers.EPSILON));
+    assert.equal(A.tan().equals(expected, numbers.EPSILON), true);
     done();
   });
 
   test('should be able to check for equality of two complex numbers', function(done) {
     var A = new Complex(3,4);
 
-    assert.equal(true, A.equals(new Complex(3, 4), numbers.EPSILON));
-    assert.equal(true, A.equals(new Complex(3, 4.0001), numbers.EPSILON));
-    assert.equal(true, A.equals(new Complex(3.0001, 4), numbers.EPSILON));
+    assert.equal(A.equals(new Complex(3, 4), numbers.EPSILON), true);
+    assert.equal(A.equals(new Complex(3, 4.0001), numbers.EPSILON), true);
+    assert.equal(A.equals(new Complex(3.0001, 4), numbers.EPSILON), true);
 
-    assert.equal(false, A.equals(new Complex(3.1, 4), numbers.EPSILON));
-    assert.equal(false, A.equals(new Complex(3, 4.1), numbers.EPSILON));
-    assert.equal(false, A.equals(new Complex(5, 4), numbers.EPSILON));
+    assert.equal(A.equals(new Complex(3.1, 4), numbers.EPSILON), false);
+    assert.equal(A.equals(new Complex(3, 4.1), numbers.EPSILON), false);
+    assert.equal(A.equals(new Complex(5, 4), numbers.EPSILON), false);
     done();
   });
 
