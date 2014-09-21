@@ -3,7 +3,8 @@ node_js:
   - 0.10
   - 0.8
   - 0.6
-
+before_install:
+  - npm install -g npm
 notifications:
   email:
     - sjkaliski@gmail.com
