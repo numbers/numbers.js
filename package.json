@@ -12,7 +12,8 @@
     "David Byrd (https://github.com/davidbyrd11)",
     "Ethan Resnick (https://github.comc/ethanresnick)",
     "Dakota St. Laurent (https://github.com/StDako)",
-    "Kartik Talwar (https://github.com/KartikTalwar)"
+    "Kartik Talwar (https://github.com/KartikTalwar)",
+    "Larry Battle (https://github.com/LarryBattle)"
   ],
   "engines": {
     "node": ">= v0.6.0"
@@ -25,12 +26,24 @@
     "statistics"
   ],
   "devDependencies": {
+    "browserify": "~5.12.1",
+    "del": "~0.1.3",
+    "gulp": "~3.8.8",
+    "gulp-jsbeautifier": "0.0.2",
+    "gulp-jshint": "~1.8.4",
+    "gulp-mocha": "~1.1.0",
+    "gulp-rename": "~1.2.0",
+    "gulp-uglify": "~1.0.1",
+    "jshint-stylish": "~1.0.0",
     "mocha": "~1.8.0",
-    "browserify": "~1.16.6",
-    "uglify-js": "~2.2.2"
+    "uglify-js": "~2.2.2",
+    "vinyl-buffer": "~1.0.0",
+    "vinyl-source-stream": "~1.0.0"
   },
   "scripts": {
-    "test": "make test",
-    "build": "make build"
+    "build": "gulp build",
+    "format": "gulp format",
+    "lint": "gulp lint",
+    "test": "gulp test"
   }
 }
