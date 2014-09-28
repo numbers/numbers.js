@@ -122,7 +122,7 @@ suite('numbers', function() {
   // random.distribution.boxMuller
   test('random.distribution.boxMuller should return a n-sample of a normal distribution', function(done) {
     var t = numbers.EPSILON;
-    numbers.EPSILON = .01;
+    numbers.EPSILON = .1;
     //lower error considering the issue with Math.random()
     var test = random.distribution.boxMuller(100000),
         mu = statistic.mean(test),
@@ -153,8 +153,8 @@ suite('numbers', function() {
   // random.distribution.irwinHall
   test('random.distribution.irwinHall should return a normal distribution of length n within bounds of (m/2 - sub, m/2)', function(done) {
     var test = random.distribution.irwinHall(100);
-    testing.approxEquals(statistic.mean(test), 100 / 2, .5);
-    testing.approxEquals(statistic.standardDev(test), Math.sqrt(100 / 12), .5);
+    testing.approxEquals(statistic.mean(test), 100 / 2, 2);
+    testing.approxEquals(statistic.standardDev(test), Math.sqrt(100 / 12), 5);
 
     var test = random.distribution.irwinHall(100, 500);
     testing.approxEquals(statistic.mean(test), 500 / 2, 10);
@@ -170,7 +170,7 @@ suite('numbers', function() {
   // random.distribution.irwinHallNormal
   test('random.distribution.irwinHallNormal should return a n-sample of a normal distribution with a bound of (-6, 6)', function(done) {
     var test = random.distribution.irwinHallNormal(50);
-    testing.approxEquals(statistic.mean(test), 0, .3);
+    testing.approxEquals(statistic.mean(test), 0, .5);
     testing.approxEquals(statistic.standardDev(test), 1, .3);
     done();
   });
