@@ -18,18 +18,8 @@ suite('numbers', function() {
 
   // basic.sum
   test('sum should return the sum of items in an array', function (done) {
-    assert.equal(basic.sum([
-    0,
-    1,
-    2,
-    3
-]), 6);
-    assert.equal(basic.sum([
-    0,
-    -3,
-    5,
-    -2
-]), 0);
+    assert.equal(basic.sum([ 0, 1, 2, 3 ]), 6);
+    assert.equal(basic.sum([ 0, -3, 5, -2 ]), 0);
     done();
   });
 
@@ -55,12 +45,7 @@ suite('numbers', function() {
 
   // basic.substraction
   test('subtraction should return the difference of items in an array', function (done) {
-    assert.equal(basic.subtraction([
-    5,
-    3,
-    1,
-    -1
-]), 2);
+    assert.equal(basic.subtraction([ 5, 3, 1, -1 ]), 2);
     done();
   });
 
@@ -96,16 +81,8 @@ suite('numbers', function() {
 
   // basic.product
   test('product should return the product of items in an array', function (done) {
-    assert.equal(basic.product([
-    1,
-    2,
-    3,
-    4
-]), 24);
-    assert.equal(basic.product([
-    -3,
-    2
-]), -6);
+    assert.equal(basic.product([ 1, 2, 3, 4 ]), 24);
+    assert.equal(basic.product([ -3, 2 ]), -6);
     done();
   });
 
@@ -204,22 +181,9 @@ suite('numbers', function() {
   });
 
   test('max should return the biggest number in an array', function (done) {
-    assert.equal(basic.max([
-    1,
-    2,
-    3,
-    42
-]), 42);
-    assert.equal(basic.max([
-    -1,
-    -2,
-    -3,
-    -42
-]), -1);
-    assert.equal(basic.max([
-    1,
-    Infinity
-]), Infinity);
+    assert.equal(basic.max([ 1, 2, 3, 42 ]), 42);
+    assert.equal(basic.max([ -1, -2, -3, -42 ]), -1);
+    assert.equal(basic.max([ 1, Infinity ]), Infinity);
     assert.equal(basic.max(longList), 1000000);
     done();
   });
@@ -236,74 +200,19 @@ suite('numbers', function() {
   });
 
   test('min should return the smallest number in an array', function (done) {
-    assert.equal(basic.min([
-    1,
-    2,
-    3,
-    42
-]), 1);
-    assert.equal(basic.min([
-    -1,
-    -2,
-    -3,
-    -42
-]), -42);
-    assert.equal(basic.min([
-    1,
-    -Infinity
-]), -Infinity);
+    assert.equal(basic.min([ 1, 2, 3, 42 ]), 1);
+    assert.equal(basic.min([ -1, -2, -3, -42 ]), -42);
+    assert.equal(basic.min([ 1, -Infinity ]), -Infinity);
     assert.equal(basic.min(longList), -1000000);
     done();
   });
 
   // basic.range
   test('range should return an appropriate range for the given start, stop, and step parameters', function (done) {
-    assert.deepEqual(basic.range(1, 10), [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10
-]);
-    assert.deepEqual(basic.range(10, 1), [
-    10,
-    9,
-    8,
-    7,
-    6,
-    5,
-    4,
-    3,
-    2,
-    1
-]);
-    assert.deepEqual(basic.range(1, 5, 0.5), [
-    1,
-    1.5,
-    2,
-    2.5,
-    3,
-    3.5,
-    4,
-    4.5,
-    5
-]);
-    assert.deepEqual(basic.range(5, 1, 0.5), [
-    5,
-    4.5,
-    4,
-    3.5,
-    3,
-    2.5,
-    2,
-    1.5,
-    1
-]);
+    assert.deepEqual(basic.range(1, 10), [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]);
+    assert.deepEqual(basic.range(10, 1), [ 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 ]);
+    assert.deepEqual(basic.range(1, 5, 0.5), [ 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5 ]);
+    assert.deepEqual(basic.range(5, 1, 0.5), [ 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1 ]);
     done();
  
   });
@@ -319,14 +228,8 @@ suite('numbers', function() {
 
   // basic.divMod
   test('divMod should return an array of both the division and modulus values of two integers', function (done) {
-    assert.deepEqual(basic.divMod(12, 6), [
-    2,
-    0
-]);
-    assert.deepEqual(basic.divMod(10, 3), [
-    3,
-    1
-]); 
+    assert.deepEqual(basic.divMod(12, 6), [ 2, 0 ]);
+    assert.deepEqual(basic.divMod(10, 3), [ 3, 1 ]); 
     done();
   });
 
@@ -342,56 +245,16 @@ suite('numbers', function() {
   });
   test('egcd should return the array [a, x, y] which is the solved linear equation for GCD', function(done) {
     assert.equal(basic.egcd('ten', 1).toString(), 'NaN,NaN,NaN');
-    assert.deepEqual(basic.egcd(1, Infinity), [
-    Infinity,
-    Infinity,
-    Infinity
-]);
-    assert.deepEqual(basic.egcd(3, 0), [
-    3,
-    1,
-    0
-]);
-    assert.deepEqual(basic.egcd(0, 3), [
-    3,
-    0,
-    1
-]);
-    assert.deepEqual(basic.egcd(-2, -6), [
-    2,
-    -1,
-    0
-]);
-    assert.deepEqual(basic.egcd(-2, 5), [
-    1,
-    2,
-    1
-]);
-    assert.deepEqual(basic.egcd(65, 40), [
-    5,
-    -3,
-    5
-]);
-    assert.deepEqual(basic.egcd(40, 65), [
-    5,
-    5,
-    -3
-]);
-    assert.deepEqual(basic.egcd(1239, 735), [
-    21,
-    -16,
-    27
-]);
-    assert.deepEqual(basic.egcd(105, 252), [
-    21,
-    5,
-    -2
-]);
-    assert.deepEqual(basic.egcd(252, 105), [
-    21,
-    -2,
-    5
-]);
+    assert.deepEqual(basic.egcd(1, Infinity), [ Infinity, Infinity, Infinity ]);
+    assert.deepEqual(basic.egcd(3, 0), [ 3, 1, 0 ]);
+    assert.deepEqual(basic.egcd(0, 3), [ 3, 0, 1 ]);
+    assert.deepEqual(basic.egcd(-2, -6), [ 2, -1, 0 ]);
+    assert.deepEqual(basic.egcd(-2, 5), [ 1, 2, 1 ]);
+    assert.deepEqual(basic.egcd(65, 40), [ 5, -3, 5 ]);
+    assert.deepEqual(basic.egcd(40, 65), [ 5, 5, -3 ]);
+    assert.deepEqual(basic.egcd(1239, 735), [ 21, -16, 27 ]);
+    assert.deepEqual(basic.egcd(105, 252), [ 21, 5, -2 ]);
+    assert.deepEqual(basic.egcd(252, 105), [ 21, -2, 5 ]);
     done();
   });
 

@@ -18,25 +18,7 @@ suite('numbers', function() {
   test('collatz should populate the given array with a collatz sequence', function (done) {
     var result = [];
     generate.collatz(7, result);
-    assert.equal(result.join(','), [
-    7,
-    22,
-    11,
-    34,
-    17,
-    52,
-    26,
-    13,
-    40,
-    20,
-    10,
-    5,
-    16,
-    8,
-    4,
-    2,
-    1
-].join(','));
+    assert.equal(result.join(','), [ 7, 22, 11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1 ].join(','));
     done();
   });
 
