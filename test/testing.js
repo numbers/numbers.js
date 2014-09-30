@@ -11,8 +11,7 @@ var testing = exports;
  */
 testing.approxEquals = function(a, b, eps) {
   if (arguments.length < 3) eps = numbers.EPSILON; 
-  assert.equal(true, Math.abs(a - b) < eps,
-    'Math.abs(' + a + ' - ' + b + ') < ' + eps);
+  assert.equal(Math.abs(a - b) < eps, true);
 };
 
 /**
@@ -23,8 +22,7 @@ testing.approxEquals = function(a, b, eps) {
  * @param {Number} upper bound
  */
 testing.between = function(x, a, b) {
-  assert.equal(true, a < x && x < b, 
-    a + ' < ' + x + ' < ' + b);
+  assert.equal(a < x && x < b, true);
 };
 
 /**
@@ -45,5 +43,5 @@ testing.likelyTrue = function(testFunction, message, n, perc) {
     for (var i = 0; i < n; i++) {
         if (testFunction()) r++;
     }
-    assert.equal(true, r / n < perc, message);
+    assert.equal(r / n < perc, true);
 };

@@ -8,9 +8,9 @@ suite('numbers', function() {
 
   //numbers.generate.fibonacci
   test('Should generate the nth fibonacci number', function (done) {
-    assert.equal(55, generate.fibonacci(10));
-    assert.equal(12586269025, generate.fibonacci(50));
-    assert.equal(14472334024676221, generate.fibonacci(79));
+    assert.equal(generate.fibonacci(10), 55);
+    assert.equal(generate.fibonacci(50), 12586269025);
+    assert.equal(generate.fibonacci(79), 14472334024676220);
     done();
   });
 
@@ -18,7 +18,7 @@ suite('numbers', function() {
   test('collatz should populate the given array with a collatz sequence', function (done) {
     var result = [];
     generate.collatz(7, result);
-    assert.equal([7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1].join(','), result.join(','));
+    assert.equal(result.join(','), [ 7, 22, 11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1 ].join(','));
     done();
   });
 

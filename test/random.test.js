@@ -19,7 +19,7 @@ suite('numbers', function() {
     res.forEach(function(val) {
       testing.between(val, 5, 100);
     });
-    assert.equal(5, res.length);
+    assert.equal(res.length, 5);
     done();
   });
 
@@ -74,7 +74,7 @@ suite('numbers', function() {
         var test = random.distribution.normal(n, i, j),
             mu = statistic.mean(test),
             sigma = statistic.standardDev(test);
-        assert.equal(n, test.length);
+        assert.equal(test.length, n);
         testing.approxEquals(mu, i);
         testing.approxEquals(sigma, j);
       }
@@ -144,7 +144,7 @@ suite('numbers', function() {
         var test = random.distribution.boxMuller(n, i, j),
             mu = statistic.mean(test),
             sigma = statistic.standardDev(test);
-        assert.equal(n, test.length);
+        assert.equal(test.length, n);
         testing.approxEquals(mu, i);
         testing.approxEquals(sigma, j);
       }
