@@ -1,4 +1,7 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.numbers=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+module.exports = require('./lib/numbers.js');
+
+},{"./lib/numbers.js":2}],2:[function(require,module,exports){
 /**
  * numbers.js
  * http://github.com/sjkaliski/numbers.js
@@ -46,7 +49,7 @@ numbers.random = require('./numbers/random');
  */
 numbers.EPSILON = 0.001;
 
-},{"./numbers/basic":2,"./numbers/calculus":3,"./numbers/complex":4,"./numbers/dsp":5,"./numbers/generators":6,"./numbers/matrix":7,"./numbers/prime":8,"./numbers/random":9,"./numbers/statistic":10}],2:[function(require,module,exports){
+},{"./numbers/basic":3,"./numbers/calculus":4,"./numbers/complex":5,"./numbers/dsp":6,"./numbers/generators":7,"./numbers/matrix":8,"./numbers/prime":9,"./numbers/random":10,"./numbers/statistic":11}],3:[function(require,module,exports){
 /**
  * basic.js
  * http://github.com/sjkaliski/numbers.js
@@ -511,7 +514,7 @@ basic.fallingFactorial = function(n, k) {
   return r;
 }
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /**
  * calculus.js
  * http://github.com/sjkaliski/numbers.js
@@ -743,7 +746,7 @@ calculus.MonteCarlo = function(func, N) {
 
   return coeff * fvals.reduce(function(a,b) {return a+b;});
 }
-},{"../numbers":1}],4:[function(require,module,exports){
+},{"../numbers":2}],5:[function(require,module,exports){
 /**
  * complex.js
  * http://github.com/sjkaliski/numbers.js
@@ -945,7 +948,7 @@ Complex.prototype.equals = function(complex, epsilon) {
 
 module.exports = Complex;
 
-},{"../numbers":1}],5:[function(require,module,exports){
+},{"../numbers":2}],6:[function(require,module,exports){
 /**
  * dsp.js
  * http://github.com/sjkaliski/numbers.js
@@ -1025,7 +1028,7 @@ dsp.fft = function (x) {
   return res;
 };
 
-},{"../numbers":1}],6:[function(require,module,exports){
+},{"../numbers":2}],7:[function(require,module,exports){
 /**
  * generators.js
  * http://github.com/sjkaliski/numbers.js
@@ -1113,7 +1116,7 @@ generate.collatz = function (n, result) {
   }
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * matrix.js
  * http://github.com/sjkaliski/numbers.js
@@ -2260,7 +2263,7 @@ matrix.isLowerBand = function(M,p) {
   }
   return result;
 }
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * prime.js
  * http://github.com/sjkaliski/numbers.js
@@ -2465,10 +2468,24 @@ prime.getPrimePower = function(n) {
   return false;
 };
 
-},{"./basic":2}],9:[function(require,module,exports){
+},{"./basic":3}],10:[function(require,module,exports){
 var basic = require('./basic');
 var random = exports;
 
+// random number generator.
+var rGen = Math.random;
+
+/**
+ * Set the pseudo random number generator used by the random module.
+ *
+ * @param {Function} Random number generator
+ */
+random.setGenerator = function(fn){
+  if(typeof fn !== "function"){
+    throw new Error("Must pass a function");
+  }
+  rGen = fn;
+};
 /**
  * Return a random sample of values over a set of bounds with
  * a specified quantity.
@@ -2483,7 +2500,7 @@ random.sample = function (lower, upper, n) {
   sample.length = n;
 
   for (var i=0; i<n; i++) {
-    sample[i] = lower + (upper - lower) * Math.random();
+    sample[i] = lower + (upper - lower) * rGen();
   }
   return sample;
 };
@@ -2506,8 +2523,8 @@ random.boxMullerTransform = function(mu, sigma) {
       s;
 
   do {
-    u = Math.random() * 2 - 1;
-    v = Math.random() * 2 - 1;
+    u = rGen() * 2 - 1;
+    v = rGen() * 2 - 1;
     s = u * u + v * v;
   } while (s === 0 || s > 1)
 
@@ -2530,7 +2547,7 @@ random.boxMullerTransform = function(mu, sigma) {
 random.irwinHall = function(n, sub) {
   if (arguments.length === 1) sub = 0;
   var sum = 0;
-  for (var i = 0; i < n; i++) sum += Math.random();
+  for (var i = 0; i < n; i++) sum += rGen();
   return sum - sub;
 };
 
@@ -2547,7 +2564,7 @@ random.bates = function(n, b, a) {
   if (arguments.length <= 2) a = 0;
   if (arguments.length === 1) b = 1;
   var sum = 0;
-  for (var i = 0; i < n; i++) sum += (b - a)*Math.random() + a;
+  for (var i = 0; i < n; i++) sum += (b - a)*rGen() + a;
   return sum/n;
 };
 
@@ -2667,7 +2684,7 @@ random.distribution.bates = function(n, b, a) {
   return results;
 };
 
-},{"./basic":2}],10:[function(require,module,exports){
+},{"./basic":3}],11:[function(require,module,exports){
 /**
  * statistic.js
  * http://github.com/sjkaliski/numbers.js
@@ -2784,25 +2801,6 @@ statistic.report = function(array) {
     thirdQuartile: statistic.quantile(array, 3, 4),
     standardDev: statistic.standardDev(array)
   }
-};
-
-/**
- * Return a random sample of values over a set of bounds with
- * a specified quantity.
- *
- * @param {Number} lower bound.
- * @param {Number} upper bound.
- * @param {Number} quantity of elements in random sample.
- * @return {Array} random sample.
- */
-statistic.randomSample = function (lower, upper, n) {
-  var sample = [];
-  sample.length = n;
-
-  for (var i=0; i<n; i++) {
-    sample[i] = lower + (upper - lower) * Math.random();
-  }
-  return sample;
 };
 
 /**
@@ -2951,4 +2949,5 @@ statistic.linearRegression = function (arrX, arrY) {
   }
 };
 
-},{"./basic":2}]},{},[1]);
+},{"./basic":3}]},{},[1])(1)
+});
