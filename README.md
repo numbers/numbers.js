@@ -110,7 +110,21 @@ npm run lint
 
 ## Format Code
 
-To format all the tests and lib files using jsbeautifier, run 
+Currently, gulp-jsbeautifier uses an untested and incompatible version of js-beautifier (1.5.2). Thus, the version must be changed to 1.5.1. A quick fix for this at the moment is the following:
+
+```bash
+rm -rf ./node_modules/gulp-jsbeautifier
+npm install
+cd ./node_modules/gulp-jsbeautifier
+rm -rf /node_modules/
+sed 's/~1.5.1/1.5.1/' package.json > package.json.new
+rm package.json
+mv package.json.new package.json
+npm install
+cd ../../
+```
+
+Then, to format all the tests and lib files using jsbeautifier, run 
 
 ```
 npm run format
