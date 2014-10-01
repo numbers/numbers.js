@@ -108,7 +108,7 @@ suite('numbers', function() {
     assert.equal(roots.length, root);
 
     for(var i = 0; i < root; i++) {
-       assert.equal(roots[i].pow(root).equals(A, numbers.EPSILON), true)
+       assert.equal(roots[i].pow(root).equals(A, numbers.EPSILON), true);
     }
     done();
   });

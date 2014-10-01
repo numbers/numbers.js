@@ -444,14 +444,14 @@ basic.egcd = function (a, b) {
     throw new Error("Can only operate on integers");
   }
   var signX = (a < 0) ? -1 : 1,
-  signY = (b < 0) ? -1 : 1,
-  a = Math.abs(a),
-  b = Math.abs(b),
-  x = 0,
-  y = 1,
-  oldX = 1,
-  oldY = 0,
-  q, r, m, n;
+      signY = (b < 0) ? -1 : 1,
+      x = 0,
+      y = 1,
+      oldX = 1,
+      oldY = 0,
+      q, r, m, n;
+    a = Math.abs(a);
+    b = Math.abs(b);
 
   while(a !== 0){
     q = Math.floor(b/a);
@@ -512,7 +512,7 @@ basic.fallingFactorial = function(n, k) {
   }
 
   return r;
-}
+};
 
 },{}],4:[function(require,module,exports){
 /**
@@ -745,7 +745,7 @@ calculus.MonteCarlo = function(func, N) {
   });
 
   return coeff * fvals.reduce(function(a,b) {return a+b;});
-}
+};
 },{"../numbers":2}],5:[function(require,module,exports){
 /**
  * complex.js
@@ -871,7 +871,7 @@ Complex.prototype.pow = function(n) {
 Complex.prototype.complexPow = function(complexN) {
   var realSqPlusImSq =  Math.pow(this.re, 2) + Math.pow(this.im, 2);
   var multiplier = Math.pow(realSqPlusImSq, complexN.re / 2) * Math.pow(Math.E, -complexN.im * this.phase());
-  var theta = complexN.re * this.phase() + .5 * complexN.im * Math.log(realSqPlusImSq);
+  var theta = complexN.re * this.phase() + 0.5 * complexN.im * Math.log(realSqPlusImSq);
 
   return new Complex(multiplier * Math.cos(theta), multiplier * Math.sin(theta));
 };
@@ -889,7 +889,7 @@ Complex.prototype.roots = function(n) {
     var theta = (this.phase() + 2*Math.PI*i) / n;
     var radiusConstant = Math.pow(this.magnitude(), 1 / n);
 
-    result[i] = (new Complex(radiusConstant * Math.cos(theta), radiusConstant * Math.sin(theta)))
+    result[i] = (new Complex(radiusConstant * Math.cos(theta), radiusConstant * Math.sin(theta)));
   }
 
   return result;
@@ -970,7 +970,7 @@ module.exports = Complex;
 
 
 var numbers = require('../numbers');
-var Complex = numbers.complex
+var Complex = numbers.complex;
 var dsp = exports;
 
 /**
@@ -1087,7 +1087,7 @@ generate.fibonacci = function (n) {
       b = temp[1];
     } else {
       temp = [(a * a) + (b * b), (a + c) * b];
-      a = temp[0]
+      a = temp[0];
       b = temp[1];
     }
 
@@ -1183,15 +1183,16 @@ matrix.isSquare = function(arr) {
  */
 matrix.addition = function (arrA, arrB) {
   if ((arrA.length === arrB.length) && (arrA[0].length === arrB[0].length)) {
-    var result = new Array(arrA.length);
+    var result = new Array(arrA.length),
+        i;
     
     if (!arrA[0].length) {
       // The arrays are vectors.
-      for (var i = 0; i < arrA.length; i++) {
+      for (i = 0; i < arrA.length; i++) {
         result[i] = arrA[i] + arrB[i];
       }
     } else {
-      for (var i = 0; i < arrA.length; i++) {
+      for (i = 0; i < arrA.length; i++) {
           result[i] = new Array(arrA[i].length);
         
           for (var j = 0; j < arrA[i].length; j++) {
@@ -1215,15 +1216,16 @@ matrix.addition = function (arrA, arrB) {
  */
 matrix.subtraction = function (arrA, arrB) {
   if ((arrA.length === arrB.length) && (arrA[0].length === arrB[0].length)) {
-    var result = new Array(arrA.length);
+    var result = new Array(arrA.length),
+        i;
     
     if (!arrA[0].length) {
       // The arrays are vectors.
-      for (var i = 0; i < arrA.length; i++) {
+      for (i = 0; i < arrA.length; i++) {
         result[i] = arrA[i] - arrB[i];
       }
     } else {
-      for (var i = 0; i < arrA.length; i++) {
+      for (i = 0; i < arrA.length; i++) {
           result[i] = new Array(arrA[i].length);
         
           for (var j = 0; j < arrA[i].length; j++) {
@@ -1359,7 +1361,7 @@ matrix.determinant = function (m) {
   var diagLeft, diagRight;
 
   if (numRow !== numCol) {
-    throw new Error("Not a square matrix.")
+    throw new Error("Not a square matrix.");
   }
 
   if (numRow === 1) {
@@ -1686,7 +1688,7 @@ matrix.GaussJordanEliminate = function(m, epsilon) {
   var h = m.length;
   var w = m[0].length;
   var y = -1;
-  var y2, x;
+  var y2, x, c;
 
   while (++y < h) {
     // Pivot.
@@ -1708,7 +1710,7 @@ matrix.GaussJordanEliminate = function(m, epsilon) {
     // Eliminate column
     y2 = y;
     while (++y2 < h) {
-      var c = m[y2][y] / m[y][y];
+      c = m[y2][y] / m[y][y];
       x = y - 1;
       while (++x < w) {
         m[y2][x] -= m[y][x] * c;
@@ -1719,7 +1721,7 @@ matrix.GaussJordanEliminate = function(m, epsilon) {
   // Backsubstitute.
   y = h;
   while (--y >= 0) {
-    var c = m[y][y];
+    c = m[y][y];
     y2 = -1;
     while (++y2 < y) {
       x = w;
@@ -1748,7 +1750,7 @@ matrix.GaussJordanEliminate = function(m, epsilon) {
  */
 matrix.rowReduce = function(m, epsilon) {
   return matrix.GaussJordanEliminate(m, epsilon);
-}
+};
 
 /**
  * nxn matrix inversion
@@ -1757,13 +1759,14 @@ matrix.rowReduce = function(m, epsilon) {
  * @return {Array} inverted matrix.
  */
 matrix.inverse = function(m) {
-  var n = m.length;
+  var n = m.length,
+      i;
 
   if (n === m[0].length) {
     var identity = matrix.identity(n);
 
     // AI
-    for(var i=0; i<n; i++) {
+    for(i=0; i<n; i++) {
       m[i] = m[i].concat(identity[i]);
     }
 
@@ -1771,7 +1774,7 @@ matrix.inverse = function(m) {
     m = matrix.GaussJordanEliminate(m);
 
     // inv(A)
-    for(var i=0; i<n; i++) {
+    for(i=0; i<n; i++) {
       m[i] = m[i].slice(n);
     }
 
@@ -1779,7 +1782,7 @@ matrix.inverse = function(m) {
   } else {
     throw new Error('The given matrix must be square');
   }
-}
+};
 
 /**
  * Get a column of a matrix as a vector.
@@ -1799,7 +1802,7 @@ matrix.getCol = function(M, n) {
     result.push(M[i][n]);
   }
   return result;
-}
+};
 
 /**
  * Reorder the rows of a matrix based off an array of numbers.
@@ -1811,7 +1814,7 @@ matrix.getCol = function(M, n) {
 matrix.reorderRows = function(M, L) {
   var result = [];
   if (L === undefined) {
-    throw new Error('Please enter a desired reordering array.');
+    throw new Error('A reordering array must be entered.');
   } else if (L.length !== M.length) {
     throw new Error ('The reordered matrix must have the same number of rows as the original matrix.');
   }
@@ -1825,7 +1828,7 @@ matrix.reorderRows = function(M, L) {
     }
   }
   return result;
-}
+};
 
 /**
  * Reorder the columns of a matrix based off an array of numbers.
@@ -1851,7 +1854,7 @@ matrix.reorderCols = function(M, L) {
     }
   }
   return matrix.transpose(result);
-}
+};
 
 /**
  * Reverse the rows of a matrix.
@@ -1865,7 +1868,7 @@ matrix.reverseRows = function(M) {
         L.push(i);
     }
     return matrix.reorderRows(M,L);
-}
+};
 
 /**
  * Reverse the columns of a matrix.
@@ -1879,7 +1882,7 @@ matrix.reverseCols = function(M) {
         L.push(i);
     }
     return matrix.reorderCols(M,L);
-}
+};
 
 /**
  * Create a n x m matrix of zeros.
@@ -1890,20 +1893,20 @@ matrix.reverseCols = function(M) {
  */
 matrix.zeros = function(n,m) {
   var M = [];
-  if ((n < 1) || (m < 1)) {
-    throw new Error('Please enter the matrix dimensions as positive integers.')
+  if (n < 1 || m < 1) {
+    throw new Error('The matrix dimensions must be positive integers.');
   }
   n = Math.ceil(n);
   m = Math.ceil(m);
   for (var i=0; i<n; i++) {
-    var empty = [];
+    var empty = new Array(m);
     for (var j=0; j<m; j++) {
-      empty.push(0);
+      empty[j] = 0;
     }
     M.push(empty);
   }
   return M;
-}
+};
 
 /**
  * Create a zigzag matrix. point represents the starting corner,
@@ -1928,11 +1931,12 @@ matrix.zigzag = function(n, point, dir) {
     var jump = false,
         tl = n*n, 
         br = 1, 
-        inc = 1;
+        inc = 1,
+        row, col, val, i, j;
     M[0][0] = tl;
     M[n-1][n-1] = br;
 
-    for (var i=1; i<n; i++) {
+    for (i=1; i<n; i++) {
       //generate top/bottom row
       if (jump) {
         tl -= 4*inc;
@@ -1949,13 +1953,13 @@ matrix.zigzag = function(n, point, dir) {
     }
 
     var dec = true;
-    for (var i=1; i<n; i++) {
+    for (i=1; i<n; i++) {
       //iterate diagonally from top row
-      var row = 0,
-          col = i, 
-          val = M[row][col];
+      row = 0;
+      col = i; 
+      val = M[row][col];
 
-      for (var j=1; j<i+1;j++) {
+      for (j=1; j<i+1;j++) {
         if (dec) {
           val -= 1;
         } else {
@@ -1968,18 +1972,18 @@ matrix.zigzag = function(n, point, dir) {
         dec = !dec;
     }
 
-    if (n%2 ==0) {
+    if (n%2 === 0) {
       dec = true;
     } else {
       dec = false;
     }
-    for (var i=1; i<n-1; i++) {
+    for (i=1; i<n-1; i++) {
       //iterate diagonally from bottom row
       row = n-1;
       col = i;
       val = M[row][col];
 
-      for (var j=1; j<n-i; j++) {
+      for (j=1; j<n-i; j++) {
         if (dec) {
           val--;
         } else {
@@ -1992,35 +1996,35 @@ matrix.zigzag = function(n, point, dir) {
       dec = !dec;
     }
     return M;
-  }
+  };
 
   var BRV = function(M) {//starting at bottom right, moving vertically
     return matrix.transpose(BRH(M));
-  }
+  };
 
   var BLH = function(M) {//starting at bottom left, moving horizontally
     return matrix.reverseCols(BRH(M));
-  }
+  };
 
   var BLV = function(M) {//starting at bottom left, moving vertically
     return matrix.reverseRows(TLV(BLH(M)));
-  }
+  };
 
   var TRH = function(M) {//starting at top right, moving horizontally
     return matrix.reverseRows(BRH(M));
-  }
+  };
 
   var TRV = function(M) {//starting at top right, moving vertically
     return matrix.reverseRows(BRV(M));
-  }
+  };
 
   var TLH = function(M) {//starting at top left, moving horizontally
     return matrix.reverseCols(matrix.reverseRows(BRH(M)));
-  }
+  };
 
   var TLV = function(M) {//starting at top left, moving vertically
     return matrix.transpose(TLH(M));
-  }
+  };
 
   if ((point === 'BR') && (dir === 'H')) {return (BRH(mat));}
   else if ((point === 'BR') && (dir === 'V')) {return (BRV(mat));}
@@ -2030,8 +2034,8 @@ matrix.zigzag = function(n, point, dir) {
   else if ((point === 'TR') && (dir === 'V')) {return (TRV(mat));}
   else if ((point === 'TL') && (dir === 'H')) {return (TLH(mat));}
   else if ((point === 'TL') && (dir === 'V')) {return (TLV(mat));}
-  else {throw new Error('Please enter the direction (V,H) and corner (BR,BL,TR,TL) correctly.');}
-}
+  else {throw new Error('Enter the direction (V,H) and corner (BR,BL,TR,TL) correctly.');}
+};
 
 /**
  * Calculate the p-norm of a vector. Specific cases include:
@@ -2052,13 +2056,14 @@ matrix.vectorNorm = function(v,p) {
 
   p = (typeof p === 'undefined') ? 2 : p;
   var n = v.length,
-    ans = 0;
+    ans = 0,
+    term, i;
 
   switch (p) {
 
     case Infinity:
-      for (var i=0; i<n; i++) {
-        var term = Math.abs(v[i]);
+      for (i=0; i<n; i++) {
+        term = Math.abs(v[i]);
         if (term > ans) {
           ans = term;
         }
@@ -2067,8 +2072,8 @@ matrix.vectorNorm = function(v,p) {
 
     case -Infinity:
       ans = Infinity;
-      for (var i=0; i<n; i++) {
-        var term = Math.abs(v[i]);
+      for (i=0; i<n; i++) {
+        term = Math.abs(v[i]);
         if (term < ans) {
           ans = term;
         }
@@ -2076,7 +2081,7 @@ matrix.vectorNorm = function(v,p) {
       break;
 
     default:
-      for (var i=0; i<n; i++) {
+      for (i=0; i<n; i++) {
         ans += Math.pow(Math.abs(v[i]), p);
       }
       ans = Math.pow(ans, 1/p);
@@ -2084,7 +2089,7 @@ matrix.vectorNorm = function(v,p) {
   }
 
   return ans;
-}
+};
 
 /**
  * Calculate the p-norm of a matrix. Specific cases include:
@@ -2110,16 +2115,17 @@ matrix.matrixNorm = function(M,p) {
   p = (typeof p === 'undefined') ? null : p;
   var m = M.length, //number of rows
     n = M[0].length, //number of cols
-    ans = 0;
+    ans = 0,
+    term, i, j;
 
   switch (p) {
 
     // the largest value when absolute-ing and summing each row
     case Infinity:
-      for (var i=0; i<m; i++) {
-        var term = 0;
+      for (i=0; i<m; i++) {
+        term = 0;
 
-        for (var j=0; j<n; j++) {
+        for (j=0; j<n; j++) {
           term += Math.abs(M[i][j]);
         }
 
@@ -2132,10 +2138,10 @@ matrix.matrixNorm = function(M,p) {
     // the smallest value when absolute-ing and summing each row
     case -Infinity:
       ans = Infinity;
-      for (var i=0; i<m; i++) {
-        var term = 0;
+      for (i=0; i<m; i++) {
+        term = 0;
 
-        for (var j=0; j<n; j++) {
+        for (j=0; j<n; j++) {
           term += Math.abs(M[i][j]);
         }
 
@@ -2147,10 +2153,10 @@ matrix.matrixNorm = function(M,p) {
 
     // the largest value when absolute-ing and summing each column
     case 1:
-      for (var i=0; i<n; i++) {
-        var term = 0;
+      for (i=0; i<n; i++) {
+        term = 0;
 
-        for (var j=0; j<m; j++) {
+        for (j=0; j<m; j++) {
           term += Math.abs(M[j][i]);
         }
 
@@ -2163,10 +2169,10 @@ matrix.matrixNorm = function(M,p) {
     // the smallest value when absolute-ing and summing each column
     case -1:
       ans = Infinity;
-      for (var i=0; i<n; i++) {
-        var term = 0;
+      for (i=0; i<n; i++) {
+        term = 0;
 
-        for (var j=0; j<m; j++) {
+        for (j=0; j<m; j++) {
           term += Math.abs(M[j][i]);
         }
 
@@ -2178,8 +2184,8 @@ matrix.matrixNorm = function(M,p) {
 
     // the Frobenius norm
     case null:
-      for (var i=0; i<m; i++) {
-        for (var j=0; j<n; j++) {
+      for (i=0; i<m; i++) {
+        for (j=0; j<n; j++) {
           ans += Math.pow(M[i][j], 2);
         }
       }
@@ -2189,17 +2195,15 @@ matrix.matrixNorm = function(M,p) {
     // largest singular value
     case 2:
       throw new Error("Singular values are not yet supported in numbers.js.");
-      break;
 
     // smallest singular value
     case -2:
       throw new Error("Singular values are not yet supported in numbers.js.");
-      break;
 
     // entry-wise norm; analogous to that of the entry-wise vector norm.
     default:
-      for (var i=0; i<m; i++) {
-        for (var j=0; j<n; j++) {
+      for (i=0; i<m; i++) {
+        for (j=0; j<n; j++) {
           ans += Math.pow(Math.abs(M[i][j]), p);
         }
       }
@@ -2208,7 +2212,7 @@ matrix.matrixNorm = function(M,p) {
   }
 
   return ans;
-}
+};
 
 /**
  * Determines if a matrix has an upper bandwidth of q.
@@ -2235,7 +2239,7 @@ matrix.isUpperBand = function(M,q) {
     cnt++;
   }
   return result;
-}
+};
 
 /**
  * Determines if a matrix has an lower bandwidth of p.
@@ -2262,7 +2266,7 @@ matrix.isLowerBand = function(M,p) {
     cnt++;
   }
   return result;
-}
+};
 },{}],9:[function(require,module,exports){
 /**
  * prime.js
@@ -2377,7 +2381,7 @@ prime.millerRabin = function(n, k) {
     }
     
     return true;
-  }
+  };
 
   for (var i = 0; i < k; i++) {
     var a = 2 + Math.floor(Math.random() * (n - 2 - 2));
@@ -2526,13 +2530,13 @@ random.boxMullerTransform = function(mu, sigma) {
     u = rGen() * 2 - 1;
     v = rGen() * 2 - 1;
     s = u * u + v * v;
-  } while (s === 0 || s > 1)
+  } while (s === 0 || s > 1);
 
   var c = Math.sqrt(-2 * Math.log(s)/s),
       x = u * c,
-      y = v * c,
-      x = mu + x * sigma,
-      y = mu + y * sigma;
+      y = v * c;
+  x = mu + x * sigma;
+  y = mu + y * sigma;
   return [x, y];
 };
 
@@ -2800,7 +2804,7 @@ statistic.report = function(array) {
     median: statistic.median(array),
     thirdQuartile: statistic.quantile(array, 3, 4),
     standardDev: statistic.standardDev(array)
-  }
+  };
 };
 
 /**
@@ -2922,7 +2926,7 @@ statistic.linearRegression = function (arrX, arrY) {
         return a + b * d;
       });
     }
-  }
+  };
 };
 
 /**

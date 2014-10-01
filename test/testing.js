@@ -36,7 +36,7 @@ testing.between = function(x, a, b) {
  * @assert {Boolean} passed or failed test.
  */
 testing.likelyTrue = function(testFunction, message, n, perc) {
-    if (arguments.length <= 3) perc = .5;
+    if (arguments.length <= 3) perc = 0.5;
     if (arguments.length <= 2) n = 10;
     if (arguments.length === 1) message = 'is not likely to be true';
     var r = 0;
