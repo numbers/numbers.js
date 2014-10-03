@@ -15,7 +15,7 @@ suite('numbers', function() {
 
     assert.throws(
       function() {
-        matrix.deepCopy([1,2])
+        matrix.deepCopy([1,2]);
       },
       /Input cannot be a vector./
     );
@@ -291,7 +291,7 @@ suite('numbers', function() {
   test('should return a new vector that has been sheared in the x direction by the transformation matrix', function(done) {
     var vectorA = [[2], [5]];
     var k = 10;
-    var direction = "xaxis"
+    var direction = "xaxis";
     var expected = [ [52], [5] ];
 
     var res = matrix.shear(vectorA, k, direction);
@@ -303,7 +303,7 @@ suite('numbers', function() {
   test('should return a new vector that has been sheared in the y direction by the transformation matrix', function(done) {
     var vectorA = [[2], [5]];
     var k = 10;
-    var direction = "yaxis"
+    var direction = "yaxis";
     var expected = [ [2], [25] ];
 
     var res = matrix.shear(vectorA, k, direction);
@@ -315,7 +315,7 @@ suite('numbers', function() {
   test('should throw an error if a vector larger than two is given for shearing', function(done) {
     var vectorA = [[0], [1], [2]];
     var k = 10;
-    var direction = "yaxis"
+    var direction = "yaxis";
 
     assert.throws(
       function() {
@@ -508,7 +508,7 @@ suite('numbers', function() {
 
     var expected1 = [[7,8,9],
                      [1,2,3],
-                     [4,5,6]]
+                     [4,5,6]];
 
     var m2 = [[20,3],
               [17,5]];
