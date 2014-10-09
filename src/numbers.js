@@ -173,7 +173,8 @@ basic.binomial = function (n, k) {
     if (arr[n] && arr[n][k] > 0) return arr[n][k];
     if (!arr[n]) arr[n] = [];
 
-    return arr[n][k] = _binomial(n - 1, k - 1) + _binomial(n - 1, k);
+    arr[n][k] = _binomial(n - 1, k - 1) + _binomial(n - 1, k);
+    return arr[n][k];
   }
 
   return _binomial(n, k);
@@ -1146,10 +1147,11 @@ var matrix = exports;
  * @return {Array} copied matrix.
  */
 matrix.deepCopy = function(arr) {
-  if (arr[0][0] === undefined) {
+  if (!Array.isArray(arr)) {
+    throw new Error('Input must be a matrix.');
+  } else if (arr[0][0] === undefined) {
     throw new Error('Input cannot be a vector.');
   }
-  
   var result = new Array(arr.length);
 
   for (var i = 0; i < arr.length; i++) {
@@ -1165,10 +1167,15 @@ matrix.deepCopy = function(arr) {
  * @param {Array} arr
  */
 matrix.isSquare = function(arr) {
+  if (!Array.isArray(arr)) {
+    throw new Error('Input must be a matrix.');
+  } else if (arr[0][0] === undefined) {
+    throw new Error('Input cannot be a vector.');
+  }
   var rows = arr.length;
 
-  for (var i = 0, row; row = arr[i]; i++) {
-    if (row.length != rows) return false;
+  for (var i = 0; i < rows; i++) {
+    if (arr[i].length != rows) return false;
   }
 
   return true;
@@ -1892,7 +1899,7 @@ matrix.reverseCols = function(M) {
  * @return {Array} matrix
  */
 matrix.zeros = function(n,m) {
-  var M = [];
+  var M = new Array(n);
   if (n < 1 || m < 1) {
     throw new Error('The matrix dimensions must be positive integers.');
   }
@@ -1903,7 +1910,7 @@ matrix.zeros = function(n,m) {
     for (var j=0; j<m; j++) {
       empty[j] = 0;
     }
-    M.push(empty);
+    M[i] = empty;
   }
   return M;
 };
@@ -2267,6 +2274,142 @@ matrix.isLowerBand = function(M,p) {
   }
   return result;
 };
+
+/**
+ * Determines if a matrix is (weak) row diagonally-dominant.
+ *
+ * @param {Array} matrix
+ * @return {Boolean} true if so, false otherwise.
+ */
+matrix.isRowDD = function(M) {
+  var n = M.length;
+  if (n !== M[0].length) {
+    throw new Error("The given matrix must be square.");
+  } else if (M[0][0] === undefined) {
+    throw new Error("Input must be a matrix.");
+  }
+
+  for (var i=0; i<n; i++) {
+    var row = M[i],
+        diag = row[i],
+        sum = 0,
+        j;
+
+    for (j=0; j<i; j++) {
+      sum += Math.abs(row[j]);
+    }
+    for (j=i+1; j<n; j++) {
+      sum += Math.abs(row[j]);
+    }
+
+    if (Math.abs(diag) < sum) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Determines if a matrix is strictly row diagonally-dominant.
+ *
+ * @param {Array} matrix
+ * @return {Boolean} true if so, false otherwise.
+ */
+matrix.isStrictlyRowDD = function(M) {
+  var n = M.length;
+  if (n !== M[0].length) {
+    throw new Error("The given matrix must be square.");
+  } else if (M[0][0] === undefined) {
+    throw new Error("Input must be a matrix.");
+  }
+
+  for (var i=0; i<n; i++) {
+    var row = M[i],
+        diag = row[i],
+        sum = 0,
+        j;
+
+    for (j=0; j<i; j++) {
+      sum += Math.abs(row[j]);
+    }
+    for (j=i+1; j<n; j++) {
+      sum += Math.abs(row[j]);
+    }
+
+    if (Math.abs(diag) <= sum) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Determines if a matrix is (weak) column diagonally-dominant.
+ *
+ * @param {Array} matrix
+ * @return {Boolean} true if so, false otherwise.
+ */
+matrix.isColumnDD = function(M) {
+  var n = M.length;
+  if (n !== M[0].length) {
+    throw new Error("The given matrix must be square.");
+  } else if (M[0][0] === undefined) {
+    throw new Error("Input must be a matrix.");
+  }
+
+  for (var i=0; i<n; i++) {
+    var col = matrix.getCol(M,i),
+        diag = col[i],
+        sum = 0,
+        j;
+
+    for (j=0; j<i; j++) {
+      sum += Math.abs(col[j]);
+    }
+    for (j=i+1; j<n; j++) {
+      sum += Math.abs(col[j]);
+    }
+
+    if (Math.abs(diag) < sum) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Determines if a matrix is strictly column diagonally-dominant.
+ *
+ * @param {Array} matrix
+ * @return {Boolean} true if so, false otherwise.
+ */
+matrix.isStrictlyColumnDD = function(M) {
+  var n = M.length;
+  if (n !== M[0].length) {
+    throw new Error("The given matrix must be square.");
+  } else if (M[0][0] === undefined) {
+    throw new Error("Input cannot be a vector.");
+  }
+
+  for (var i=0; i<n; i++) {
+    var col = matrix.getCol(M,i),
+        diag = col[i],
+        sum = 0,
+        j;
+
+    for (j=0; j<i; j++) {
+      sum += Math.abs(col[j]);
+    }
+    for (j=i+1; j<n; j++) {
+      sum += Math.abs(col[j]);
+    }
+
+    if (Math.abs(diag) <= sum) {
+      return false;
+    }
+  }
+  return true;
+};
 },{}],9:[function(require,module,exports){
 /**
  * prime.js
@@ -2292,26 +2435,29 @@ var basic = require('./basic');
 var prime = exports;
 
 /**
- * Determine if number is prime.  This is far from high performance.
+ * Determine if number is prime.  
+ * Adopted from http://www.javascripter.net/faq/numberisprime.htm
  *
  * @param {Number} number to evaluate.
  * @return {Boolean} return true if value is prime. false otherwise.
  */
-prime.simple = function (val) {
-  if (val === 1) return false;
-  else if (val === 2) return true;
-  else if (val !== undefined) {
-    var start = 1;
-    var valSqrt = Math.ceil(Math.sqrt(val));
-    while (++start <= valSqrt) {
-      if (val % start === 0) {
+prime.simple = function (n) {
+    if (isNaN(n) || !isFinite(n) || n % 1 || n < 2) {
         return false;
-      }
+    }
+    if (n % 2 === 0){
+        return (n === 2);
+    }
+    if (n % 3 === 0){
+        return (n === 3);
+    }
+    for (var i = 5, m = Math.sqrt(n); i <= m; i += 6) {
+        if ((n % i === 0) || (n % (i + 2) === 0)){
+            return false;
+        }
     }
     return true;
-  }
 };
-
 /**
  * Returns the prime factors of a number.
  * More info (http://bateru.com/news/2012/05/code-of-the-day-javascript-prime-factors-of-a-number/)
