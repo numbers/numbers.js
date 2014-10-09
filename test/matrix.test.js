@@ -686,4 +686,80 @@ suite('numbers', function() {
     done();
   });
 
+  test('should test for weak row diagonal dominance', function(done) {
+    var m1 = [[3,-2,1],
+              [1,-3,2],
+              [-1,2,4]];
+    var m2 = [[-2,2,1],
+              [1,3,2],
+              [1,-2,0]];
+
+    var expected1 = true;
+    var expected2 = false;
+
+    var res1 = matrix.isRowDD(m1);
+    var res2 = matrix.isRowDD(m2);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
+  test('should test for strict row diagonal dominance', function(done) {
+    var m1 = [[3,-2,1],
+              [1,-3,2],
+              [-1,2,4]];
+    var m2 = [[-4,2,1],
+              [1,6,2],
+              [1,-2,5]];
+
+    var expected1 = false;
+    var expected2 = true;
+
+    var res1 = matrix.isStrictlyRowDD(m1);
+    var res2 = matrix.isStrictlyRowDD(m2);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
+  test('should test for weak column diagonal dominance', function(done) {
+    var m1 = [[3,-2,1],
+              [1,-3,2],
+              [-1,2,4]];
+    var m2 = [[-4,1,1],
+              [2,3,2],
+              [2,-1,5]];
+
+    var expected1 = false;
+    var expected2 = true;
+
+    var res1 = matrix.isColumnDD(m1);
+    var res2 = matrix.isColumnDD(m2);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
+  test('should test for strict column diagonal dominance', function(done) {
+    var m1 = [[-4,2,1],
+              [1,6,2],
+              [1,-2,5]];
+    var m2 = [[-4,1,1],
+              [2,3,2],
+              [2,-1,5]];
+
+    var expected1 = true;
+    var expected2 = false;
+
+    var res1 = matrix.isStrictlyColumnDD(m1);
+    var res2 = matrix.isStrictlyColumnDD(m2);
+
+    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res2,expected2);
+    done();
+  });
+
 });
