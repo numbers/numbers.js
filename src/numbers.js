@@ -1140,7 +1140,8 @@ generate.collatz = function (n, result) {
 
 var matrix = exports;
 
-var ERROR_MATRIX_NOT_SQUARE = 'Matrix must be square.';
+var ERROR_MATRIX_NOT_SQUARE = 'Matrix must be square.',
+    ERROR_VECTOR_NOT_2D = 'Only two dimensional operations are supported at this time.';
 
 /**
  * Check to see if a point is 2D. Used in all 2D vector functions.
@@ -1151,7 +1152,7 @@ var ERROR_MATRIX_NOT_SQUARE = 'Matrix must be square.';
  */
 matrix._check2DVector = function(point) {
   if (point.length !== 2) {
-    throw new Error('Only two dimensional operations are supported at this time.');
+    throw new Error(ERROR_VECTOR_NOT_2D);
   }
 };
 
@@ -2286,7 +2287,7 @@ matrix.isLowerBand = function(M,p) {
  * @param {Int} index of element to ignore.
  * @return {Number} sum.
  */
-matrix._sumNondiagonalElements = function(arr, i) {
+sumNondiagonalElements = function(arr, i) {
   var sum = 0,
       j;
 
@@ -2314,7 +2315,7 @@ matrix.isRowDD = function(M) {
   for (var i=0; i<n; i++) {
     var row = M[i],
         diag = row[i],
-        sum = matrix._sumNondiagonalElements(row, i);
+        sum = sumNondiagonalElements(row, i);
 
     if (Math.abs(diag) < sum) {
       return false;
@@ -2339,7 +2340,7 @@ matrix.isStrictlyRowDD = function(M) {
   for (var i=0; i<n; i++) {
     var row = M[i],
         diag = row[i],
-        sum = matrix._sumNondiagonalElements(row, i);
+        sum = sumNondiagonalElements(row, i);
 
     if (Math.abs(diag) <= sum) {
       return false;
@@ -2364,7 +2365,7 @@ matrix.isColumnDD = function(M) {
   for (var i=0; i<n; i++) {
     var col = matrix.getCol(M,i),
         diag = col[i],
-        sum = matrix._sumNondiagonalElements(col, i);
+        sum = sumNondiagonalElements(col, i);
 
     if (Math.abs(diag) < sum) {
       return false;
@@ -2389,7 +2390,7 @@ matrix.isStrictlyColumnDD = function(M) {
   for (var i=0; i<n; i++) {
     var col = matrix.getCol(M,i),
         diag = col[i],
-        sum = matrix._sumNondiagonalElements(col, i);
+        sum = sumNondiagonalElements(col, i);
 
     if (Math.abs(diag) <= sum) {
       return false;
