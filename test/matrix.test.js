@@ -204,7 +204,7 @@ suite('numbers', function() {
     assert.throws(function() {
         matrix.determinant(m3);
       },
-      /Not a square matrix/
+      /Matrix must be square./
     );
     done();
   });
