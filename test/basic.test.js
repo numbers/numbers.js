@@ -123,6 +123,16 @@ suite('numbers', function() {
         done();
     });
 
+    test('square should throw an Error when input is other than a number', function(done) {
+        assert.throws(
+            function() {
+                basic.square('error');
+            },
+            /Input must be a number/
+        );
+        done();
+    });    
+
     // basic.binomial
     test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
         assert.equal(basic.binomial(5, 3), 10);
