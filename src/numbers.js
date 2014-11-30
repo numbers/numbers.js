@@ -153,7 +153,12 @@ basic.product = function (arr) {
  * @return {Number} square of number
  */
 basic.square = function (num) {
-  return num * num;
+  if (typeof(num) !== 'number') {
+    throw new Error('Input must be a number.');
+  } else {
+    return num * num;  
+  }
+  
 };
 
 /**
