@@ -329,10 +329,10 @@ suite('numbers', function() {
 
     // basic.permutation
     test('permutation should return the permutation coefficient (n permute k) of two numbers', function(permute) {
-        assert.equal(func(5, 0), 1);
-        assert.equal(func(5, 1), 5);
-        assert.equal(func(5, 4), 120);
-        assert.equal(func(5, 5), 120);
+        assert.equal(basic.permutation(5, 0), 1);
+        assert.equal(basic.permutation(5, 1), 5);
+        assert.equal(basic.permutation(5, 4), 120);
+        assert.equal(basic.permutation(5, 5), 120);
         done();
     });
 
