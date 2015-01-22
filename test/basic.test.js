@@ -316,6 +316,15 @@ suite('numbers', function() {
         assert.equal(basic.powerMod(2, Math.pow(10, 9), 18), 16);
         assert.equal(basic.powerMod(6, 0.5, 10), 6);
         assert.equal(basic.powerMod(4, 13, 497), 445);
+        test('powerMod should throw an exception when given a non number', function(done) {
+            assert.throws(
+                function() {
+                    basic.powerMod('error', 'error', 'error');
+                },
+                /Can only operate on numbers/
+            );
+            done();
+        });
         done();
     });
 
