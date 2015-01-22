@@ -335,6 +335,15 @@ suite('numbers', function() {
         assert.equal(basic.numbersEqual(-5, 5, numbers.EPSILON), false);
         assert.equal(basic.numbersEqual(5, 5.1, numbers.EPSILON), false);
         assert.equal(basic.numbersEqual(5, 5.001, numbers.EPSILON), false);
+        test('numbersEqual should throw an exception when given a non number', function(done) {
+            assert.throws(
+                function() {
+                    basic.powerMod('error', 'error', .2);
+                },
+                /Can only operate on numbers/
+            );
+            done();
+        });
         done();
     });
 
