@@ -242,6 +242,15 @@ suite('numbers', function() {
     test('divMod should return an array of both the division and modulus values of two integers', function(done) {
         assert.deepEqual(basic.divMod(12, 6), [2, 0]);
         assert.deepEqual(basic.divMod(10, 3), [3, 1]);
+        test('divMod should throw an exception when given a decimal', function(done) {
+        assert.throws(
+            function() {
+                basic.divMod(0.2, 0.1);
+            },
+            /Can only operate on integers/
+        );
+        done();
+    });
         done();
     });
 
