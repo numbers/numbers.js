@@ -321,7 +321,6 @@ suite('numbers', function() {
 
         assert.equal(func(0, 0), 1); //allows n=0
         assert.equal(func(7, 0), 1); //k = 0 returns 1.
-        assert.equal(func(2, 4), 0); //nonsensical k returns 0
 
         assert.equal(func(7, 7), 5040); //n=k returns n!
         assert.equal(func(7, 4), 840);
@@ -329,8 +328,10 @@ suite('numbers', function() {
         assert.throws(
             function() {
                 func(-2, 5);
+                func(2,4);
             },
-            /negative/
+            /negative/,
+            /k is greater than n/
         );
 
         done();
