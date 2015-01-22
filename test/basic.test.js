@@ -327,4 +327,13 @@ suite('numbers', function() {
         done();
     });
 
+    // basic.permutation
+    test('permutation should return the permutation coefficient (n permute k) of two numbers', function(done) {
+        assert.equal(basic.permutation(5, 0), 1);
+        assert.equal(basic.permutation(5, 1), 5);
+        assert.equal(basic.permutation(5, 4), 120);
+        assert.equal(basic.permutation(5, 5), 120);
+        done();
+    });
+
 });
