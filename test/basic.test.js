@@ -149,6 +149,14 @@ suite('numbers', function() {
     test('factorial should return the product of n * (n - 1) * (n - 2) * ... * 1', function(done) {
         assert.equal(basic.factorial(4), 24);
         assert.equal(basic.factorial(5), 120);
+        assert.throws(
+            function() {
+                basic.factorial('error');
+                basic.factorial(-1);
+            },
+            /Input must be a number/,
+            /Input must not be negative/
+        );
         done();
     });
 
