@@ -136,6 +136,12 @@ suite('numbers', function() {
     // basic.binomial
     test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
         assert.equal(basic.binomial(5, 3), 10);
+        assert.throws(
+            function() {
+                basic.binomial('error');
+            },
+            /Input must be a number/
+        );
         done();
     });
 
