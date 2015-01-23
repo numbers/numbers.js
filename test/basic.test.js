@@ -136,6 +136,12 @@ suite('numbers', function() {
     // basic.binomial
     test('binomial should return the binomial coefficient (n choose k) of two numbers', function(done) {
         assert.equal(basic.binomial(5, 3), 10);
+        assert.throws(
+            function() {
+                basic.binomial('error');
+            },
+            /Input must be a number/
+        );
         done();
     });
 
@@ -143,6 +149,14 @@ suite('numbers', function() {
     test('factorial should return the product of n * (n - 1) * (n - 2) * ... * 1', function(done) {
         assert.equal(basic.factorial(4), 24);
         assert.equal(basic.factorial(5), 120);
+        assert.throws(
+            function() {
+                basic.factorial('error');
+                basic.factorial(-1);
+            },
+            /Input must be a number/,
+            /Input must not be negative/
+        );
         done();
     });
 
@@ -242,6 +256,15 @@ suite('numbers', function() {
     test('divMod should return an array of both the division and modulus values of two integers', function(done) {
         assert.deepEqual(basic.divMod(12, 6), [2, 0]);
         assert.deepEqual(basic.divMod(10, 3), [3, 1]);
+        test('divMod should throw an exception when given a decimal', function(done) {
+        assert.throws(
+            function() {
+                basic.divMod(0.2, 0.1);
+            },
+            /Can only operate on integers/
+        );
+        done();
+    });
         done();
     });
 
@@ -293,6 +316,15 @@ suite('numbers', function() {
         assert.equal(basic.powerMod(2, Math.pow(10, 9), 18), 16);
         assert.equal(basic.powerMod(6, 0.5, 10), 6);
         assert.equal(basic.powerMod(4, 13, 497), 445);
+        test('powerMod should throw an exception when given a non number', function(done) {
+            assert.throws(
+                function() {
+                    basic.powerMod('error', 'error', 'error');
+                },
+                /Can only operate on numbers/
+            );
+            done();
+        });
         done();
     });
 
@@ -303,6 +335,15 @@ suite('numbers', function() {
         assert.equal(basic.numbersEqual(-5, 5, numbers.EPSILON), false);
         assert.equal(basic.numbersEqual(5, 5.1, numbers.EPSILON), false);
         assert.equal(basic.numbersEqual(5, 5.001, numbers.EPSILON), false);
+        test('numbersEqual should throw an exception when given a non number', function(done) {
+            assert.throws(
+                function() {
+                    basic.powerMod('error', 'error', .2);
+                },
+                /Can only operate on numbers/
+            );
+            done();
+        });
         done();
     });
 
@@ -312,7 +353,6 @@ suite('numbers', function() {
 
         assert.equal(func(0, 0), 1); //allows n=0
         assert.equal(func(7, 0), 1); //k = 0 returns 1.
-        assert.equal(func(2, 4), 0); //nonsensical k returns 0
 
         assert.equal(func(7, 7), 5040); //n=k returns n!
         assert.equal(func(7, 4), 840);
@@ -320,8 +360,10 @@ suite('numbers', function() {
         assert.throws(
             function() {
                 func(-2, 5);
+                func(2,4);
             },
-            /negative/
+            /negative/,
+            /k is greater than n/
         );
 
         done();
