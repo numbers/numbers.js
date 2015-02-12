@@ -7,7 +7,10 @@ suite('numbers', function() {
   console.log('\n\n\033[34mTesting Matrix Mathematics\033[0m');
 
   test('should create a deep copy of a matrix', function(done) {
-    var input = [[1,2],[2,1]];
+    var input = [
+      [1, 2],
+      [2, 1]
+    ];
 
     var copy = matrix.deepCopy(input);
 
@@ -15,21 +18,38 @@ suite('numbers', function() {
 
     assert.throws(
       function() {
-        matrix.deepCopy([1,2]);
+        matrix.deepCopy([1, 2]);
       },
       /Input cannot be a vector./
     );
-    
+
     done();
   });
 
   test('should be able to tell if a matrix is square', function(done) {
-    assert.equal(matrix.isSquare([[1,2],[3,4]]), true);
-    assert.equal(matrix.isSquare([[1,2,3],[4,5,6]]), false);
-    assert.equal(matrix.isSquare([[1,2,3], [4,5,6], [7,8,9]]), true);
-    assert.equal(matrix.isSquare([[1,2], [3,4,5]]), false);
-    assert.equal(matrix.isSquare([[1,2,3], [4,5], [6,7,8]]), false);
-    
+    assert.equal(matrix.isSquare([
+      [1, 2],
+      [3, 4]
+    ]), true);
+    assert.equal(matrix.isSquare([
+      [1, 2, 3],
+      [4, 5, 6]
+    ]), false);
+    assert.equal(matrix.isSquare([
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9]
+    ]), true);
+    assert.equal(matrix.isSquare([
+      [1, 2],
+      [3, 4, 5]
+    ]), false);
+    assert.equal(matrix.isSquare([
+      [1, 2, 3],
+      [4, 5],
+      [6, 7, 8]
+    ]), false);
+
     done();
   });
 
@@ -50,7 +70,7 @@ suite('numbers', function() {
     ];
 
     var res = matrix.addition(arrA, arrB);
-    
+
     assert.deepEqual(arrC, res);
     done();
   });
@@ -70,7 +90,7 @@ suite('numbers', function() {
   test('should return difference of two vectors', function(done) {
     var arrA = [0, 1, 2];
     var arrB = [3, 4, 5];
-    var expected1 = [-3,-3,-3];
+    var expected1 = [-3, -3, -3];
     var res = matrix.subtraction(arrA, arrB);
 
     assert.deepEqual(expected1, res);
@@ -86,7 +106,10 @@ suite('numbers', function() {
 
     var res = matrix.scalar(array, scalar);
 
-    assert.deepEqual([[0, 5, 10], [15, 20, 25]], res);
+    assert.deepEqual([
+      [0, 5, 10],
+      [15, 20, 25]
+    ], res);
     done();
   });
 
@@ -130,7 +153,93 @@ suite('numbers', function() {
     done();
   });
 
+  test('should return product of a row vector and a matrix', function(done) {
+    var vec = [2, 1];
+    var mat = [
+      [1, 0, 1],
+      [0, 1, 0]
+    ];
+
+    var res = matrix.multiplyVecMat(vec, mat);
+
+    assert.deepEqual([2, 1, 2], res);
+    done();
+  });
+
+  test('should return product of a matrix and a column vector', function(done) {
+    var mat = [
+      [1, 0, 1],
+      [0, 1, 0]
+    ];
+    var vec = [
+      [2],
+      [1],
+      [0]
+    ];
+
+    var res = matrix.multiplyMatVec(mat, vec);
+
+    assert.deepEqual([
+      [2],
+      [1]
+    ], res);
+    done();
+  });
+
   test('should return product of two matrices', function(done) {
+    var matrixA = [
+      [0, 1, 2],
+      [3, 4, 5]
+    ];
+    var matrixB = [
+      [0, 3],
+      [1, 4],
+      [2, 5]
+    ];
+
+    var res = matrix.multiplyMatMat(matrixA, matrixB);
+
+    assert.deepEqual([
+      [5, 14],
+      [14, 50]
+    ], res);
+    done();
+  });
+
+  test('should return product of a row vector and a matrix using general-purpose multiplication', function(done) {
+    var vec = [3, 4];
+    var mat = [
+      [2, 0, 2],
+      [0, 1, 1]
+    ];
+
+    var res = matrix.multiply(vec, mat);
+
+    assert.deepEqual([6, 4, 10], res);
+    done();
+  });
+
+  test('should return product of a matrix and a column vector using general-purpose multiplication', function(done) {
+    var mat = [
+      [1, 2, 3],
+      [2, 1, 0]
+    ];
+    var vec = [
+      [0],
+      [4],
+      [-1]
+    ];
+
+    var res = matrix.multiply(mat, vec);
+
+    assert.deepEqual([
+      [5],
+      [4]
+    ], res);
+    done();
+  });
+
+  test('should return product of two matrices using general-purpose multiplication', function(done) {
     var matrixA = [
       [0, 1, 2],
       [3, 4, 5]
@@ -143,24 +252,10 @@ suite('numbers', function() {
 
     var res = matrix.multiply(matrixA, matrixB);
 
-    assert.deepEqual([[5, 14], [14, 50]], res);
-    done();
-  });
-
-  test('should return product of matrix and a vector', function(done) {
-    var matrixA = [
-      [0, 1, 2],
-      [3, 4, 5]
-    ];
-    var matrixB = [
-      [0],
-      [1],
-      [2]
-    ];
-
-    var res = matrix.multiply(matrixA, matrixB);
-
-    assert.deepEqual([[5], [14]], res);
+    assert.deepEqual([
+      [5, 14],
+      [14, 50]
+    ], res);
     done();
   });
 
@@ -172,7 +267,7 @@ suite('numbers', function() {
 
     var res0 = matrix.determinant(m0);
     assert.equal(1, res0);
-    
+
     var m1 = [
       [2, 3],
       [6, 7]
@@ -189,11 +284,11 @@ suite('numbers', function() {
 
     var res2 = matrix.determinant(m2);
     assert.equal(0, res2);
-    
+
     done();
-  }); 
-  
-  test('should throw an error for calculating the determinant of a non-square matrix', function(done) {    
+  });
+
+  test('should throw an error for calculating the determinant of a non-square matrix', function(done) {
     var m3 = [
       [3, -7, 8, 9, -6],
       [0, 2, -5, 7, 3],
@@ -212,32 +307,48 @@ suite('numbers', function() {
   test('should throw an error if trying to get LU decomposition of non-square matrix', function(done) {
     assert.throws(
       function() {
-        matrix.lupDecomposition([[1,2,3],[4,5,6]]);
+        matrix.lupDecomposition([
+          [1, 2, 3],
+          [4, 5, 6]
+        ]);
       },
       /Matrix must be square./
     );
-    
+
     done();
   });
 
   test('should return the LU decomposition of a matrix', function(done) {
-    var inputMatrix = [[1, 0, 0, 2], [2, -2, 0, 5], [1, -2, -2, 3], [5, -3, -5, 2]];
+    var inputMatrix = [
+      [1, 0, 0, 2],
+      [2, -2, 0, 5],
+      [1, -2, -2, 3],
+      [5, -3, -5, 2]
+    ];
     var firstLup = matrix.lupDecomposition(inputMatrix);
 
     assert.deepEqual(matrix.multiply(firstLup[0], firstLup[1]),
-                     matrix.multiply(firstLup[2], inputMatrix));
+      matrix.multiply(firstLup[2], inputMatrix));
 
-    var secondInputMatrix = [[1, 0, 0, 2], [1, -2, 0, 5], [1, -2, 0, 3], [1, -3, -5, 0]];
+    var secondInputMatrix = [
+      [1, 0, 0, 2],
+      [1, -2, 0, 5],
+      [1, -2, 0, 3],
+      [1, -3, -5, 0]
+    ];
     var secondLup = matrix.lupDecomposition(secondInputMatrix);
 
     assert.deepEqual(matrix.multiply(secondLup[0], secondLup[1]),
-                     matrix.multiply(secondLup[2], secondInputMatrix));
-    
+      matrix.multiply(secondLup[2], secondInputMatrix));
+
     done();
   });
 
   test('should return a new vector that has been rotated by the transformation matrix', function(done) {
-    var vectorA = [[0], [1]];
+    var vectorA = [
+      [0],
+      [1]
+    ];
     var degree = 90;
 
     var res = matrix.rotate(vectorA, degree, 'clockwise');
@@ -250,7 +361,11 @@ suite('numbers', function() {
   });
 
   test('should throw an error if a vector larger than two is given for rotation', function(done) {
-    var vectorA = [[0], [1], [2]];
+    var vectorA = [
+      [0],
+      [1],
+      [2]
+    ];
     var degree = 90;
 
     assert.throws(
@@ -263,10 +378,16 @@ suite('numbers', function() {
   });
 
   test('should return a new vector that has been scaled by the transformation matrix', function(done) {
-    var vectorA = [[2], [5]];
+    var vectorA = [
+      [2],
+      [5]
+    ];
     var sx = 10;
     var sy = 5;
-    var expected = [ [20], [25] ];
+    var expected = [
+      [20],
+      [25]
+    ];
 
     var res = matrix.scale(vectorA, sx, sy);
 
@@ -275,7 +396,11 @@ suite('numbers', function() {
   });
 
   test('should throw an error if a vector larger than two is given for scaling', function(done) {
-    var vectorA = [[0], [1], [2]];
+    var vectorA = [
+      [0],
+      [1],
+      [2]
+    ];
     var sx = 10;
     var sy = 5;
 
@@ -289,10 +414,16 @@ suite('numbers', function() {
   });
 
   test('should return a new vector that has been sheared in the x direction by the transformation matrix', function(done) {
-    var vectorA = [[2], [5]];
+    var vectorA = [
+      [2],
+      [5]
+    ];
     var k = 10;
     var direction = "xaxis";
-    var expected = [ [52], [5] ];
+    var expected = [
+      [52],
+      [5]
+    ];
 
     var res = matrix.shear(vectorA, k, direction);
 
@@ -301,10 +432,16 @@ suite('numbers', function() {
   });
 
   test('should return a new vector that has been sheared in the y direction by the transformation matrix', function(done) {
-    var vectorA = [[2], [5]];
+    var vectorA = [
+      [2],
+      [5]
+    ];
     var k = 10;
     var direction = "yaxis";
-    var expected = [ [2], [25] ];
+    var expected = [
+      [2],
+      [25]
+    ];
 
     var res = matrix.shear(vectorA, k, direction);
 
@@ -313,7 +450,11 @@ suite('numbers', function() {
   });
 
   test('should throw an error if a vector larger than two is given for shearing', function(done) {
-    var vectorA = [[0], [1], [2]];
+    var vectorA = [
+      [0],
+      [1],
+      [2]
+    ];
     var k = 10;
     var direction = "yaxis";
 
@@ -327,10 +468,16 @@ suite('numbers', function() {
   });
 
   test('should return a new vector that has been transformed by the affine transformation matrix', function(done) {
-    var vectorA = [[2], [5]];
+    var vectorA = [
+      [2],
+      [5]
+    ];
     var tx = 10;
     var ty = 10;
-    var expected = [ [12], [15] ];
+    var expected = [
+      [12],
+      [15]
+    ];
 
     var res = matrix.affine(vectorA, tx, ty);
 
@@ -339,7 +486,11 @@ suite('numbers', function() {
   });
 
   test('should throw an error if a vector larger than two is given for the affine transform', function(done) {
-    var vectorA = [[0], [1], [2]];
+    var vectorA = [
+      [0],
+      [1],
+      [2]
+    ];
     var tx = 10;
     var ty = 10;
 
@@ -364,20 +515,20 @@ suite('numbers', function() {
       [0, 0, 0],
       [3, -1, 5],
       [1, 2, 5]
-      ];
-    var res1 = matrix.rowScale(m,0,0);
+    ];
+    var res1 = matrix.rowScale(m, 0, 0);
 
-    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res1, expected1);
 
 
     var expected2 = [
       [0, 1, 2],
       [-6, 2, -10],
       [1, 2, 5]
-      ];
-    var res2 = matrix.rowScale( m , 1 , -2 );
+    ];
+    var res2 = matrix.rowScale(m, 1, -2);
 
-    assert.deepEqual( res2 , expected2 );
+    assert.deepEqual(res2, expected2);
 
 
     done();
@@ -394,16 +545,16 @@ suite('numbers', function() {
       [3, -1, 5],
       [0, 1, 2],
       [1, 2, 5]
-      ];
-    var res1 = matrix.rowSwitch(m,0,1);
+    ];
+    var res1 = matrix.rowSwitch(m, 0, 1);
 
-    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res1, expected1);
 
-    var res2 = matrix.rowScale(m,1,1);
+    var res2 = matrix.rowScale(m, 1, 1);
 
-    assert.deepEqual(res2,m);
+    assert.deepEqual(res2, m);
 
-    
+
     done();
   });
   test('should return a new matrix that has a multiple of one row added to another using the rowAddMultiple function', function(done) {
@@ -417,121 +568,155 @@ suite('numbers', function() {
       [0, 1, 2],
       [3, 1, 9],
       [1, 2, 5]
-      ];
-    var res1 = matrix.rowAddMultiple(m,0,1,2);
+    ];
+    var res1 = matrix.rowAddMultiple(m, 0, 1, 2);
 
-    assert.deepEqual(res1,expected1);
+    assert.deepEqual(res1, expected1);
 
-    var res2 = matrix.rowScale(m,1,1,0);
+    var res2 = matrix.rowScale(m, 1, 1, 0);
 
-    assert.deepEqual(res2,m);
+    assert.deepEqual(res2, m);
 
-    
+
     done();
   });
 
   test('should row reduce the given matrix for a given epsilon', function(done) {
-    var m1 = [[0, 1, 2],
-              [3, -1, 5],
-              [1, 2, 5]];
+    var m1 = [
+      [0, 1, 2],
+      [3, -1, 5],
+      [1, 2, 5]
+    ];
 
-    var m2 = [[2, -1, 0],
-              [-1, 2, -1],
-              [0, -1, 2]];
+    var m2 = [
+      [2, -1, 0],
+      [-1, 2, -1],
+      [0, -1, 2]
+    ];
 
-    var expected1 = [[1, 0, 0],
-                     [0, 1, 0],
-                     [0, 0, 1]];
+    var expected1 = [
+      [1, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1]
+    ];
 
     var res1 = matrix.GaussJordanEliminate(m1);
     var res2 = matrix.GaussJordanEliminate(m2);
     var res3 = matrix.rowReduce(m2, 0.01);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected1);
-    assert.deepEqual(res3,expected1);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected1);
+    assert.deepEqual(res3, expected1);
 
     done();
   });
 
   test('should row reduce the given matrix for a given epsilon', function(done) {
-    var m1 = [[0, 1],
-              [1, 2]];
+    var m1 = [
+      [0, 1],
+      [1, 2]
+    ];
 
-    var expected1 = [[-2, 1],
-                     [1, 0]];
+    var expected1 = [
+      [-2, 1],
+      [1, 0]
+    ];
 
-    var m2 = [[1, 3, 3],
-              [1, 4, 3],
-              [1, 3, 4]];
+    var m2 = [
+      [1, 3, 3],
+      [1, 4, 3],
+      [1, 3, 4]
+    ];
 
-   var expected2 = [[7,-3,-3],
-                    [-1,1,0],
-                    [-1,0,1]];
+    var expected2 = [
+      [7, -3, -3],
+      [-1, 1, 0],
+      [-1, 0, 1]
+    ];
 
     var res1 = matrix.inverse(m1);
     var res2 = matrix.inverse(m2);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
 
     done();
   });
 
   test('should reorder columns', function(done) {
-    var m1 = [[1,2,3],
-              [4,5,6],
-              [7,8,9]];
+    var m1 = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9]
+    ];
 
-    var expected1 = [[2,3,1],
-                     [5,6,4],
-                     [8,9,7]];
+    var expected1 = [
+      [2, 3, 1],
+      [5, 6, 4],
+      [8, 9, 7]
+    ];
 
-    var m2 = [[20,3],
-              [17,5]];
+    var m2 = [
+      [20, 3],
+      [17, 5]
+    ];
 
-    var expected2 = [[3,20],
-                     [5,17]];
+    var expected2 = [
+      [3, 20],
+      [5, 17]
+    ];
 
-    var res1 = matrix.reorderCols(m1, [1,2,0]);
-    var res2 = matrix.reorderCols(m2, [1,0]);
+    var res1 = matrix.reorderCols(m1, [1, 2, 0]);
+    var res2 = matrix.reorderCols(m2, [1, 0]);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
   test('should reorder rows', function(done) {
-    var m1 = [[1,2,3],
-              [4,5,6],
-              [7,8,9]];
+    var m1 = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9]
+    ];
 
-    var expected1 = [[7,8,9],
-                     [1,2,3],
-                     [4,5,6]];
+    var expected1 = [
+      [7, 8, 9],
+      [1, 2, 3],
+      [4, 5, 6]
+    ];
 
-    var m2 = [[20,3],
-              [17,5]];
+    var m2 = [
+      [20, 3],
+      [17, 5]
+    ];
 
-    var expected2 = [[17,5],
-                     [20,3]];
+    var expected2 = [
+      [17, 5],
+      [20, 3]
+    ];
 
-    var res1 = matrix.reorderRows(m1, [2,0,1]);
-    var res2 = matrix.reorderRows(m2, [1,0]);
+    var res1 = matrix.reorderRows(m1, [2, 0, 1]);
+    var res2 = matrix.reorderRows(m2, [1, 0]);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
   test('should reverse columns and rows', function(done) {
-    var m1 = [[2,5,7],
-              [10,4,6],
-              [0,1,0]];
+    var m1 = [
+      [2, 5, 7],
+      [10, 4, 6],
+      [0, 1, 0]
+    ];
 
-    var expected1 = [[0,1,0],
-                     [6,4,10],
-                     [7,5,2]];
+    var expected1 = [
+      [0, 1, 0],
+      [6, 4, 10],
+      [7, 5, 2]
+    ];
 
     var res1 = matrix.reverseRows(matrix.reverseCols(m1));
 
@@ -543,23 +728,27 @@ suite('numbers', function() {
     var n1 = 3;
     var m1 = 2;
 
-    var expected1 = [[0,0],
-                     [0,0],
-                     [0,0]];
+    var expected1 = [
+      [0, 0],
+      [0, 0],
+      [0, 0]
+    ];
 
-    var res1 = matrix.zeros(n1,m1);
+    var res1 = matrix.zeros(n1, m1);
 
     assert.deepEqual(res1, expected1);
     done();
   });
 
   test('should get a column', function(done) {
-    var m1 = [[10,2,5],
-              [5,2,42],
-              [7,6,4],
-              [4,11,89]];
+    var m1 = [
+      [10, 2, 5],
+      [5, 2, 42],
+      [7, 6, 4],
+      [4, 11, 89]
+    ];
 
-    var expected1 = [5,42,4,89];
+    var expected1 = [5, 42, 4, 89];
 
     var res1 = matrix.getCol(m1, 2);
 
@@ -572,10 +761,12 @@ suite('numbers', function() {
     var corner1 = 'TL';
     var dir1 = 'V';
 
-    var expected1 = [[1,3,4,10],
-                     [2,5,9,11],
-                     [6,8,12,15],
-                     [7,13,14,16]];
+    var expected1 = [
+      [1, 3, 4, 10],
+      [2, 5, 9, 11],
+      [6, 8, 12, 15],
+      [7, 13, 14, 16]
+    ];
 
     var res1 = matrix.zigzag(n1, corner1, dir1);
 
@@ -584,41 +775,45 @@ suite('numbers', function() {
   });
 
   test('should calculate a vector norm', function(done) {
-    var v1 = [-100,5,-12,20,83];
+    var v1 = [-100, 5, -12, 20, 83];
     var p1 = Infinity;
     var p2 = -Infinity;
-    
-    var v2 = [1,1,1,1];
+
+    var v2 = [1, 1, 1, 1];
     var p3 = 2;
 
     var expected1 = 100;
     var expected2 = 5;
     var expected3 = 2;
 
-    var res1 = matrix.vectorNorm(v1,p1);
-    var res2 = matrix.vectorNorm(v1,p2);
-    var res3 = matrix.vectorNorm(v2,p3);
+    var res1 = matrix.vectorNorm(v1, p1);
+    var res2 = matrix.vectorNorm(v1, p2);
+    var res3 = matrix.vectorNorm(v2, p3);
 
     assert.deepEqual(res1, expected1);
-    assert.deepEqual(res2,expected2);
-    assert.deepEqual(res3,expected3);
+    assert.deepEqual(res2, expected2);
+    assert.deepEqual(res3, expected3);
     done();
   });
 
   test('should calculate a matrix norm', function(done) {
-    var m1 = [[1,-3,2],
-              [-4,6,-5],
-              [7,-9,-8],
-              [-10,12,11]];
+    var m1 = [
+      [1, -3, 2],
+      [-4, 6, -5],
+      [7, -9, -8],
+      [-10, 12, 11]
+    ];
     var p1 = Infinity;
     var p2 = -Infinity;
     var p3 = 1;
     var p4 = -1;
-    
-    var m2 = [[1,0,0,0],
-              [0,1,0,0],
-              [0,0,1,0],
-              [0,0,0,1]];
+
+    var m2 = [
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ];
     var p5 = null;
 
     var expected1 = 33;
@@ -627,11 +822,11 @@ suite('numbers', function() {
     var expected4 = 22;
     var expected5 = 2;
 
-    var res1 = matrix.matrixNorm(m1,p1);
-    var res2 = matrix.matrixNorm(m1,p2);
-    var res3 = matrix.matrixNorm(m1,p3);
-    var res4 = matrix.matrixNorm(m1,p4);
-    var res5 = matrix.matrixNorm(m2,p5);
+    var res1 = matrix.matrixNorm(m1, p1);
+    var res2 = matrix.matrixNorm(m1, p2);
+    var res3 = matrix.matrixNorm(m1, p3);
+    var res4 = matrix.matrixNorm(m1, p4);
+    var res5 = matrix.matrixNorm(m2, p5);
 
     assert.deepEqual(res1, expected1);
     assert.deepEqual(res2, expected2);
@@ -642,57 +837,69 @@ suite('numbers', function() {
   });
 
   test('should test for upper bandwidth', function(done) {
-    var m1 = [[1,2,0,0],
-              [5,4,3,0],
-              [8,2,1,5],
-              [1,2,5,4]];
-    var m2 = [[1,0,0,0,0],
-              [1,3,3,0,0],
-              [1,3,3,3,0]];
+    var m1 = [
+      [1, 2, 0, 0],
+      [5, 4, 3, 0],
+      [8, 2, 1, 5],
+      [1, 2, 5, 4]
+    ];
+    var m2 = [
+      [1, 0, 0, 0, 0],
+      [1, 3, 3, 0, 0],
+      [1, 3, 3, 3, 0]
+    ];
     var q1 = 1;
     var q2 = 0;
 
     var expected1 = true;
     var expected2 = false;
 
-    var res1 = matrix.isUpperBand(m1,q1);
-    var res2 = matrix.isUpperBand(m2,q2);
+    var res1 = matrix.isUpperBand(m1, q1);
+    var res2 = matrix.isUpperBand(m2, q2);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
   test('should test for lower bandwidth', function(done) {
-    var m1 = [[1,2,3,5],
-              [5,4,3,0],
-              [0,2,1,5],
-              [0,0,5,4]];
-    var m2 = [[1,3,4,5,9],
-              [0,3,3,0,0],
-              [0,0,3,3,0],
-              [0,0,1,3,3]];
+    var m1 = [
+      [1, 2, 3, 5],
+      [5, 4, 3, 0],
+      [0, 2, 1, 5],
+      [0, 0, 5, 4]
+    ];
+    var m2 = [
+      [1, 3, 4, 5, 9],
+      [0, 3, 3, 0, 0],
+      [0, 0, 3, 3, 0],
+      [0, 0, 1, 3, 3]
+    ];
     var q1 = 1;
     var q2 = 0;
 
     var expected1 = true;
     var expected2 = false;
 
-    var res1 = matrix.isLowerBand(m1,q1);
-    var res2 = matrix.isLowerBand(m2,q2);
+    var res1 = matrix.isLowerBand(m1, q1);
+    var res2 = matrix.isLowerBand(m2, q2);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
   test('should test for weak row diagonal dominance', function(done) {
-    var m1 = [[3,-2,1],
-              [1,-3,2],
-              [-1,2,4]];
-    var m2 = [[-2,2,1],
-              [1,3,2],
-              [1,-2,0]];
+    var m1 = [
+      [3, -2, 1],
+      [1, -3, 2],
+      [-1, 2, 4]
+    ];
+    var m2 = [
+      [-2, 2, 1],
+      [1, 3, 2],
+      [1, -2, 0]
+    ];
 
     var expected1 = true;
     var expected2 = false;
@@ -700,18 +907,22 @@ suite('numbers', function() {
     var res1 = matrix.isRowDD(m1);
     var res2 = matrix.isRowDD(m2);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
   test('should test for strict row diagonal dominance', function(done) {
-    var m1 = [[3,-2,1],
-              [1,-3,2],
-              [-1,2,4]];
-    var m2 = [[-4,2,1],
-              [1,6,2],
-              [1,-2,5]];
+    var m1 = [
+      [3, -2, 1],
+      [1, -3, 2],
+      [-1, 2, 4]
+    ];
+    var m2 = [
+      [-4, 2, 1],
+      [1, 6, 2],
+      [1, -2, 5]
+    ];
 
     var expected1 = false;
     var expected2 = true;
@@ -719,18 +930,22 @@ suite('numbers', function() {
     var res1 = matrix.isStrictlyRowDD(m1);
     var res2 = matrix.isStrictlyRowDD(m2);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
   test('should test for weak column diagonal dominance', function(done) {
-    var m1 = [[3,-2,1],
-              [1,-3,2],
-              [-1,2,4]];
-    var m2 = [[-4,1,1],
-              [2,3,2],
-              [2,-1,5]];
+    var m1 = [
+      [3, -2, 1],
+      [1, -3, 2],
+      [-1, 2, 4]
+    ];
+    var m2 = [
+      [-4, 1, 1],
+      [2, 3, 2],
+      [2, -1, 5]
+    ];
 
     var expected1 = false;
     var expected2 = true;
@@ -738,18 +953,22 @@ suite('numbers', function() {
     var res1 = matrix.isColumnDD(m1);
     var res2 = matrix.isColumnDD(m2);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
   test('should test for strict column diagonal dominance', function(done) {
-    var m1 = [[-4,2,1],
-              [1,6,2],
-              [1,-2,5]];
-    var m2 = [[-4,1,1],
-              [2,3,2],
-              [2,-1,5]];
+    var m1 = [
+      [-4, 2, 1],
+      [1, 6, 2],
+      [1, -2, 5]
+    ];
+    var m2 = [
+      [-4, 1, 1],
+      [2, 3, 2],
+      [2, -1, 5]
+    ];
 
     var expected1 = true;
     var expected2 = false;
@@ -757,8 +976,8 @@ suite('numbers', function() {
     var res1 = matrix.isStrictlyColumnDD(m1);
     var res2 = matrix.isStrictlyColumnDD(m2);
 
-    assert.deepEqual(res1,expected1);
-    assert.deepEqual(res2,expected2);
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
     done();
   });
 
