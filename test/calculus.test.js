@@ -2,22 +2,22 @@ var assert = require('assert');
 var numbers = require('../index.js');
 var calculus = numbers.calculus;
 
-suite('numbers', function() {
+suite('numbers', function () {
 
   console.log('\n\n\033[34mTesting Calculus Mathematics\033[0m');
 
-  test('pointDiff should return the derivative at a point, provided function', function(done) {
+  test('pointDiff should return the derivative at a point, provided function', function (done) {
     var func = function (x) {
       return 2 * x + 2;
     };
 
     var res = calculus.pointDiff(func, 5);
-    
+
     assert.equal(2 - res < numbers.EPSILON, true);
     done();
   });
 
-  test('riemann should return an estimated definite integral of a function', function(done) {
+  test('riemann should return an estimated definite integral of a function', function (done) {
     var func = function (x) {
       return 2 * Math.pow(x, 2);
     };
@@ -28,7 +28,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('adaptive simpson should return an estimated definite integral of a function', function(done) {
+  test('adaptive simpson should return an estimated definite integral of a function', function (done) {
     var func = function (x) {
       return 2 * Math.pow(x, 2);
     };
@@ -39,7 +39,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('limit should return the limit of a function at a given point from left, middle, or right', function(done) {
+  test('limit should return the limit of a function at a given point from left, middle, or right', function (done) {
     var func = function (x) {
       return Math.pow(x, 2) * Math.sin(2 * x);
     };

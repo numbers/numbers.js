@@ -2,11 +2,11 @@ var assert = require('assert');
 var numbers = require('../index.js');
 var matrix = numbers.matrix;
 
-suite('numbers', function() {
+suite('numbers', function () {
 
   console.log('\n\n\033[34mTesting Matrix Mathematics\033[0m');
 
-  test('should create a deep copy of a matrix', function(done) {
+  test('should create a deep copy of a matrix', function (done) {
     var input = [
       [1, 2],
       [2, 1]
@@ -17,7 +17,7 @@ suite('numbers', function() {
     assert.notEqual(input, copy);
 
     assert.throws(
-      function() {
+      function () {
         matrix.deepCopy([1, 2]);
       },
       /Input cannot be a vector./
@@ -26,7 +26,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should be able to tell if a matrix is square', function(done) {
+  test('should be able to tell if a matrix is square', function (done) {
     assert.equal(matrix.isSquare([
       [1, 2],
       [3, 4]
@@ -53,7 +53,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return sum of two matrices', function(done) {
+  test('should return sum of two matrices', function (done) {
     var arrA = [
       [0, 1, 2],
       [3, 4, 5]
@@ -75,7 +75,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return sum of two vectors', function(done) {
+  test('should return sum of two vectors', function (done) {
     var arrA = [0, 1, 2];
     var arrB = [3, 4, 5];
 
@@ -87,7 +87,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return difference of two vectors', function(done) {
+  test('should return difference of two vectors', function (done) {
     var arrA = [0, 1, 2];
     var arrB = [3, 4, 5];
     var expected1 = [-3, -3, -3];
@@ -97,7 +97,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should returned scaled matrix', function(done) {
+  test('should returned scaled matrix', function (done) {
     var array = [
       [0, 1, 2],
       [3, 4, 5]
@@ -113,7 +113,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return transposed matrix', function(done) {
+  test('should return transposed matrix', function (done) {
     var array = [
       [0, 1, 2],
       [3, 4, 5]
@@ -131,7 +131,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return identity matrix of dimension n', function(done) {
+  test('should return identity matrix of dimension n', function (done) {
     var identity = [
       [1, 0, 0],
       [0, 1, 0],
@@ -143,7 +143,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return dot product of two vectors', function(done) {
+  test('should return dot product of two vectors', function (done) {
     var vectorA = [0, 1, 2, 3];
     var vectorB = [-1, 2, 4, 6];
 
@@ -153,7 +153,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return product of a row vector and a matrix', function(done) {
+  test('should return product of a row vector and a matrix', function (done) {
     var vec = [2, 1];
     var mat = [
       [1, 0, 1],
@@ -166,7 +166,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return product of a matrix and a column vector', function(done) {
+  test('should return product of a matrix and a column vector', function (done) {
     var mat = [
       [1, 0, 1],
       [0, 1, 0]
@@ -186,7 +186,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return product of two matrices', function(done) {
+  test('should return product of two matrices', function (done) {
     var matrixA = [
       [0, 1, 2],
       [3, 4, 5]
@@ -206,7 +206,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return product of a row vector and a matrix using general-purpose multiplication', function(done) {
+  test('should return product of a row vector and a matrix using general-purpose multiplication', function (done) {
     var vec = [3, 4];
     var mat = [
       [2, 0, 2],
@@ -219,7 +219,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return product of a matrix and a column vector using general-purpose multiplication', function(done) {
+  test('should return product of a matrix and a column vector using general-purpose multiplication', function (done) {
     var mat = [
       [1, 2, 3],
       [2, 1, 0]
@@ -239,7 +239,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return product of two matrices using general-purpose multiplication', function(done) {
+  test('should return product of two matrices using general-purpose multiplication', function (done) {
     var matrixA = [
       [0, 1, 2],
       [3, 4, 5]
@@ -259,7 +259,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return determinant of matrix', function(done) {
+  test('should return determinant of matrix', function (done) {
 
     var m0 = [
       [1]
@@ -288,7 +288,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error for calculating the determinant of a non-square matrix', function(done) {
+  test('should throw an error for calculating the determinant of a non-square matrix', function (done) {
     var m3 = [
       [3, -7, 8, 9, -6],
       [0, 2, -5, 7, 3],
@@ -296,7 +296,7 @@ suite('numbers', function() {
       [0, 0, 0, -2, 0]
     ];
 
-    assert.throws(function() {
+    assert.throws(function () {
         matrix.determinant(m3);
       },
       /Matrix must be square./
@@ -304,9 +304,9 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error if trying to get LU decomposition of non-square matrix', function(done) {
+  test('should throw an error if trying to get LU decomposition of non-square matrix', function (done) {
     assert.throws(
-      function() {
+      function () {
         matrix.lupDecomposition([
           [1, 2, 3],
           [4, 5, 6]
@@ -318,7 +318,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return the LU decomposition of a matrix', function(done) {
+  test('should return the LU decomposition of a matrix', function (done) {
     var inputMatrix = [
       [1, 0, 0, 2],
       [2, -2, 0, 5],
@@ -344,7 +344,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new vector that has been rotated by the transformation matrix', function(done) {
+  test('should return a new vector that has been rotated by the transformation matrix', function (done) {
     var vectorA = [
       [0],
       [1]
@@ -360,7 +360,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error if a vector larger than two is given for rotation', function(done) {
+  test('should throw an error if a vector larger than two is given for rotation', function (done) {
     var vectorA = [
       [0],
       [1],
@@ -369,7 +369,7 @@ suite('numbers', function() {
     var degree = 90;
 
     assert.throws(
-      function() {
+      function () {
         matrix.rotate(vectorA, degree, 'clockwise');
       },
       /Only two dimensional operations are supported at this time/
@@ -377,7 +377,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new vector that has been scaled by the transformation matrix', function(done) {
+  test('should return a new vector that has been scaled by the transformation matrix', function (done) {
     var vectorA = [
       [2],
       [5]
@@ -395,7 +395,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error if a vector larger than two is given for scaling', function(done) {
+  test('should throw an error if a vector larger than two is given for scaling', function (done) {
     var vectorA = [
       [0],
       [1],
@@ -405,15 +405,15 @@ suite('numbers', function() {
     var sy = 5;
 
     assert.throws(
-      function() {
-        var res = matrix.scale(vectorA, sx, sy);
+      function () {
+        matrix.scale(vectorA, sx, sy);
       },
       /Only two dimensional operations are supported at this time/
     );
     done();
   });
 
-  test('should return a new vector that has been sheared in the x direction by the transformation matrix', function(done) {
+  test('should return a new vector that has been sheared in the x direction by the transformation matrix', function (done) {
     var vectorA = [
       [2],
       [5]
@@ -431,7 +431,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new vector that has been sheared in the y direction by the transformation matrix', function(done) {
+  test('should return a new vector that has been sheared in the y direction by the transformation matrix', function (done) {
     var vectorA = [
       [2],
       [5]
@@ -449,7 +449,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error if a vector larger than two is given for shearing', function(done) {
+  test('should throw an error if a vector larger than two is given for shearing', function (done) {
     var vectorA = [
       [0],
       [1],
@@ -459,15 +459,15 @@ suite('numbers', function() {
     var direction = "yaxis";
 
     assert.throws(
-      function() {
-        var res = matrix.shear(vectorA, k, direction);
+      function () {
+        matrix.shear(vectorA, k, direction);
       },
       /Only two dimensional operations are supported at this time/
     );
     done();
   });
 
-  test('should return a new vector that has been transformed by the affine transformation matrix', function(done) {
+  test('should return a new vector that has been transformed by the affine transformation matrix', function (done) {
     var vectorA = [
       [2],
       [5]
@@ -485,7 +485,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should throw an error if a vector larger than two is given for the affine transform', function(done) {
+  test('should throw an error if a vector larger than two is given for the affine transform', function (done) {
     var vectorA = [
       [0],
       [1],
@@ -495,8 +495,8 @@ suite('numbers', function() {
     var ty = 10;
 
     assert.throws(
-      function() {
-        var res = matrix.affine(vectorA, tx, ty);
+      function () {
+        matrix.affine(vectorA, tx, ty);
       },
       /Only two dimensional operations are supported at this time/
     );
@@ -504,7 +504,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new matrix that has a scaled row for the rowScale function', function(done) {
+  test('should return a new matrix that has a scaled row for the rowScale function', function (done) {
     var m = [
       [0, 1, 2],
       [3, -1, 5],
@@ -534,7 +534,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should return a new matrix that has rows changed with the rowSwitch function', function(done) {
+  test('should return a new matrix that has rows changed with the rowSwitch function', function (done) {
     var m = [
       [0, 1, 2],
       [3, -1, 5],
@@ -557,7 +557,7 @@ suite('numbers', function() {
 
     done();
   });
-  test('should return a new matrix that has a multiple of one row added to another using the rowAddMultiple function', function(done) {
+  test('should return a new matrix that has a multiple of one row added to another using the rowAddMultiple function', function (done) {
     var m = [
       [0, 1, 2],
       [3, -1, 5],
@@ -581,7 +581,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should row reduce the given matrix for a given epsilon', function(done) {
+  test('should row reduce the given matrix for a given epsilon', function (done) {
     var m1 = [
       [0, 1, 2],
       [3, -1, 5],
@@ -611,7 +611,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should row reduce the given matrix for a given epsilon', function(done) {
+  test('should row reduce the given matrix for a given epsilon', function (done) {
     var m1 = [
       [0, 1],
       [1, 2]
@@ -643,7 +643,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should reorder columns', function(done) {
+  test('should reorder columns', function (done) {
     var m1 = [
       [1, 2, 3],
       [4, 5, 6],
@@ -674,7 +674,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should reorder rows', function(done) {
+  test('should reorder rows', function (done) {
     var m1 = [
       [1, 2, 3],
       [4, 5, 6],
@@ -705,7 +705,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should reverse columns and rows', function(done) {
+  test('should reverse columns and rows', function (done) {
     var m1 = [
       [2, 5, 7],
       [10, 4, 6],
@@ -724,7 +724,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should produce a matrix of zeros', function(done) {
+  test('should produce a matrix of zeros', function (done) {
     var n1 = 3;
     var m1 = 2;
 
@@ -740,7 +740,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should get a column', function(done) {
+  test('should get a column', function (done) {
     var m1 = [
       [10, 2, 5],
       [5, 2, 42],
@@ -756,7 +756,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should create a zigzag matrix', function(done) {
+  test('should create a zigzag matrix', function (done) {
     var n1 = 4;
     var corner1 = 'TL';
     var dir1 = 'V';
@@ -774,7 +774,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should calculate a vector norm', function(done) {
+  test('should calculate a vector norm', function (done) {
     var v1 = [-100, 5, -12, 20, 83];
     var p1 = Infinity;
     var p2 = -Infinity;
@@ -796,7 +796,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should calculate a matrix norm', function(done) {
+  test('should calculate a matrix norm', function (done) {
     var m1 = [
       [1, -3, 2],
       [-4, 6, -5],
@@ -836,7 +836,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should test for upper bandwidth', function(done) {
+  test('should test for upper bandwidth', function (done) {
     var m1 = [
       [1, 2, 0, 0],
       [5, 4, 3, 0],
@@ -862,7 +862,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should test for lower bandwidth', function(done) {
+  test('should test for lower bandwidth', function (done) {
     var m1 = [
       [1, 2, 3, 5],
       [5, 4, 3, 0],
@@ -889,7 +889,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should test for weak row diagonal dominance', function(done) {
+  test('should test for weak row diagonal dominance', function (done) {
     var m1 = [
       [3, -2, 1],
       [1, -3, 2],
@@ -912,7 +912,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should test for strict row diagonal dominance', function(done) {
+  test('should test for strict row diagonal dominance', function (done) {
     var m1 = [
       [3, -2, 1],
       [1, -3, 2],
@@ -935,7 +935,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should test for weak column diagonal dominance', function(done) {
+  test('should test for weak column diagonal dominance', function (done) {
     var m1 = [
       [3, -2, 1],
       [1, -3, 2],
@@ -958,7 +958,7 @@ suite('numbers', function() {
     done();
   });
 
-  test('should test for strict column diagonal dominance', function(done) {
+  test('should test for strict column diagonal dominance', function (done) {
     var m1 = [
       [-4, 2, 1],
       [1, 6, 2],
