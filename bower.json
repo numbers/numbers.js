@@ -2,7 +2,7 @@
   "name": "numbers.js",
   "main": "src/numbers.js",
   "version": "0.5.0",
-  "homepage": "https://github.com/sjkaliski/numbers.js",
+  "homepage": "https://github.com/numbers/numbers.js",
   "authors": [
     "Steve Kaliski <sjkaliski@gmail.com>"
   ],
