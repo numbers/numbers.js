@@ -1,6 +1,5 @@
-# numbers.js [![Build Status](https://travis-ci.org/sjkaliski/numbers.js.png)](https://travis-ci.org/sjkaliski/numbers.js)
-Numbers - an advanced mathematics toolkit for JavaScript and Node.js
-developed by Steve Kaliski, [@sjkaliski](http://twitter.com/sjkaliski)
+# numbers.js [![Build Status](https://travis-ci.org/numbers/numbers.js.png)](https://travis-ci.org/numbers/numbers.js)
+Numbers - an advanced mathematics toolkit for JavaScript and Node.js.
 
 
 ## Description
@@ -155,7 +154,3 @@ In no particular order:
 * [Philip I. Thomas aka `philipithomas`](https://github.com/philipithomas)
 * [Brandon Benvie aka `Benvie`](https://github.com/Benvie)
 * [Larry Battle aka `LarryBattle`](https://github.com/LarryBattle)
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sjkaliski/numbers.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
