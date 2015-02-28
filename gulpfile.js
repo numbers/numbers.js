@@ -31,13 +31,23 @@ gulp.task("default", [ "build" ]);
 
 gulp.task("format:lib", function(){
   return gulp.src( ["./lib/**/*.js"], { base : "./lib"} )
-    .pipe(prettify())
+    .pipe(prettify({
+      js: {
+        indentSize: 2,
+        space_after_anon_function: true
+      }
+    }))
     .pipe(gulp.dest("./lib"));
 });
 
 gulp.task("format:test", function(){
   return gulp.src( ["./test/*.js"], { base : "./"} )
-    .pipe(prettify())
+    .pipe(prettify({
+      js: {
+        indentSize: 2,
+        space_after_anon_function: true
+      }  
+    }))
     .pipe(gulp.dest("./"));
 });
 
