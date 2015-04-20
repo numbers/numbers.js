@@ -68,6 +68,12 @@ We can transpose a matrix
 numbers.matrix.transpose(array);
 ```
 
+When working with vectors, treat them like single row matrices:
+
+```javascript
+var vector1 = [[1, 0, 0]];
+```
+
 Numbers also includes some basic prime number analysis.  We can check if a number is prime:
 
 ```javascript
