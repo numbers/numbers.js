@@ -915,4 +915,38 @@ suite('numbers', function () {
     done();
   });
 
+  test('should test for applying a function to each element of a matrix', function (done) {
+    var m1 = [
+      [-1, 0, 5],
+      [2, 3, 18],
+      [42, 0, 3]
+    ];
+    var m2 = [
+      [-5, 2],
+      [2, 3],
+      [11, -1]
+    ];
+    var addOne = function(x) {
+      return x + 1;
+    }
+
+    var expected1 = [
+      [0, 1, 6],
+      [3, 4, 19],
+      [43, 1, 4]
+    ];
+    var expected2 = [
+      [-4, 3],
+      [3, 4],
+      [12, 0]
+    ];
+
+    var res1 = matrix.applyFunction(m1, addOne);
+    var res2 = matrix.applyFunction(m2, addOne);
+
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
+    done();
+  });
+
 });
