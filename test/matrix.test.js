@@ -941,8 +941,8 @@ suite('numbers', function () {
       [12, 0]
     ];
 
-    var res1 = matrix.applyFunction(m1, addOne);
-    var res2 = matrix.applyFunction(m2, addOne);
+    var res1 = matrix.map(m1, addOne);
+    var res2 = matrix.map(m2, addOne);
 
     assert.deepEqual(res1, expected1);
     assert.deepEqual(res2, expected2);
