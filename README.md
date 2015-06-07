@@ -141,7 +141,7 @@ $ bower install numbers.js
 * Steve Kaliski - [@stevekaliski](http://twitter.com/stevekaliski)
 * David Byrd - [@thebyrd](http://twitter.com/thebyrd)
 * Ethan Resnick - [@studip101](http://twitter.com/studip101)
-* Dakota St. Laurent - [@StDako](https://github.com/StDako)
+* Dakota St. Laurent - [@SaintDako](https://github.com/SaintDako)
 * Kartik Talwar - [@KartikTalwar](https://github.com/KartikTalwar)
 
 ## Contributors
