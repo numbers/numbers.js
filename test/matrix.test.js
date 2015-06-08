@@ -949,4 +949,37 @@ suite('numbers', function () {
     done();
   });
 
+  test('should test for applying a function to each element of a matrix with addition parameters', function (done) {
+    var m1 = [
+      [1, 3, 5],
+      [-1, -7, 2],
+      [5, 5, 4]
+    ];
+    var m2 = [
+      [-10, 3],
+      [4, 9],
+      [100, 0]
+    ];
+    var scaleAndAddOne = function(x, alpha) {
+      return alpha*x + 1;
+    }
+
+    var expected1 = [
+      [3, 7, 11],
+      [-1, -13, 5],
+      [11, 11, 9]
+    ];
+    var expected2 = [
+      [-29, 10],
+      [13, 28],
+      [301, 1]
+    ];
+
+    var res1 = matrix.mapMulti(m1, scaleAndAddOne, 2);
+    var res2 = matrix.mapMulti(m2, scaleAndAddOne, 3);
+
+    assert.deepEqual(res1, expected1);
+    assert.deepEqual(res2, expected2);
+    done();
+  });
 });
