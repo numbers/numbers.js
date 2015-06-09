@@ -926,9 +926,9 @@ suite('numbers', function () {
       [2, 3],
       [11, -1]
     ];
-    var addOne = function(x) {
+    var addOne = function (x) {
       return x + 1;
-    }
+    };
 
     var expected1 = [
       [0, 1, 6],
@@ -960,9 +960,9 @@ suite('numbers', function () {
       [4, 9],
       [100, 0]
     ];
-    var scaleAndAddOne = function(x, alpha) {
-      return alpha*x + 1;
-    }
+    var scaleAndAddOne = function (x, alpha) {
+      return alpha * x + 1;
+    };
 
     var expected1 = [
       [3, 7, 11],
