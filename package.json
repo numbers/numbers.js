@@ -34,7 +34,8 @@
     "gulp-mocha": "~1.1.0",
     "gulp-rename": "~1.2.0",
     "gulp-uglify": "~1.0.1",
-    "jshint-stylish": "~1.0.0",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.0.1",
     "mocha": "~1.8.0",
     "seedrandom": "~2.3.10",
     "uglify-js": "~2.2.2",
@@ -42,9 +43,20 @@
     "vinyl-source-stream": "~1.0.0"
   },
   "scripts": {
-    "build": "gulp build",
-    "format": "gulp format",
-    "lint": "gulp lint",
-    "test": "gulp test"
+    "build": "npm run clean && npm run concat && npm run minimize",
+    "clean": "rm -r src/*",
+    "concat": "browserify -s numbers index.js -o ./src/numbers.js",
+    "format:lib": "js-beautify -r -s 2 --space-after-anon-function ./lib/**/*.js",
+    "format:test": "js-beautify -r -s 2 --space-after-anon-function ./test/*.js",
+    "format": "npm run format:lib && npm run format:test",
+    "lint:lib": "jshint --reporter=node_modules/jshint-stylish ./lib/**/*.js",
+    "lint:test": "jshint --reporter=node_modules/jshint-stylish ./test/*.js",
+    "lint": "npm run lint:lib && npm run lint:test",
+    "minimize": "uglify -s ./src/numbers.js -o ./src/numbers.min.js",
+    "test": "mocha -u tdd",
+    "g-build": "gulp build",
+    "g-format": "gulp format",
+    "g-lint": "gulp lint",
+    "g-test": "gulp test"
   }
 }
