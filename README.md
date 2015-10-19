@@ -103,7 +103,14 @@ To execute, run:
 ```
 npm test
 ```
+
 Note: Make sure to install the plugins by running `npm install`.
+
+With gulp:
+
+```
+npm run g-test
+```
 
 ## Lint
 
@@ -113,12 +120,26 @@ To perform a code quality check using jshint, run
 npm run lint
 ```
 
+or, with gulp:
+
+```
+npm run g-lint
+```
+
+Running without gulp will error on warnings.
+
 ## Format Code
 
 To format all the tests and lib files using jsbeautifier, run 
 
 ```
 npm run format
+```
+
+or, with gulp:
+
+```
+npm run g-format
 ```
 
 ## Build
@@ -130,6 +151,12 @@ npm run build
 ```
 
 This will compile the entire library into a single file accessible at src/numbers.js. It will also minify the file into public/numbers.min.js.
+
+With gulp:
+
+```
+npm run g-build
+```
 
 Numbers.js is also available on Bower via
 
