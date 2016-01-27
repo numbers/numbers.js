@@ -8,5 +8,4 @@ before_install:
 notifications:
   email:
     - sjkaliski@gmail.com
-    - david.byrd11@gmail.com
     - ethan.resnick@gmail.com
