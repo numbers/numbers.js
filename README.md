@@ -94,7 +94,7 @@ numbers.statistic.standardDev(array);
 numbers.statistic.randomSample(lower, upper, n);
 numbers.statistic.correlation(array1, array2);
 ```
-For further documentation, check out [numbersjs.info](http://www.numbersjs.info)
+For further documentation, check out [numbers.github.io](http://numbers.github.io/)
 
 ## Test
 
