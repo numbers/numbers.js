@@ -4,6 +4,7 @@
   "description": "Advanced Mathematics Library for JavaScript",
   "version": "0.6.0",
   "homepage": "https://github.com/numbers/numbers.js",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/numbers/numbers.js"
